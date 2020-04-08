@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="spring,登录认证," />
 
 
 
@@ -79,13 +79,17 @@
 
 
 
-<meta name="description" content="技术总结">
-<meta property="og:type" content="website">
-<meta property="og:title" content="秦音">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="自定义security配置，替换掉security自带的登录认证：SecurityConfig.class  123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring自带security做登录认证">
+<meta property="og:url" content="http://yoursite.com/2020/04/07/Spring%E8%87%AA%E5%B8%A6security%E5%81%9A%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/index.html">
 <meta property="og:site_name" content="秦音">
-<meta property="og:description" content="技术总结">
+<meta property="og:description" content="自定义security配置，替换掉security自带的登录认证：SecurityConfig.class  123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767">
+<meta property="article:published_time" content="2020-04-07T05:07:00.000Z">
+<meta property="article:modified_time" content="2020-04-08T02:59:24.554Z">
 <meta property="article:author" content="YouQiang">
+<meta property="article:tag" content="spring">
+<meta property="article:tag" content="登录认证">
 <meta name="twitter:card" content="summary">
 
 
@@ -116,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/04/07/Spring自带security做登录认证/"/>
 
 
 
 
 
-  <title>秦音</title>
+  <title>spring自带security做登录认证 | 秦音</title>
   
 
 
@@ -141,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -235,178 +238,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/08/Spring%E7%9A%84@Transactional%E6%B3%A8%E8%A7%A3%E6%8E%A7%E5%88%B6%E4%BA%8B%E5%8A%A1%E6%9C%89%E5%93%AA%E4%BA%9B%E4%B8%8D%E7%94%9F%E6%95%88%E7%9A%84%E5%9C%BA%E6%99%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="YouQiang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/touxiang.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦音">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/08/Spring%E7%9A%84@Transactional%E6%B3%A8%E8%A7%A3%E6%8E%A7%E5%88%B6%E4%BA%8B%E5%8A%A1%E6%9C%89%E5%93%AA%E4%BA%9B%E4%B8%8D%E7%94%9F%E6%95%88%E7%9A%84%E5%9C%BA%E6%99%AF/" itemprop="url">Spring的@Transactional注解控制事务有哪些不生效的场景</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-08T11:00:00+08:00">
-                2020-04-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-数据库引擎不支持事务"><a href="#1-数据库引擎不支持事务" class="headerlink" title="1. 数据库引擎不支持事务"></a>1. 数据库引擎不支持事务</h4><p>&emsp;&emsp;这里以 MySQL 为例，其 MyISAM 引擎是不支持事务操作的，InnoDB 才是支持事务的引擎，一般要支持事务都会使用 InnoDB。<br>&emsp;&emsp;从 MySQL 5.5.5 开始的默认存储引擎是：InnoDB，之前默认的都是：MyISAM，所以这点要值得注意，底层引擎不支持事务再怎么搞都是白搭。</p>
-<h4 id="2-没有被-Spring-管理"><a href="#2-没有被-Spring-管理" class="headerlink" title="2. 没有被 Spring 管理"></a>2. 没有被 Spring 管理</h4><p>如下面例子所示：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderServiceImpl</span> <span class="keyword">implements</span> <span class="title">OrderService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateOrder</span><span class="params">(Order order)</span> </span>&#123;</span><br><span class="line">    	<span class="comment">// update order</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;如果此时把 @Service 注解注释掉，这个类就不会被加载成一个 Bean，那这个类就不会被 Spring 管理了，事务自然就失效了。</p>
-<h4 id="3-方法不是-public-的"><a href="#3-方法不是-public-的" class="headerlink" title="3.方法不是 public 的"></a>3.方法不是 public 的</h4><p>以下来自 Spring 官方文档：</p>
-<blockquote>
-<p>When using proxies, you should apply the @Transactional annotation only to methods with public visibility. If you do annotate protected, private or package-visible methods with the @Transactional annotation, no error is raised, but the annotated method does not exhibit the configured transactional settings. Consider the use of AspectJ (see below) if you need to annotate non-public methods.</p>
-</blockquote>
-<p>&emsp;&emsp;大概意思就是 @Transactional 只能用于 public 的方法上，否则事务不会失效，如果要用在非 public 方法上，可以开启 AspectJ 代理模式。</p>
-<h4 id="4-自身调用问题"><a href="#4-自身调用问题" class="headerlink" title="4. 自身调用问题"></a>4. 自身调用问题</h4><p>来看两个示例：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderServiceImpl</span> <span class="keyword">implements</span> <span class="title">OrderService</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(Order order)</span> </span>&#123;</span><br><span class="line">		updateOrder(order);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Transactional</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateOrder</span><span class="params">(Order order)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// update order</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;update方法上面没有加 @Transactional 注解，调用有 @Transactional 注解的 updateOrder 方法，updateOrder 方法上的事务管用吗？<br>再来看下面这个例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderServiceImpl</span> <span class="keyword">implements</span> <span class="title">OrderService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Transactional</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(Order order)</span> </span>&#123;</span><br><span class="line">		updateOrder(order);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.REQUIRES_NEW)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateOrder</span><span class="params">(Order order)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// update order</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;这次在 update 方法上加了 @Transactional，updateOrder 加了 <code>REQUIRES_NEW</code> 新开启一个事务，那么新开的事务管用么？</p>
-<p>&emsp;&emsp;这两个例子的答案是：<font color=red>不管用！</font></p>
-<p>&emsp;&emsp;因为它们发生了自身调用，就调该类自己的方法，而没有经过 Spring 的代理类，默认只有在外部调用事务才会生效，这也是老生常谈的经典问题了。</p>
-<p>&emsp;&emsp;这个的解决方案之一就是在的类中注入自己，用注入的对象再调用另外一个方法，这个不太优雅，另外一个可行的方案可以参考<a href="https://mp.weixin.qq.com/s/1TEBnmWynN4nwc6Q-oZfvw" target="_blank" rel="noopener" title="Spring 如何在一个事务中开启另一个事务？">《Spring 如何在一个事务中开启另一个事务？》</a></p>
-<h4 id="5-数据源没有配置事务管理器"><a href="#5-数据源没有配置事务管理器" class="headerlink" title="5. 数据源没有配置事务管理器"></a>5. 数据源没有配置事务管理器</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PlatformTransactionManager <span class="title">transactionManager</span><span class="params">(DataSource dataSource)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> DataSourceTransactionManager(dataSource);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如上面所示，当前数据源若没有配置事务管理器，那也是白搭！</p>
-<h4 id="6-不支持事务"><a href="#6-不支持事务" class="headerlink" title="6. 不支持事务"></a>6. 不支持事务</h4><p>来看下面这个例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderServiceImpl</span> <span class="keyword">implements</span> <span class="title">OrderService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Transactional</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(Order order)</span> </span>&#123;</span><br><span class="line">		updateOrder(order);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.NOT_SUPPORTED)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateOrder</span><span class="params">(Order order)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// update order</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;Propagation.NOT_SUPPORTED： 表示不以事务运行，当前若存在事务则挂起，详细的可以参考《事务隔离级别和传播机制》这篇文章。<br>&emsp;&emsp;都主动不支持以事务方式运行了，那事务生效也是白搭！</p>
-<h4 id="7-异常被吃了"><a href="#7-异常被吃了" class="headerlink" title="7. 异常被吃了"></a>7. 异常被吃了</h4><p>这个也是出现比较多的场景：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderServiceImpl</span> <span class="keyword">implements</span> <span class="title">OrderService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Transactional</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateOrder</span><span class="params">(Order order)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// update order</span></span><br><span class="line">		&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>把异常吃了，然后又不抛出来，事务怎么回滚吧！</p>
-<h4 id="8-异常类型错误"><a href="#8-异常类型错误" class="headerlink" title="8. 异常类型错误"></a>8. 异常类型错误</h4><p>上面的例子再抛出一个异常：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderServiceImpl</span> <span class="keyword">implements</span> <span class="title">OrderService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Transactional</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateOrder</span><span class="params">(Order order)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// update order</span></span><br><span class="line">		&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"更新错误"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;这样事务也是不生效的，因为默认回滚的是：RuntimeException，如果你想触发其他异常的回滚，需要在注解上配置一下，如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor = Exception<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">	这个配置仅限于 <span class="title">Throwable</span> 异常类及其子类。</span></span><br><span class="line"><span class="class">&#125;</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
 
   
 
@@ -436,9 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/07/Spring%E8%87%AA%E5%B8%A6security%E5%81%9A%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/" itemprop="url">spring自带security做登录认证</a></h1>
+          <h1 class="post-title" itemprop="name headline">spring自带security做登录认证</h1>
         
 
         <div class="post-meta">
@@ -510,9 +342,7 @@
       
 
       
-        
-          
-            <details>
+        <details>
 <summary>自定义security配置，替换掉security自带的登录认证：SecurityConfig.class</summary>
 
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.aiidc.parse.auth.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.aiidc.parse.auth.support.AuthConfigProperties;</span><br><span class="line"><span class="keyword">import</span> com.aiidc.parse.auth.support.CustomAuthenticationFilter;</span><br><span class="line"><span class="keyword">import</span> com.aiidc.parse.auth.support.TokenFilter;</span><br><span class="line"><span class="keyword">import</span> com.aiidc.parse.auth.service.UserAuthService;</span><br><span class="line"><span class="keyword">import</span> com.aiidc.parse.core.exception.ErrorCode;</span><br><span class="line"><span class="keyword">import</span> com.aiidc.parse.core.query.CommonResponse;</span><br><span class="line"><span class="keyword">import</span> com.aiidc.parse.core.query.SecurityConstants;</span><br><span class="line"><span class="keyword">import</span> com.aiidc.parse.core.utils.JsonUtil;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.lang3.ArrayUtils;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.EnableConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.HttpMethod;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.MediaType;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.config.annotation.web.builders.HttpSecurity;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.crypto.password.PasswordEncoder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义身份验证类（用于重写WebSecurityConfigurerAdapter默认配置）</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Configuration</span> 表示这是一个配置类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@EnableWebSecurity</span> 允许security</span></span><br><span class="line"><span class="comment"> * configure()     该方法重写了父类的方法，用于添加用户与角色</span></span><br><span class="line"><span class="comment"> *      $&#123;user.auth.switch&#125; :用户认证开关，true:开启用户认证；false:关闭用户认证.    与启动类中的</span></span><br><span class="line"><span class="comment"> *          exclude = &#123;org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class&#125;一起使用才有效果。</span></span><br><span class="line"><span class="comment"> *      原理是：ConditionalOnProperty注解来觉得是否生成我们自定义的bean。而exclude来排除security的自动配置。</span></span><br><span class="line"><span class="comment"> *          如果只有ConditionalOnProperty注解，而security会自动配置，那么就会使用security的自定义登录与认证；</span></span><br><span class="line"><span class="comment"> *          而exclude来排除security的自动配置但在正常启动后还是可以正常运行，即它只是将security的自动配置关闭了而已</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty</span>(name = <span class="string">"user.auth.switch"</span>, havingValue = <span class="string">"true"</span>)</span><br><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="meta">@EnableGlobalMethodSecurity</span>(prePostEnabled = <span class="keyword">true</span>)<span class="comment">//  启用方法级别的权限认证</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties</span>(AuthConfigProperties<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AuthConfigProperties authConfigProperties;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> TokenFilter tokenFilter;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Http安全配置</span></span><br><span class="line"><span class="comment">     * 表单登录：使用默认的表单登录页面和登录端点/login进行登录</span></span><br><span class="line"><span class="comment">     * 退出登录：使用默认的退出登录端点/logout退出登录</span></span><br><span class="line"><span class="comment">     * 记住我：使用默认的“记住我”功能，把记住用户已登录的Token保存在内存里，记住30分钟</span></span><br><span class="line"><span class="comment">     * 权限：除了指定接口之外的其它请求都要求用户已登录</span></span><br><span class="line"><span class="comment">     * 注意：Controller中也对URL配置了权限，如果WebSecurityConfig中和Controller中都对某文化URL配置了权限，则取较小的权限</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.csrf()<span class="comment">//支持跨域</span></span><br><span class="line">                .disable()</span><br><span class="line">                .authorizeRequests()</span><br><span class="line">                <span class="comment">//指定接口放行</span></span><br><span class="line">                .antMatchers(buildIgnoreUrls()).permitAll()</span><br><span class="line">                <span class="comment">//OPTIONS请求全部放行</span></span><br><span class="line">                .antMatchers(HttpMethod.OPTIONS, <span class="string">"/**"</span>).permitAll()</span><br><span class="line">                <span class="comment">//其他接口全部接受验证</span></span><br><span class="line">                .anyRequest().authenticated();</span><br><span class="line">        <span class="comment">//使用自定义的 Token过滤器 验证请求的Token是否合法</span></span><br><span class="line">        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        http.headers().cacheControl();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CustomAuthenticationFilter <span class="title">customAuthenticationFilter</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        CustomAuthenticationFilter filter = <span class="keyword">new</span> CustomAuthenticationFilter();</span><br><span class="line">        filter.setAuthenticationSuccessHandler((request, response, authentication) -&gt; &#123;</span><br><span class="line">            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);</span><br><span class="line">            <span class="keyword">try</span> (PrintWriter writer = response.getWriter()) &#123;</span><br><span class="line">                writer.write(</span><br><span class="line">                        JsonUtil.obj2jsonString(</span><br><span class="line">                                CommonResponse.success(authentication.getPrincipal())</span><br><span class="line">                        )</span><br><span class="line">                );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        filter.setAuthenticationFailureHandler((request, response, exception) -&gt; &#123;</span><br><span class="line">            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);</span><br><span class="line">            <span class="keyword">try</span> (PrintWriter writer = response.getWriter()) &#123;</span><br><span class="line">                writer.write(</span><br><span class="line">                        JsonUtil.obj2jsonString(</span><br><span class="line">                                CommonResponse.error(ErrorCode.LOGIN_AUTHORIZE_ERROR)</span><br><span class="line">                        )</span><br><span class="line">                );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        filter.setAuthenticationManager(authenticationManagerBean());</span><br><span class="line">        <span class="keyword">return</span> filter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TokenFilter <span class="title">authenticationTokenFilterBean</span><span class="params">(UserAuthService userAuthService)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TokenFilter(userAuthService, SecurityConstants.HEADER_AUTH_STRING, buildIgnoreUrls());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String[] buildIgnoreUrls() &#123;</span><br><span class="line">        <span class="keyword">return</span> ArrayUtils.addAll(<span class="keyword">this</span>.authConfigProperties.getAuthIgnoreUrls(), SecurityConstants.AUTH_IGNORE_URL);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -559,8 +389,6 @@
 
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.aiidc.parse.aiidcjusticedimension;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.hankcs.hanlp.utility.Predefine;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication</span>(exclude = &#123;org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration<span class="class">.<span class="keyword">class</span>&#125;)</span></span><br><span class="line">@ComponentScan("com.aiidc.parse.*")</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AiidcJusticeDimensionApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 启动时可配置外部hanlp.properties</span></span><br><span class="line"><span class="comment">     * -Dhanlp_properties_path=</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//指定hanlp的配置文件路径</span></span><br><span class="line">        String hanlp_properties_path = System.getProperty(<span class="string">"hanlp_properties_path"</span>);</span><br><span class="line">        System.out.println(<span class="string">"hanlp_properties_path:"</span> + hanlp_properties_path);</span><br><span class="line">        <span class="comment">//读取设置的hanlp.properties路径</span></span><br><span class="line">        <span class="keyword">if</span> (hanlp_properties_path != <span class="keyword">null</span>) &#123;</span><br><span class="line">            Predefine.HANLP_PROPERTIES_PATH = hanlp_properties_path;</span><br><span class="line">        &#125;</span><br><span class="line">        SpringApplication.run(AiidcJusticeDimensionApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </details>
-          
-        
       
     </div>
     
@@ -575,354 +403,42 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/03/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="YouQiang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/touxiang.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦音">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/03/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" itemprop="url">Hexo博客搭建流程与注意事项</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-03T17:49:00+08:00">
-                2020-04-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index">
-                    <span itemprop="name">博客搭建</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/spring/" rel="tag"># spring</a>
           
-
+            <a href="/tags/%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/" rel="tag"># 登录认证</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="搭建流程"><a href="#搭建流程" class="headerlink" title="搭建流程"></a>搭建流程</h2><p>在GitHub上创建项目的名称必须与你的github用户名相同，比如用户名为qinyin-yq，系统名必须为：qinyin-yq.github.io，即《系统名.github.io》</p>
-<p>安装Hexo：<code>npm install -g hexo-cli</code><br>安装 Hexo 完成后，再执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo init myBlog</span><br><span class="line"><span class="built_in">cd</span> myBlog</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
-<p>新建完成后，指定文件夹的目录如下：<br>├── _config.yml # 网站的配置信息，您可以在此配置大部分的参数。<br>├── package.json<br>├── scaffolds # 模版文件夹<br>├── source  # 资源文件夹，除 _posts 文件，其他以下划线_开头的文件或者文件夹不会被编译打包到public文件夹<br>|   ├── _drafts # 草稿文件<br>|   └── _posts # 文章Markdowm文件<br>└── themes  # 主题文件夹</p>
-<p>之后将Hexo与github两个关联起来：</p>
-<ol>
-<li><p>打开项目根目录下的 _config.yml 配置文件配置参数。拉到文件末尾，填上如下配置（也可同时部署到多个仓库，后面再说）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo:</span><br><span class="line">	github: https://github.com/qinyin-yq/qinyin-yq.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></li>
-<li><p>要安装一个部署插件 hexo-deployer-git：</p>
-<pre><code>npm install hexo-deployer-git --save</code></pre></li>
-<li><p>在本地修改项目后，要更新到github Page上时，应该现在本地测试看效果：</p>
-<pre><code>hexo server (或 hexo s)</code></pre><p>然后部署上线：g 是 generate 缩写，d 是 deploy 缩写</p>
-<pre><code>hexo clean    //清除缓存文件 (db.json) 和已生成的静态文件 (public)
-hexo g    //（本地生成静态文件）
-hexo d     //（将本地静态文件推送至Github）</code></pre></li>
-<li><p>draft是草稿的意思，也就是你如果想写文章，又不希望被看到，那么可以：<code>hexo new draft newpage</code>。这样会在source/_draft中新建一个newpage.md文件，如果你的草稿文件写的过程中，想要预览一下，那么可以使用：<code>hexo server --draft</code>。然后在本地端口中开启服务预览。<br>如果你的草稿文件写完了，想要发表到post中：<code>hexo publish draft newpage</code>就会自动把newpage.md发送到post中。</p>
-</li>
-</ol>
-<p>还有另外一种方式：</p>
-<blockquote>
-<p>直接在github上新建项目qinyin，然后在项目上创建html页面，比如index.html页面，然后在setting&gt;GitHub Pages&gt;Source&gt;选择需要关联的分支，然后就 <a href="https://qinyin-yq.github.io/qinyin（项目名）/index.html（html页面名）" target="_blank" rel="noopener">https://qinyin-yq.github.io/qinyin（项目名）/index.html（html页面名）</a> 可以访问了，然后通过index.html上的页面按钮跳转到其他页面（这种方式没有深入实践不清楚可行性）</p>
-</blockquote>
-<h2 id="样式修改"><a href="#样式修改" class="headerlink" title="样式修改"></a>样式修改</h2><ul>
-<li>next的主题修改（比如头部Home的地址，图标等）在<code>..\themes\next\_config.yml</code>文件中menu属性修改，    而底部是否显示主题样式、地址与版本号，则是footer:属性中修改，而博客的更新时间是updated_at这个属性决定。</li>
-<li>首页的内容是在<code>..\source\_posts\hello-world.md</code>文件中修改</li>
-<li>博客中的英文转中文，比如：Posted on是根据在<code>..\_config.yml</code>文件中language属性指定何种语言格式来确定的。英文对应于en，中文对应zh-Hans。包括其他例如“首页”“标签”等同理。</li>
-<li>菜单与侧边栏的英文替换中文是在对应的.yml文件中修改（中文对应的是zh-Hans.yml）而指定使用哪个.yml文件是在<code>..\_config.yml</code>文件中language属性指定（language: zh-Hans）</li>
-<li>侧边栏目录添加序号问题：在新增博客内容时，自己在内容中有编号，但next默认又会给我们添加一次编号，导致编号重复。<br>&emsp;&emsp;解决方法：关闭next自带的添加编号功能：在<code>..\themes\next\_config.yml</code>文件中toc.number属性设置</li>
-<li>头像设置：在<code>..\themes\next\_config.yml</code>文件中avatar属性修改，指定头像图片的路径，相对路径是在当前主题，即<code>..\themes\next\source</code>目录下。也可以使用绝对路径</li>
-<li>修改”发表于2020-04-08|分类于 Spring”下的margin-bottom过大的样式：<code>..\themes\next\source\css\_common\components\post\post-meta.styl</code>文件中.posts-expand .post-meta{}属性</li>
-<li>修改h1-7 标题中的间距问题：<code>..\themes\next\source\css\_common\components\post\post-expand.styl</code>文件中h2, h3, h4, h5, h6{}属性删除了：padding-top: 10px;</li>
-<li>修改代码块<code>&lt;figure&gt;</code>标签上下间距：<code>..\themes\next\source\css\_common\components\highlight\highlight.styl</code>文件code-block属性：margin: 10px 0;</li>
-<li>修改博客与博客之间的间距过大，即横线的上下间距过大的样式：<code>..\themes\next\source\css\_variables\base.styl</code>中的：<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$post-eof-margin-top          = <span class="number">80</span>px  <span class="comment">//  or 160px for more white space</span></span><br><span class="line">$post-eof-margin-bottom       = <span class="number">60</span>px  <span class="comment">//  or 120px for less white space</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="标签类别管理"><a href="#标签类别管理" class="headerlink" title="标签类别管理"></a>标签类别管理</h2><ul>
-<li>创建标签<br>创建标签页面：<code>hexo new page tags</code></li>
-<li>创建分类<br>创建分类页面：<code>hexo new page categories</code></li>
-</ul>
-<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><p><a href="https://www.mdeditor.com/" target="_blank" rel="noopener" title="Markdown在线编辑器">Markdown在线编辑器</a><br><a href="https://blog.csdn.net/sinat_37781304/article/details/82729029" target="_blank" rel="noopener" title="hexo史上最全搭建教程">hexo史上最全搭建教程</a><br><a href="https://www.jianshu.com/p/636c34bca14a" target="_blank" rel="noopener" title="GitHub——GitHub Pages+Hexo 搭建独立博客的优化">GitHub——GitHub Pages+Hexo 搭建独立博客的优化</a><br><a href="https://blog.csdn.net/banjw_129/article/details/82261165" target="_blank" rel="noopener" title="hexo + github pages搭建博客样式加载不出来+url的配置问题">hexo + github pages搭建博客样式加载不出来+url的配置问题</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
       
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/02/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="YouQiang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/touxiang.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦音">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/02/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-02T21:01:24+08:00">
-                2017-12-02
-              </time>
+              <a href="/2020/04/03/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" rel="next" title="Hexo博客搭建流程与注意事项">
+                <i class="fa fa-chevron-left"></i> Hexo博客搭建流程与注意事项
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
+              <a href="/2020/04/08/Spring%E7%9A%84@Transactional%E6%B3%A8%E8%A7%A3%E6%8E%A7%E5%88%B6%E4%BA%8B%E5%8A%A1%E6%9C%89%E5%93%AA%E4%BA%9B%E4%B8%8D%E7%94%9F%E6%95%88%E7%9A%84%E5%9C%BA%E6%99%AF/" rel="prev" title="Spring的@Transactional注解控制事务有哪些不生效的场景">
+                Spring的@Transactional注解控制事务有哪些不生效的场景 <i class="fa fa-chevron-right"></i>
+              </a>
             
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%A7%8B/" itemprop="url" rel="index">
-                    <span itemprop="name">开始</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-<details>
-<summary>内容折叠标题</summary>
-
-<p>折叠内容</p>
-</details>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -932,10 +448,11 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -943,6 +460,10 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
 
 
           
+
+  
+
+
 
         </div>
         
@@ -1155,6 +676,10 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
