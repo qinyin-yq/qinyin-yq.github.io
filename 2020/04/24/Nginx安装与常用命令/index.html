@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="搭建博客," />
+  <meta name="keywords" content="nginx," />
 
 
 
@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="搭建流程在GitHub上创建项目的名称必须与你的github用户名相同，比如用户名为qinyin-yq，系统名必须为：qinyin-yq.github.io，即《系统名.github.io》 安装Hexo：npm install -g hexo-cli安装 Hexo 完成后，再执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。 123hexo init myBlogcd myBlognp">
+<meta name="description" content="1.nginx在服务器上安装：nginx 在服务器上安装后启动位置为：&#x2F;usr&#x2F;sbin&#x2F;nginx，但可以修改指定配置文件地址，然后就可全局使用Nginx命令（个人理解）,寻找含有nginx的文件 1find &#x2F; -name nginx 定位nginx文件位置 1whereis nginx 指定配置文件地址 1&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;n">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo博客搭建流程与注意事项">
-<meta property="og:url" content="http://yoursite.com/2020/04/03/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/index.html">
+<meta property="og:title" content="Nginx安装与常用命令">
+<meta property="og:url" content="http://yoursite.com/2020/04/24/Nginx%E5%AE%89%E8%A3%85%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="秦音">
-<meta property="og:description" content="搭建流程在GitHub上创建项目的名称必须与你的github用户名相同，比如用户名为qinyin-yq，系统名必须为：qinyin-yq.github.io，即《系统名.github.io》 安装Hexo：npm install -g hexo-cli安装 Hexo 完成后，再执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。 123hexo init myBlogcd myBlognp">
-<meta property="article:published_time" content="2020-04-03T09:49:00.000Z">
-<meta property="article:modified_time" content="2020-04-27T08:51:19.715Z">
+<meta property="og:description" content="1.nginx在服务器上安装：nginx 在服务器上安装后启动位置为：&#x2F;usr&#x2F;sbin&#x2F;nginx，但可以修改指定配置文件地址，然后就可全局使用Nginx命令（个人理解）,寻找含有nginx的文件 1find &#x2F; -name nginx 定位nginx文件位置 1whereis nginx 指定配置文件地址 1&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;n">
+<meta property="article:published_time" content="2020-04-24T11:23:00.000Z">
+<meta property="article:modified_time" content="2020-04-24T11:42:24.014Z">
 <meta property="article:author" content="YouQiang">
-<meta property="article:tag" content="搭建博客">
+<meta property="article:tag" content="nginx">
 <meta name="twitter:card" content="summary">
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/04/03/Hexo博客搭建流程与注意事项/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/04/24/Nginx安装与常用命令/"/>
 
 
 
 
 
-  <title>Hexo博客搭建流程与注意事项 | 秦音</title>
+  <title>Nginx安装与常用命令 | 秦音</title>
   
 
 
@@ -252,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/03/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/24/Nginx%E5%AE%89%E8%A3%85%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="YouQiang">
@@ -269,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hexo博客搭建流程与注意事项</h1>
+          <h1 class="post-title" itemprop="name headline">Nginx安装与常用命令</h1>
         
 
         <div class="post-meta">
@@ -281,8 +281,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-03T17:49:00+08:00">
-                2020-04-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-24T19:23:00+08:00">
+                2020-04-24
               </time>
             
 
@@ -304,8 +304,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index">
-                    <span itemprop="name">博客搭建</span>
+                  <a href="/categories/Nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">Nginx</span>
                   </a>
                 </span>
 
@@ -341,51 +341,43 @@
       
 
       
-        <h2 id="搭建流程"><a href="#搭建流程" class="headerlink" title="搭建流程"></a>搭建流程</h2><p>在GitHub上创建项目的名称必须与你的github用户名相同，比如用户名为qinyin-yq，系统名必须为：qinyin-yq.github.io，即《系统名.github.io》</p>
-<p>安装Hexo：<code>npm install -g hexo-cli</code><br>安装 Hexo 完成后，再执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo init myBlog</span><br><span class="line"><span class="built_in">cd</span> myBlog</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
-<p>新建完成后，指定文件夹的目录如下：<br>├── _config.yml # 网站的配置信息，您可以在此配置大部分的参数。<br>├── package.json<br>├── scaffolds # 模版文件夹<br>├── source  # 资源文件夹，除 _posts 文件，其他以下划线_开头的文件或者文件夹不会被编译打包到public文件夹<br>|   ├── _drafts # 草稿文件<br>|   └── _posts # 文章Markdowm文件<br>└── themes  # 主题文件夹</p>
-<p>之后将Hexo与github两个关联起来：</p>
-<ol>
-<li><p>打开项目根目录下的 _config.yml 配置文件配置参数。拉到文件末尾，填上如下配置（也可同时部署到多个仓库，后面再说）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo:</span><br><span class="line">	github: https://github.com/qinyin-yq/qinyin-yq.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></li>
-<li><p>要安装一个部署插件 hexo-deployer-git：</p>
-<pre><code>npm install hexo-deployer-git --save</code></pre></li>
-<li><p>在本地修改项目后，要更新到github Page上时，应该现在本地测试看效果：</p>
-<pre><code>hexo server (或 hexo s)</code></pre><p>然后部署上线：g 是 generate 缩写，d 是 deploy 缩写</p>
-<pre><code>hexo clean    //清除缓存文件 (db.json) 和已生成的静态文件 (public)
-hexo g    //（本地生成静态文件）
-hexo d     //（将本地静态文件推送至Github）</code></pre></li>
-<li><p>draft是草稿的意思，也就是你如果想写文章，又不希望被看到，那么可以：<code>hexo new draft newpage</code>。这样会在source/_draft中新建一个newpage.md文件，如果你的草稿文件写的过程中，想要预览一下，那么可以使用：<code>hexo server --draft</code>。然后在本地端口中开启服务预览。<br>如果你的草稿文件写完了，想要发表到post中：<code>hexo publish draft newpage</code>就会自动把newpage.md发送到post中。</p>
-</li>
-</ol>
-<p>还有另外一种方式：</p>
-<blockquote>
-<p>直接在github上新建项目qinyin，然后在项目上创建html页面，比如index.html页面，然后在setting&gt;GitHub Pages&gt;Source&gt;选择需要关联的分支，然后就 <a href="https://qinyin-yq.github.io/qinyin（项目名）/index.html（html页面名）" target="_blank" rel="noopener">https://qinyin-yq.github.io/qinyin（项目名）/index.html（html页面名）</a> 可以访问了，然后通过index.html上的页面按钮跳转到其他页面（这种方式没有深入实践不清楚可行性）</p>
-</blockquote>
-<h2 id="样式修改"><a href="#样式修改" class="headerlink" title="样式修改"></a>样式修改</h2><ul>
-<li>next的主题修改（比如头部Home的地址，图标等）在<code>..\themes\next\_config.yml</code>文件中menu属性修改，    而底部是否显示主题样式、地址与版本号，则是footer:属性中修改，而博客的更新时间是updated_at这个属性决定。</li>
-<li>首页的内容是在<code>..\source\_posts\hello-world.md</code>文件中修改</li>
-<li>博客中的英文转中文，比如：Posted on是根据在<code>..\_config.yml</code>文件中language属性指定何种语言格式来确定的。英文对应于en，中文对应zh-Hans。包括其他例如“首页”“标签”等同理。</li>
-<li>菜单与侧边栏的英文替换中文是在对应的.yml文件中修改（中文对应的是zh-Hans.yml）而指定使用哪个.yml文件是在<code>..\_config.yml</code>文件中language属性指定（language: zh-Hans）</li>
-<li>侧边栏目录添加序号问题：在新增博客内容时，自己在内容中有编号，但next默认又会给我们添加一次编号，导致编号重复。<br>&emsp;&emsp;解决方法：关闭next自带的添加编号功能：在<code>..\themes\next\_config.yml</code>文件中toc.number属性设置</li>
-<li>头像设置：在<code>..\themes\next\_config.yml</code>文件中avatar属性修改，指定头像图片的路径，相对路径是在当前主题，即<code>..\themes\next\source</code>目录下。也可以使用绝对路径</li>
-<li>修改”发表于2020-04-08|分类于 Spring”下的margin-bottom过大的样式：<code>..\themes\next\source\css\_common\components\post\post-meta.styl</code>文件中.posts-expand .post-meta{}属性</li>
-<li>修改h1-7 标题中的间距问题：<code>..\themes\next\source\css\_common\components\post\post-expand.styl</code>文件中h2, h3, h4, h5, h6{}属性删除了：padding-top: 10px;</li>
-<li>修改代码块<code>&lt;figure&gt;</code>标签上下间距：<code>..\themes\next\source\css\_common\components\highlight\highlight.styl</code>文件code-block属性：margin: 10px 0;</li>
-<li>修改博客与博客之间的间距过大，即横线的上下间距过大的样式：<code>..\themes\next\source\css\_variables\base.styl</code>中的：<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$post-eof-margin-top          = <span class="number">80</span>px  <span class="comment">//  or 160px for more white space</span></span><br><span class="line">$post-eof-margin-bottom       = <span class="number">60</span>px  <span class="comment">//  or 120px for less white space</span></span><br></pre></td></tr></table></figure>
+        <h3 id="1-nginx在服务器上安装："><a href="#1-nginx在服务器上安装：" class="headerlink" title="1.nginx在服务器上安装："></a>1.nginx在服务器上安装：</h3><p>nginx 在服务器上安装后启动位置为：<code>/usr/sbin/nginx</code>，但可以修改指定配置文件地址，然后就可全局使用Nginx命令（个人理解）,寻找含有nginx的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find &#x2F; -name nginx</span><br></pre></td></tr></table></figure>
+<p>定位nginx文件位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whereis nginx</span><br></pre></td></tr></table></figure>
+<p>指定配置文件地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx -c &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx.conf</span><br></pre></td></tr></table></figure>
+<p>重新加载配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>nginx的配置文件目录/etc/nginx/nginx.conf中在http内添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name localhost;</span><br><span class="line"></span><br><span class="line">	location &#x2F; &#123;</span><br><span class="line">		proxy_pass http:&#x2F;&#x2F;localhost:8080;</span><br><span class="line">		proxy_redirect off;</span><br><span class="line">		proxy_set_header Host $host;</span><br><span class="line">		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">		proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-1-启动nginx"><a href="#1-1-启动nginx" class="headerlink" title="1.1 启动nginx"></a>1.1 启动nginx</h4><p>启动前先看它启动没有，通过linux命令查看所有端口，看看有没有80</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">netstat -ntlp（查看端口情况）</span><br><span class="line">sudo systemctl status nginx（查看nginx服务情况）</span><br></pre></td></tr></table></figure>
+<p>如果没有，则通过命令启动<br>启动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx</span><br></pre></td></tr></table></figure>
+<p>停止：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop nginx</span><br></pre></td></tr></table></figure>
+<p>重启：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart nginx</span><br></pre></td></tr></table></figure>
+<h4 id="1-2-设置nginx开启启动"><a href="#1-2-设置nginx开启启动" class="headerlink" title="1.2 设置nginx开启启动"></a>1.2 设置nginx开启启动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chkconfig nginx on</span><br></pre></td></tr></table></figure>
+<h4 id="1-3-关闭Centos自带的firewall防火墙"><a href="#1-3-关闭Centos自带的firewall防火墙" class="headerlink" title="1.3 关闭Centos自带的firewall防火墙"></a>1.3 关闭Centos自带的firewall防火墙</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure>
+<h4 id="1-4-禁止Firewall开机启动"><a href="#1-4-禁止Firewall开机启动" class="headerlink" title="1.4 禁止Firewall开机启动"></a>1.4 禁止Firewall开机启动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl disable firewalld.service</span><br></pre></td></tr></table></figure>
+<p>然后在浏览器上访问：服务器的Ip（192.168.216.128）:80</p>
+<h3 id="2-nginx命令："><a href="#2-nginx命令：" class="headerlink" title="2.nginx命令："></a>2.nginx命令：</h3><p>查看nginx进程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo lsof -i：80</span><br></pre></td></tr></table></figure>
+<p>修改配置文件后，需要测试修改的配置文件是否合法，然后再重启nginx。<br>测试修改是否合法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -t</span><br></pre></td></tr></table></figure>
+<p>重启命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart nginx</span><br></pre></td></tr></table></figure>
 
-</li>
-</ul>
-<h2 id="标签类别管理"><a href="#标签类别管理" class="headerlink" title="标签类别管理"></a>标签类别管理</h2><ul>
-<li>创建标签<br>创建标签页面：<code>hexo new page tags</code></li>
-<li>创建分类<br>创建分类页面：<code>hexo new page categories</code></li>
-</ul>
-<h2 id="博客内容引入图片"><a href="#博客内容引入图片" class="headerlink" title="博客内容引入图片"></a>博客内容引入图片</h2><p>将图片放在<code>..\themes\next\source\images</code>目录下，然后在博客的内容中，通过</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](&#x2F;images&#x2F;xxxx.jpg)</span><br></pre></td></tr></table></figure>
-<p>格式引入本地图片。</p>
-<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><p><a href="https://www.mdeditor.com/" target="_blank" rel="noopener" title="Markdown在线编辑器">Markdown在线编辑器</a><br><a href="https://blog.csdn.net/sinat_37781304/article/details/82729029" target="_blank" rel="noopener" title="hexo史上最全搭建教程">hexo史上最全搭建教程</a><br><a href="https://www.jianshu.com/p/636c34bca14a" target="_blank" rel="noopener" title="GitHub——GitHub Pages+Hexo 搭建独立博客的优化">GitHub——GitHub Pages+Hexo 搭建独立博客的优化</a><br><a href="https://blog.csdn.net/banjw_129/article/details/82261165" target="_blank" rel="noopener" title="hexo + github pages搭建博客样式加载不出来+url的配置问题">hexo + github pages搭建博客样式加载不出来+url的配置问题</a></p>
-
+<h4 id="3-1由于启动用户和nginx工作用户不一致所致"><a href="#3-1由于启动用户和nginx工作用户不一致所致" class="headerlink" title="3.1由于启动用户和nginx工作用户不一致所致"></a>3.1由于启动用户和nginx工作用户不一致所致</h4><p>查看nginx的启动用户，发现是nobody，而未是用root启动的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep &quot;nginx: worker process&quot; | awk&#39;&#123;print $1&#125;&#39;</span><br></pre></td></tr></table></figure>
+<p>故将nginx.config的user改为和启动用户一致，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;nginx&#x2F;nginx.conf</span><br></pre></td></tr></table></figure>
+<p>该文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">user nginx;  #将nginx改为和启动用户一致</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">error_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;error.log warn;</span><br><span class="line">pid        &#x2F;var&#x2F;run&#x2F;nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -402,7 +394,7 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
       
         <div class="post-tags">
           
-            <a href="/tags/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/" rel="tag"># 搭建博客</a>
+            <a href="/tags/nginx/" rel="tag"># nginx</a>
           
         </div>
       
@@ -415,8 +407,8 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/02/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2020/04/24/ubuntu%E7%AB%AF%E5%8F%A3%E4%B8%8E%E9%98%B2%E7%81%AB%E5%A2%99/" rel="next" title="ubuntu端口与防火墙">
+                <i class="fa fa-chevron-left"></i> ubuntu端口与防火墙
               </a>
             
           </div>
@@ -424,10 +416,6 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/04/07/Spring%E8%87%AA%E5%B8%A6security%E5%81%9A%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/" rel="prev" title="spring自带security做登录认证">
-                spring自带security做登录认证 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -573,7 +561,7 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建流程"><span class="nav-text">搭建流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样式修改"><span class="nav-text">样式修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签类别管理"><span class="nav-text">标签类别管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#博客内容引入图片"><span class="nav-text">博客内容引入图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关链接"><span class="nav-text">相关链接</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-nginx在服务器上安装："><span class="nav-text">1.nginx在服务器上安装：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-启动nginx"><span class="nav-text">1.1 启动nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-设置nginx开启启动"><span class="nav-text">1.2 设置nginx开启启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-关闭Centos自带的firewall防火墙"><span class="nav-text">1.3 关闭Centos自带的firewall防火墙</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-禁止Firewall开机启动"><span class="nav-text">1.4 禁止Firewall开机启动</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-nginx命令："><span class="nav-text">2.nginx命令：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1由于启动用户和nginx工作用户不一致所致"><span class="nav-text">3.1由于启动用户和nginx工作用户不一致所致</span></a></li></ol></li></ol></div>
             
 
           </div>

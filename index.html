@@ -250,6 +250,361 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/24/Nginx%E5%AE%89%E8%A3%85%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YouQiang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦音">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/24/Nginx%E5%AE%89%E8%A3%85%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" itemprop="url">Nginx安装与常用命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-24T19:23:00+08:00">
+                2020-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">Nginx</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1-nginx在服务器上安装："><a href="#1-nginx在服务器上安装：" class="headerlink" title="1.nginx在服务器上安装："></a>1.nginx在服务器上安装：</h3><p>nginx 在服务器上安装后启动位置为：<code>/usr/sbin/nginx</code>，但可以修改指定配置文件地址，然后就可全局使用Nginx命令（个人理解）,寻找含有nginx的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find &#x2F; -name nginx</span><br></pre></td></tr></table></figure>
+<p>定位nginx文件位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whereis nginx</span><br></pre></td></tr></table></figure>
+<p>指定配置文件地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx -c &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx.conf</span><br></pre></td></tr></table></figure>
+<p>重新加载配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>nginx的配置文件目录/etc/nginx/nginx.conf中在http内添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name localhost;</span><br><span class="line"></span><br><span class="line">	location &#x2F; &#123;</span><br><span class="line">		proxy_pass http:&#x2F;&#x2F;localhost:8080;</span><br><span class="line">		proxy_redirect off;</span><br><span class="line">		proxy_set_header Host $host;</span><br><span class="line">		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">		proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-1-启动nginx"><a href="#1-1-启动nginx" class="headerlink" title="1.1 启动nginx"></a>1.1 启动nginx</h4><p>启动前先看它启动没有，通过linux命令查看所有端口，看看有没有80</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">netstat -ntlp（查看端口情况）</span><br><span class="line">sudo systemctl status nginx（查看nginx服务情况）</span><br></pre></td></tr></table></figure>
+<p>如果没有，则通过命令启动<br>启动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx</span><br></pre></td></tr></table></figure>
+<p>停止：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop nginx</span><br></pre></td></tr></table></figure>
+<p>重启：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart nginx</span><br></pre></td></tr></table></figure>
+<h4 id="1-2-设置nginx开启启动"><a href="#1-2-设置nginx开启启动" class="headerlink" title="1.2 设置nginx开启启动"></a>1.2 设置nginx开启启动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chkconfig nginx on</span><br></pre></td></tr></table></figure>
+<h4 id="1-3-关闭Centos自带的firewall防火墙"><a href="#1-3-关闭Centos自带的firewall防火墙" class="headerlink" title="1.3 关闭Centos自带的firewall防火墙"></a>1.3 关闭Centos自带的firewall防火墙</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure>
+<h4 id="1-4-禁止Firewall开机启动"><a href="#1-4-禁止Firewall开机启动" class="headerlink" title="1.4 禁止Firewall开机启动"></a>1.4 禁止Firewall开机启动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl disable firewalld.service</span><br></pre></td></tr></table></figure>
+<p>然后在浏览器上访问：服务器的Ip（192.168.216.128）:80</p>
+<h3 id="2-nginx命令："><a href="#2-nginx命令：" class="headerlink" title="2.nginx命令："></a>2.nginx命令：</h3><p>查看nginx进程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo lsof -i：80</span><br></pre></td></tr></table></figure>
+<p>修改配置文件后，需要测试修改的配置文件是否合法，然后再重启nginx。<br>测试修改是否合法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -t</span><br></pre></td></tr></table></figure>
+<p>重启命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart nginx</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-1由于启动用户和nginx工作用户不一致所致"><a href="#3-1由于启动用户和nginx工作用户不一致所致" class="headerlink" title="3.1由于启动用户和nginx工作用户不一致所致"></a>3.1由于启动用户和nginx工作用户不一致所致</h4><p>查看nginx的启动用户，发现是nobody，而未是用root启动的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep &quot;nginx: worker process&quot; | awk&#39;&#123;print $1&#125;&#39;</span><br></pre></td></tr></table></figure>
+<p>故将nginx.config的user改为和启动用户一致，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;nginx&#x2F;nginx.conf</span><br></pre></td></tr></table></figure>
+<p>该文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">user nginx;  #将nginx改为和启动用户一致</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">error_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;error.log warn;</span><br><span class="line">pid        &#x2F;var&#x2F;run&#x2F;nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/24/ubuntu%E7%AB%AF%E5%8F%A3%E4%B8%8E%E9%98%B2%E7%81%AB%E5%A2%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YouQiang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦音">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/24/ubuntu%E7%AB%AF%E5%8F%A3%E4%B8%8E%E9%98%B2%E7%81%AB%E5%A2%99/" itemprop="url">ubuntu端口与防火墙</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-24T19:07:50+08:00">
+                2020-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ubuntu/" itemprop="url" rel="index">
+                    <span itemprop="name">ubuntu</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1-ubuntu切换到root用户"><a href="#1-ubuntu切换到root用户" class="headerlink" title="1. ubuntu切换到root用户"></a>1. ubuntu切换到root用户</h3><p>如果在使用<code>su root</code>命令，去切换到root权限，此时会提示输入密码，但怎么也输不对，提示<code>&quot;Authentication failure&quot;</code>，此时有两种情况一个是真的是密码错了，另一种就是刚安装好的Linux系统，没有给root设置密码。<br>打开Ubuntu，输入命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su root</span><br></pre></td></tr></table></figure>
+<p>回车提示输入密码，怎么输入都不对。<br>给root用户设置密码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure>
+<p>输入密码，并确认密码。<br>重新输入命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su root</span><br></pre></td></tr></table></figure>
+<p>然后输入密码,发现可以切换到root权限了。</p>
+<h3 id="2-Ubuntu查看端口使用情况，使用netstat命令"><a href="#2-Ubuntu查看端口使用情况，使用netstat命令" class="headerlink" title="2. Ubuntu查看端口使用情况，使用netstat命令"></a>2. Ubuntu查看端口使用情况，使用netstat命令</h3><p>查看已经连接的服务端口（ESTABLISHED）:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -a</span><br></pre></td></tr></table></figure>
+<p>查看所有的服务端口（LISTEN，ESTABLISHED）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ap</span><br></pre></td></tr></table></figure>
+<p>查看指定端口，可以结合grep命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ap | grep 8080</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>也可以使用lsof命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:8888 </span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>查看本地端口开启情况(ubuntu下执行)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ufw status.</span><br></pre></td></tr></table></figure>
+<p>打开80端口(ubuntu下执行)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ufw allow 80</span><br></pre></td></tr></table></figure>
+<p>测试服务器的端口是否开启：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet 192.168.13.128 80</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-ubuntu防火墙"><a href="#3-ubuntu防火墙" class="headerlink" title="3.ubuntu防火墙"></a>3.ubuntu防火墙</h3><p>ubuntu的防火墙名称为ufw，而centos服务器的防火墙名称为firewall</p>
+<p>查看防火墙状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status ufw</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ufw status</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>inactive 状态是防火墙关闭状态<br>active 是开启状态。</p>
+</blockquote>
+<p>开启防火墙(ubuntu下执行)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ufw enable</span><br></pre></td></tr></table></figure>
+<p>关闭防火墙:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop ufw</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ufw disable</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/09/Nginx%E4%BB%A3%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1064,6 +1419,9 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
 <li>创建标签<br>创建标签页面：<code>hexo new page tags</code></li>
 <li>创建分类<br>创建分类页面：<code>hexo new page categories</code></li>
 </ul>
+<h2 id="博客内容引入图片"><a href="#博客内容引入图片" class="headerlink" title="博客内容引入图片"></a>博客内容引入图片</h2><p>将图片放在<code>..\themes\next\source\images</code>目录下，然后在博客的内容中，通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](&#x2F;images&#x2F;xxxx.jpg)</span><br></pre></td></tr></table></figure>
+<p>格式引入本地图片。</p>
 <h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><p><a href="https://www.mdeditor.com/" target="_blank" rel="noopener" title="Markdown在线编辑器">Markdown在线编辑器</a><br><a href="https://blog.csdn.net/sinat_37781304/article/details/82729029" target="_blank" rel="noopener" title="hexo史上最全搭建教程">hexo史上最全搭建教程</a><br><a href="https://www.jianshu.com/p/636c34bca14a" target="_blank" rel="noopener" title="GitHub——GitHub Pages+Hexo 搭建独立博客的优化">GitHub——GitHub Pages+Hexo 搭建独立博客的优化</a><br><a href="https://blog.csdn.net/banjw_129/article/details/82261165" target="_blank" rel="noopener" title="hexo + github pages搭建博客样式加载不出来+url的配置问题">hexo + github pages搭建博客样式加载不出来+url的配置问题</a></p>
 
           
@@ -1206,13 +1564,17 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
       
         
           
-            <p><font color=blue>s</font></p>
+            <p>图片开始<img src="/images/test/408.jpg" alt="">图片结束</p>
+<p><font color=blue>s</font></p>
 <p>&emsp;&emsp; </p>
 <details>
 <summary>内容折叠标题</summary>
 
 <p>折叠内容</p>
 </details>
+
+
+
           
         
       
@@ -1297,7 +1659,7 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1308,7 +1670,7 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1319,7 +1681,7 @@ hexo d     //（将本地静态文件推送至Github）</code></pre></li>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
