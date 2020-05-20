@@ -79,14 +79,14 @@
 
 
 
-<meta name="description" content="1. 首次打包失败需要将每个模块都分别进行打包，否则在某些模块时，会报某些模块的jar不存在错误；在分别打包时，需要在子模块的pom.xml文件中加入&lt;relativePath&gt;..&#x2F;..&#x2F;pom.xml&lt;&#x2F;relativePath&gt;即： 123456&lt;parent&gt;	&lt;groupId&gt;com.aiidc.parse&lt;&#x2F;groupId&gt;">
+<meta name="description" content="1. 首次打包失败&amp;emsp;&amp;emsp;需要将每个模块都分别进行打包，否则在某些模块时，会报某些模块的jar不存在错误；在分别打包时，需要在子模块的pom.xml文件中加入&lt;relativePath&gt;..&#x2F;..&#x2F;pom.xml&lt;&#x2F;relativePath&gt;即： 123456&lt;parent&gt;	&lt;groupId&gt;com.aiidc.parse&lt;&#x2F;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot 多模块项目打包">
 <meta property="og:url" content="http://yoursite.com/2020/04/09/SpringBoot%20%E5%A4%9A%E6%A8%A1%E5%9D%97%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85/index.html">
 <meta property="og:site_name" content="秦音">
-<meta property="og:description" content="1. 首次打包失败需要将每个模块都分别进行打包，否则在某些模块时，会报某些模块的jar不存在错误；在分别打包时，需要在子模块的pom.xml文件中加入&lt;relativePath&gt;..&#x2F;..&#x2F;pom.xml&lt;&#x2F;relativePath&gt;即： 123456&lt;parent&gt;	&lt;groupId&gt;com.aiidc.parse&lt;&#x2F;groupId&gt;">
+<meta property="og:description" content="1. 首次打包失败&amp;emsp;&amp;emsp;需要将每个模块都分别进行打包，否则在某些模块时，会报某些模块的jar不存在错误；在分别打包时，需要在子模块的pom.xml文件中加入&lt;relativePath&gt;..&#x2F;..&#x2F;pom.xml&lt;&#x2F;relativePath&gt;即： 123456&lt;parent&gt;	&lt;groupId&gt;com.aiidc.parse&lt;&#x2F;">
 <meta property="article:published_time" content="2020-04-09T09:00:00.000Z">
-<meta property="article:modified_time" content="2020-04-09T09:32:29.618Z">
+<meta property="article:modified_time" content="2020-04-27T09:30:43.688Z">
 <meta property="article:author" content="YouQiang">
 <meta property="article:tag" content="spring">
 <meta property="article:tag" content="springboot打包">
@@ -342,7 +342,7 @@
       
 
       
-        <h4 id="1-首次打包失败"><a href="#1-首次打包失败" class="headerlink" title="1. 首次打包失败"></a>1. 首次打包失败</h4><p>需要将每个模块都分别进行打包，否则在某些模块时，会报某些模块的jar不存在错误；在分别打包时，需要在子模块的pom.xml文件中加入<code>&lt;relativePath&gt;../../pom.xml&lt;/relativePath&gt;</code>即：</p>
+        <h4 id="1-首次打包失败"><a href="#1-首次打包失败" class="headerlink" title="1. 首次打包失败"></a>1. 首次打包失败</h4><p>&emsp;&emsp;需要将每个模块都分别进行打包，否则在某些模块时，会报某些模块的jar不存在错误；在分别打包时，需要在子模块的pom.xml文件中加入<code>&lt;relativePath&gt;../../pom.xml&lt;/relativePath&gt;</code>即：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;parent&gt;</span><br><span class="line">	&lt;groupId&gt;com.aiidc.parse&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;parse-project&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</span><br><span class="line">	&lt;relativePath&gt;../../pom.xml&lt;/relativePath&gt;</span><br><span class="line">&lt;/parent&gt;</span><br></pre></td></tr></table></figure>
 <p>&emsp;&emsp;其中，<code>relativePath</code>标签中的内容指父项目的pom.xml文件的相对路径。默认值为../pom.xml（即<code>&lt;relativePath/&gt;</code>）。maven首先从当前构建项目开始查找父项目的pom文件，然后从本地仓库，最后从远程仓库。RelativePath允许你选择一个不同的位置。如果默认../pom.xml 没找到父元素的pom ，不配置<code>relativePath</code>指向父项目的pom则会报错</p>
 <h4 id="2-检查报错模块的pom-xml中是否引入了所报错的jar"><a href="#2-检查报错模块的pom-xml中是否引入了所报错的jar" class="headerlink" title="2. 检查报错模块的pom.xml中是否引入了所报错的jar"></a>2. 检查报错模块的pom.xml中是否引入了所报错的jar</h4><p>&emsp;&emsp;比如在打父目录jar时，A模块报找不到com.aiidc.parse jar，那在A模块中查看是否引入了com.aiidc.parse.jar,如果没引，就引入</p>
@@ -417,7 +417,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/04/09/Nginx%E4%BB%A3%E7%90%86/" rel="prev" title="Nginx代理入门">
+              <a href="/2020/04/09/Nginx%E4%BB%A3%E7%90%86%E5%85%A5%E9%97%A8/" rel="prev" title="Nginx代理入门">
                 Nginx代理入门 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -500,7 +500,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -511,7 +511,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -522,7 +522,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
