@@ -250,6 +250,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/22/Elasticsearch%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E4%B8%8E%E8%BF%98%E5%8E%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YouQiang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦音">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/22/Elasticsearch%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E4%B8%8E%E8%BF%98%E5%8E%9F/" itemprop="url">Elasticsearch快照备份与还原</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-22T13:55:00+08:00">
+                2020-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="使用snapshot实现es数据备份、还原与迁移"><a href="#使用snapshot实现es数据备份、还原与迁移" class="headerlink" title="使用snapshot实现es数据备份、还原与迁移"></a>使用snapshot实现es数据备份、还原与迁移</h3><h4 id="1-snapshot介绍"><a href="#1-snapshot介绍" class="headerlink" title="1.snapshot介绍"></a>1.snapshot介绍</h4><p>&emsp;&emsp; snapshot api是Elasticsearch用于对数据进行备份和恢复的一组api接口，可以通过snapshot api进行跨集群的数据迁移，原理就是从源ES集群创建数据快照，然后在目标ES集群中进行恢复。需要注意ES的版本问题:<br>&emsp;&emsp; 1)目标ES集群的主版本号(如5.6.4中的5为主版本号)要大于等于源ES集群的主版本号;<br>&emsp;&emsp; 2)1.x版本的集群创建的快照不能在5.x版本中恢复;</p>
+<h4 id="2-数据备份"><a href="#2-数据备份" class="headerlink" title="2.数据备份"></a>2.数据备份</h4><p>2.1 源ES集群中创建备份还原目录：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir es_bak</span><br><span class="line"># 为了避免权限问题，直接修改/opt/es_bak权限为777</span><br><span class="line">chmod <span class="number">777</span> /opt/es_bak</span><br></pre></td></tr></table></figure>
+<p>2.2 注册备份还原目录<br>&emsp;&emsp; 修改elasticsearch.yml,添加如下配置<code>path.repo: [&#39;/opt/elasticsearch/es_bak&#39;]</code><br>&emsp;&emsp; 即指定备份还原目录路径，然后重启elasticsearch<br>2.3 注册备份还原仓库（仓库名称为my_backup）<br><code>PUT http://地址:9200/_snapshot/my_backup/</code><br>参数：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"type"</span>: <span class="string">"fs"</span>,</span><br><span class="line">    <span class="attr">"settings"</span>: &#123;</span><br><span class="line">        <span class="attr">"location"</span>: <span class="string">"/opt/elasticsearch/es_bak"</span>,</span><br><span class="line">        <span class="attr">"max_snapshot_bytes_per_sec"</span> : <span class="string">"50mb"</span>,</span><br><span class="line">        <span class="attr">"max_restore_bytes_per_sec"</span> : <span class="string">"50mb"</span>,</span><br><span class="line">        <span class="attr">"compress"</span> : <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/es/%E6%B3%A8%E5%86%8C%E5%A4%87%E4%BB%BD%E8%BF%98%E5%8E%9F%E4%BB%93%E5%BA%93.jpg" alt=""><br>查看仓库情况：<code>GET http://地址:9200/_snapshot/my_backup/_all</code><br><img src="/images/es/%E6%9F%A5%E7%9C%8B%E4%BB%93%E5%BA%93%E7%8A%B6%E6%80%81.jpg" alt=""><br>这里执行完之后/opt/elasticsearch/es_bak目录下还什么数据都没有.<br>一个repository仓库可以包含多份快照文件，repository主要有一下几种类型:</p>
+<blockquote>
+<p>fs: 共享文件系统，将快照文件存放于文件系统中<br> url: 指定文件系统的URL路径，支持协议：http,https,ftp,file,jar<br> s3: AWS S3对象存储,快照存放于S3中，以插件形式支持<br> hdfs: 快照存放于hdfs中，以插件形式支持<br> cos: 快照存放于腾讯云COS对象存储中，以插件形式支持</p>
+</blockquote>
+<p>2.4 备份数据<br>在创建的my_backup仓库下备份数据，备份的名称为：yq<br><code>PUT http://地址:9200/_snapshot/my_backup/yq</code><br>指定备份的索引逗号分隔，不传默认备份所有索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;indices&quot;: &quot;index1,index2&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>?wait_for_completion=true 等待备份完后再返回<br>参数 wait_for_completion 决定请求是在快照初始化后立即返回（默认），还是等快照创建完成之后再返回。<br><img src="/images/es/%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD.jpg" alt=""><br>备份完成后可以看到备份状态，该yq备份已经完成，且能查看所备份的索引值：<br><img src="/images/es/%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD%E7%BB%93%E6%9E%9C%E6%9F%A5%E7%9C%8B.jpg" alt=""><br>备份完数据后就会在/opt/es_bak目录下生成备份的元数据：<br><img src="/images/es/%E5%A4%87%E4%BB%BD%E5%85%83%E6%95%B0%E6%8D%AE.jpg" alt=""></p>
+<h4 id="3-数据还原"><a href="#3-数据还原" class="headerlink" title="3.数据还原"></a>3.数据还原</h4><p>将步骤2中生成的备份元数据（即/opt/elasticsearch/es_bak目录下的所有文件）拷贝到要还原的目标机器的备份还原目录下。注意：在目标机器上2.1、2.2、2.3三个步骤同样需要进行操作，只是仓库的路径不比与源es仓库路径一样，根据个人情况而定。<br>元数据文件拷贝到目标机器后，在需要还原的机器上执行POST请求：<br><code>POST http://地址:9200/_snapshot/my_backup/yq/_restore</code><br><img src="/images/es/%E6%95%B0%E6%8D%AE%E8%BF%98%E5%8E%9F.jpg" alt=""><br>然后在目标机器上查看es中是否还原该索引数据<br><img src="/images/es/%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E6%95%B0%E6%8D%AE.jpg" alt=""></p>
+<h4 id="4-数据迁移"><a href="#4-数据迁移" class="headerlink" title="4.数据迁移"></a>4.数据迁移</h4><p>单节点情况下，数据迁移与数据还原类似，都是将元数据文件拷贝然后还原即可。</p>
+<p>参考链接：<br><a href="https://blog.csdn.net/frankcheng5143/article/details/95168300" target="_blank" rel="noopener" title="Elasticsearch快照备份与还原">Elasticsearch快照备份与还原</a><br><a href="https://cloud.tencent.com/developer/article/1409613" target="_blank" rel="noopener" title="es数据备份和恢复">es数据备份和恢复</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/20/Linux%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1515,7 +1671,7 @@ scp root@192.168.1.104:/opt/html/webs/\{index.css,json.js\}</code></pre>
 </blockquote>
 <h4 id="1-3-安装SSL库"><a href="#1-3-安装SSL库" class="headerlink" title="1.3 安装SSL库"></a>1.3 安装SSL库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;</span><br><span class="line">$ wget http:&#x2F;&#x2F;www.openssl.org&#x2F;source&#x2F;openssl-1.0.1j.tar.gz</span><br><span class="line">$ tar -zxvf openssl-1.0.1j.tar.gz</span><br><span class="line">$ cd openssl-1.0.1j</span><br><span class="line">$ .&#x2F;config</span><br><span class="line">$ make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
 <h4 id="1-4-安装zlib库存"><a href="#1-4-安装zlib库存" class="headerlink" title="1.4 安装zlib库存"></a>1.4 安装zlib库存</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;</span><br><span class="line">$ wget http:&#x2F;&#x2F;zlib.net&#x2F;zlib-1.2.11.tar.gz</span><br><span class="line">$ tar -zxvf zlib-1.2.11.tar.gz</span><br><span class="line">$ .&#x2F;configure</span><br><span class="line">$ make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
-<h4 id="1-5-安装nginx"><a href="#1-5-安装nginx" class="headerlink" title="1.5 安装nginx"></a>1.5 安装nginx</h4><p>注意，此处根据个人想法是否修改nginx的安装路径。因为后期在添加nginx的jx.conf文件时是在nginx.conf中要配置的。</p>
+<h4 id="1-5-安装nginx"><a href="#1-5-安装nginx" class="headerlink" title="1.5 安装nginx"></a>1.5 安装nginx</h4><p>注意，此处根据个人想法是否修改nginx的安装路径。因为后期在添加nginx的jx.conf文件时是在nginx.conf中要配置的。默认情况下，配置文件nginx.conf放在/usr/local/nginx/conf, /etc/nginx或/usr/local/etc/nginx.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;</span><br><span class="line">$ wget http:&#x2F;&#x2F;nginx.org&#x2F;download&#x2F;nginx-1.8.0.tar.gz</span><br><span class="line">$ tar -zxvf nginx-1.8.0.tar.gz</span><br><span class="line">$ cd nginx-1.8.0</span><br><span class="line">$ .&#x2F;configure --user&#x3D;nobody --group&#x3D;nobody --prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx --with-http_stub_status_module --with-http_gzip_static_module --with-http_realip_module --with-http_sub_module --with-http_ssl_module</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>注: –with-http_ssl_module:这个不加后面在nginx.conf配置，ssl:on后,启动会报nginx: [emerg] unknown directive “ssl” in /opt/nginx/conf/nginx.conf 异常</p>
@@ -1963,180 +2119,6 @@ scp root@192.168.1.104:/opt/html/webs/\{index.css,json.js\}</code></pre>
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/09/SpringBoot%20%E5%A4%9A%E6%A8%A1%E5%9D%97%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="YouQiang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/touxiang.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="秦音">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/09/SpringBoot%20%E5%A4%9A%E6%A8%A1%E5%9D%97%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85/" itemprop="url">SpringBoot 多模块项目打包</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-09T17:00:00+08:00">
-                2020-04-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-首次打包失败"><a href="#1-首次打包失败" class="headerlink" title="1. 首次打包失败"></a>1. 首次打包失败</h4><p>&emsp;&emsp;需要将每个模块都分别进行打包，否则在某些模块时，会报某些模块的jar不存在错误；在分别打包时，需要在子模块的pom.xml文件中加入<code>&lt;relativePath&gt;../../pom.xml&lt;/relativePath&gt;</code>即：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;parent&gt;</span><br><span class="line">	&lt;groupId&gt;com.aiidc.parse&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;parse-project&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</span><br><span class="line">	&lt;relativePath&gt;../../pom.xml&lt;/relativePath&gt;</span><br><span class="line">&lt;/parent&gt;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;其中，<code>relativePath</code>标签中的内容指父项目的pom.xml文件的相对路径。默认值为../pom.xml（即<code>&lt;relativePath/&gt;</code>）。maven首先从当前构建项目开始查找父项目的pom文件，然后从本地仓库，最后从远程仓库。RelativePath允许你选择一个不同的位置。如果默认../pom.xml 没找到父元素的pom ，不配置<code>relativePath</code>指向父项目的pom则会报错</p>
-<h4 id="2-检查报错模块的pom-xml中是否引入了所报错的jar"><a href="#2-检查报错模块的pom-xml中是否引入了所报错的jar" class="headerlink" title="2. 检查报错模块的pom.xml中是否引入了所报错的jar"></a>2. 检查报错模块的pom.xml中是否引入了所报错的jar</h4><p>&emsp;&emsp;比如在打父目录jar时，A模块报找不到com.aiidc.parse jar，那在A模块中查看是否引入了com.aiidc.parse.jar,如果没引，就引入</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">	&lt;dependency&gt;</span><br><span class="line">		&lt;groupId&gt;com.aiidc.parse&lt;/groupId&gt;</span><br><span class="line">		&lt;artifactId&gt;aiidc-parse-core&lt;/artifactId&gt;</span><br><span class="line">	&lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-spring-boot-maven-plugin插件引发的bug"><a href="#3-spring-boot-maven-plugin插件引发的bug" class="headerlink" title="3. spring-boot-maven-plugin插件引发的bug"></a>3. spring-boot-maven-plugin插件引发的bug</h4><p>&emsp;&emsp; spring-boot-maven-plugin插件的作用是：在添加了该插件之后，当运行<code>mvn package</code>进行打包时，会打包成一个可以直接运行的 JAR 文件，使用<code>java -jar</code>命令就可以直接运行。也可以在POM中，指定生成的是Jar还是War（默认是生成jar  <code>&lt;packaging&gt;jar&lt;/packaging&gt;</code>）<br>&emsp;&emsp;在使用springboot搭建多模块项目，pom引用依赖关系正常，编译正常情况。父项目maven package出现如下异常：</p>
-<h5 id="3-1-第一类异常"><a href="#3-1-第一类异常" class="headerlink" title="3.1 第一类异常"></a>3.1 第一类异常</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ERROR] 符号: 类 xxx</span><br><span class="line">[ERROR] xxx.java:[<span class="number">7</span>,<span class="number">38</span>] 程序包xxx不存在</span><br></pre></td></tr></table></figure>
-<p>解决方式：检查除父目录pom以及其他非打包模块的pom文件是否存在如下插件，若有则删除或注释次插件（嵌套引用下插件造成编译异常）</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;build&gt;</span><br><span class="line">	&lt;plugins&gt;</span><br><span class="line">		&lt;plugin&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">		&lt;/plugin&gt;</span><br><span class="line">	&lt;/plugins&gt;</span><br><span class="line">&lt;/build&gt;</span><br></pre></td></tr></table></figure>
-<p>通常仅在启动模块app工程中使用此插件（配合devtools设置热部署）</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugins&gt;</span><br><span class="line">	&lt;plugin&gt;</span><br><span class="line">		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">		&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">		&lt;configuration&gt;</span><br><span class="line">			&lt;!--fork :  如果没有该项配置，这个devtools不会起作用，即应用不会restart --&gt;</span><br><span class="line">			&lt;fork&gt;true&lt;/fork&gt;</span><br><span class="line">		&lt;/configuration&gt;</span><br><span class="line">	&lt;/plugin&gt;</span><br><span class="line">&lt;/plugins&gt;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp; 注意：Spring Boot中默认打包成的jar叫做可执行jar，这种jar不同于普通的jar，普通的jar不可以通过<code>java -jar xxx.jar</code>命令执行，    普通的jar主要是被其他应用依赖，Spring Boot打成的jar可以执行，但是不可以被其他的应用所依赖，即使强制依赖，也无法获取里边的类。但是可执行jar并不是Spring Boot独有的，Java工程本身就可以打包成可执行jar。</p>
-<p>&emsp;&emsp; 既然同样是执行<code>mvn package</code> 命令进行项目打包，为什么 Spring Boot 项目就打成了可执行 jar ，而普通项目则打包成了不可执行 jar 呢？<br>&emsp;&emsp; 原因就是两种jar目录结构不同。这我们就不得不提 Spring Boot 项目中一个默认的插件配置 <code>spring-boot-maven-plugin</code> ，这个打包插件存在 5 个方面的功能（在idea右侧–&gt;maven–&gt;aiidc-sign–&gt;Plugins–&gt;spring-boot下的6个命令），从插件命令就可以看出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">build-info：生成项目的构建信息文件 build-info.properties</span><br><span class="line">repackage：这个是默认 goal，在 mvn package 执行之后，这个命令再次打包生成可执行的 jar，同时将 mvn package 生成的 jar 重命名为 *.origin</span><br><span class="line">run：这个可以用来运行 Spring Boot 应用</span><br><span class="line">start：这个在 mvn integration-test 阶段，进行 Spring Boot 应用生命周期的管理</span><br><span class="line">stop：这个在 mvn integration-test 阶段，进行 Spring Boot 应用生命周期的管理</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp; 这里功能，默认情况下使用就是repackage功能，其他功能要使用，则需要开发者显式配置。而repackage功能的作用，就是在打包的时候，多做一点额外的事情：<br>&emsp;&emsp; ①首先<code>mvn package</code>命令对项目进行打包，打成一个jar，这个jar就是一个普通的jar，可以被其他项目依赖，但是不可以被执行。<br>&emsp;&emsp; ②而repackage命令，对第一步打包成的jar进行再次打包，将之打成一个可执行jar，通过将第一步打成的jar重命名为<code>*.original</code>文件。</p>
-<p>&emsp;&emsp; 对任意一个Spring Boot项目进行打包，可以执行<code>mvn package</code>命令，也可以直接在IDEA中点击package。<br>&emsp;&emsp; 打包成功之后，target中的文件中有两个文件，第一个 <font color=blue>springapplication-0.0.1-SNAPSHOT.jar</font> 表示打包成的可执行jar，第二个 <font color=blue>springapplication-0.0.1-SNAPSHOT.jar.original</font> 则是在打包过程中，被重命名的jar，这是一个不可执行jar，但是可以被其他项目依赖的jar。<br>&emsp;&emsp; 其中可执行jar中，我们自己的代码是存在于BOOT-INF/classes/目录下，另外，还有一个META-INF的目录，该目录下有一个MANIFEST.MF文件，打开该文件，可以看到，这里定义了一个Start-Class，这就是可执行jar的入口类，Spring-Boot-Classes表示我们自己代码编译后的位置，Spring-Boot-Lib则表示项目依赖的jar的位置。</p>
-<p>&emsp;&emsp; 换句话说，如果自己要打一个可执行jar包的话，除了添加相关依赖之外，还需要配置META-INF/MANIFEST.MF文件。而不可执行jar中（首先需要将默认的后缀.original除去，才进行解压）解压后可以看到，不可执行jar根目录就相当于我们的classpath，解压之后，直接就能看到我们的代码，它也有META-INF/MANIFEST.MF文件，但是文件中没有定义启动类等。</p>
-<p>&emsp;&emsp; 注意:这个不可以执行jar也没有将项目的依赖打包进来。<br>&emsp;&emsp; 从这里我们就可以看出，两个jar，虽然都是jar包，但是内部结构是完全不同的，因此一个可以直接执行，另一个则可以被其他项目依赖。</p>
-<p>&emsp;&emsp; 一般来说，Spring Boot直接打包成可执行jar就可以了，不建议将Spring Boot作为普通的jar被其他的项目所依赖。<br>&emsp;&emsp; 如果有这种需求，建议将被依赖的部分，单独抽出来做一个普通的Maven项目，然后在Spring Boot中引用这个Maven项目。<br>&emsp;&emsp; 如果非要将Spring Boot打包成一个普通jar被其他项目依赖，技术上来说，也是可以的，给spring-boot-maven-plugin插件添加如下配置：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;build&gt;</span><br><span class="line">	&lt;plugins&gt;</span><br><span class="line">		&lt;plugin&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">			&lt;configuration&gt;</span><br><span class="line">				&lt;classifier&gt;exec&lt;/classifier&gt;</span><br><span class="line">			&lt;/configuration&gt;</span><br><span class="line">		&lt;/plugin&gt;</span><br><span class="line">	&lt;/plugins&gt;</span><br><span class="line">&lt;/build&gt;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp; 配置的classifier表示可执行jar的名字，配置了这个之后，在插件执行repackage命令时，就不会给mvn package所打成的jar重命名了，而打好包后的第一个jar表示可以被其他项目依赖的jar，第二个jar则表示一个可执行jar。<br>&emsp;&emsp; 相关链接地址：<a href="https://blog.csdn.net/MissOfSpring/article/details/100678593" target="_blank" rel="noopener" title="可执行 jar 和普通 jar 区别">可执行 jar 和普通 jar 区别</a></p>
-<h5 id="3-2-第二类异常"><a href="#3-2-第二类异常" class="headerlink" title="3.2 第二类异常"></a>3.2 第二类异常</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:<span class="number">2.21</span><span class="number">.0</span>:test (<span class="keyword">default</span>-test) on project webapp: There are test failures.</span><br></pre></td></tr></table></figure>
-
-<p>检查各个测试类是否打包跳过编译，可以使用@ignore注解（编译时跳过测试用例类）</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//（import org.junit.Ignore;）</span></span><br><span class="line"><span class="meta">@Ignore</span></span><br><span class="line"><span class="meta">@RunWith</span>(SpringRunner<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">SpringBootTest</span></span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">CommonApplicationTests</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>@Ignore注解标注在测试方法上时，该测试方法在编译打包时不会运行；<br>标注在测试类上时，该测试类所有方法在编译打包时都不会运行。</p>
-<h5 id="3-3-第三类异常"><a href="#3-3-第三类异常" class="headerlink" title="3.3 第三类异常"></a>3.3 第三类异常</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:2.0.4.RELEASE:repackage (default) on project webapp: Execution default of goal org.springframework.boot:spring-boot-maven-plugin:2.0.4.RELEASE:repackage failed: Unable to find main class -&gt; [Help 1]</span><br></pre></td></tr></table></figure>
-<p>spring-boot-maven-plugin插件会自动扫描启动类 并执行启动类main方法，所以检测使用插件工程下是否存在启动类（位置是否正确） 若没有添加启动类加<code>@SpringBootApplication</code>并重写main方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebappApplication</span> </span>&#123;		 </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(WebappApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2191,7 +2173,7 @@ scp root@192.168.1.104:/opt/html/webs/\{index.css,json.js\}</code></pre>
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2202,7 +2184,7 @@ scp root@192.168.1.104:/opt/html/webs/\{index.css,json.js\}</code></pre>
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2213,7 +2195,7 @@ scp root@192.168.1.104:/opt/html/webs/\{index.css,json.js\}</code></pre>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
