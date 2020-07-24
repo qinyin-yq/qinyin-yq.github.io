@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SpringBoot,MyBatis,Druid,数据库连接池," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. Druid简单介绍&amp;emsp;&amp;emsp; Druid是阿里巴巴开源的数据库连接池，号称是Java语言中最好的数据库连接池，能够提供强大的监控和扩展功能。&amp;emsp;&amp;emsp; GitHub地址：https:&#x2F;&#x2F;github.com&#x2F;alibaba&#x2F;druid 优点:&amp;emsp;&amp;emsp; ① 可以监控数据库访问性能，Druid内置提供了一个功能强大的StatFilter插件，能够详细统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Druid实现简单数据库连接池监控">
+<meta property="og:url" content="http://yoursite.com/2020/06/17/Druid%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9B%91%E6%8E%A7/index.html">
+<meta property="og:site_name" content="秦音">
+<meta property="og:description" content="1. Druid简单介绍&amp;emsp;&amp;emsp; Druid是阿里巴巴开源的数据库连接池，号称是Java语言中最好的数据库连接池，能够提供强大的监控和扩展功能。&amp;emsp;&amp;emsp; GitHub地址：https:&#x2F;&#x2F;github.com&#x2F;alibaba&#x2F;druid 优点:&amp;emsp;&amp;emsp; ① 可以监控数据库访问性能，Druid内置提供了一个功能强大的StatFilter插件，能够详细统">
+<meta property="og:image" content="http://yoursite.com/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/druid_menu_structure.jpg">
+<meta property="og:image" content="http://yoursite.com/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/druid_login.jpg">
+<meta property="og:image" content="http://yoursite.com/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/druid_success.jpg">
+<meta property="og:image" content="http://yoursite.com/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/executor_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/executor_2.jpg">
+<meta property="article:published_time" content="2020-06-17T06:39:00.000Z">
+<meta property="article:modified_time" content="2020-06-18T06:54:00.402Z">
+<meta property="article:author" content="YouQiang">
+<meta property="article:tag" content="SpringBoot">
+<meta property="article:tag" content="MyBatis">
+<meta property="article:tag" content="Druid">
+<meta property="article:tag" content="数据库连接池">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/druid_menu_structure.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/17/Druid实现简单数据库连接池监控/"/>
+
+
+
+
+
+  <title>Druid实现简单数据库连接池监控 | 秦音</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦音</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archive">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/17/Druid%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9B%91%E6%8E%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YouQiang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦音">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Druid实现简单数据库连接池监控</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-17T14:39:00+08:00">
+                2020-06-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Druid/" itemprop="url" rel="index">
+                    <span itemprop="name">Druid</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-Druid简单介绍"><a href="#1-Druid简单介绍" class="headerlink" title="1. Druid简单介绍"></a>1. Druid简单介绍</h3><p>&emsp;&emsp; Druid是阿里巴巴开源的数据库连接池，号称是Java语言中最好的数据库连接池，能够提供强大的监控和扩展功能。<br>&emsp;&emsp; GitHub地址：<a href="https://github.com/alibaba/druid" target="_blank" rel="noopener">https://github.com/alibaba/druid</a></p>
+<p>优点:<br>&emsp;&emsp; ① 可以监控数据库访问性能，Druid内置提供了一个功能强大的StatFilter插件，能够详细统计SQL的执行性能，这对于线上分析数据库访问性能有帮助。<br>&emsp;&emsp; ② 替换DBCP和C3P0，Druid提供了一个高效、功能强大、可扩展性好的数据库连接池。<br>&emsp;&emsp; ③ 数据库密码加密。直接把数据库密码写在配置文件中，这是不好的行为，容易导致安全问题。DruidDriver和DruidDataSource都支持PasswordCallback。<br>&emsp;&emsp; ④ SQL执行日志，Druid提供了不同的LogFilter，能够支持Common-Logging、Log4j和JdkLog，你可以按需要选择相应的LogFilter，监控你应用的数据库访问情况。<br>&emsp;&emsp; ⑤ 扩展JDBC，如果你要对JDBC层有编程的需求，可以通过Druid提供的Filter-Chain机制，很方便编写JDBC层的扩展插件。</p>
+<h3 id="2-druid基础配置"><a href="#2-druid基础配置" class="headerlink" title="2. druid基础配置"></a>2. druid基础配置</h3><h4 id="2-1-创建基本的SpringBoot项目"><a href="#2-1-创建基本的SpringBoot项目" class="headerlink" title="2.1 创建基本的SpringBoot项目"></a>2.1 创建基本的SpringBoot项目</h4><p>此次使用的是基于Mysql与Postgresql的双数据源搭建的demo。（双数据源搭建查看上一篇博客内容）</p>
+<h4 id="2-2-导入jar"><a href="#2-2-导入jar" class="headerlink" title="2.2 导入jar"></a>2.2 导入jar</h4><p>&emsp;&emsp; 之后导入druid.jar。Druid 0.1.18之后版本都发布到maven中央仓库中，所以你只需要在项目的pom.xml中加上dependency就可以了。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--druid-demo所需jar，本demo使用的是log4j来做日志记录--&gt;</span><br><span class="line">&lt;!-- https:<span class="comment">//mvnrepository.com/artifact/com.alibaba/druid --&gt;</span></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	 &lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">	 &lt;artifactId&gt;druid&lt;/artifactId&gt;</span><br><span class="line">	 &lt;version&gt;1.1.9&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--需要将Spring-boot中去掉logback的依赖--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">    &lt;exclusions&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-starter-logging&lt;/artifactId&gt;</span><br><span class="line">        &lt;/exclusion&gt;</span><br><span class="line">    &lt;/exclusions&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--日志--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-log4j2&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-设置druid相关配置"><a href="#2-3-设置druid相关配置" class="headerlink" title="2.3 设置druid相关配置"></a>2.3 设置druid相关配置</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  # MySQL connection config</span><br><span class="line">  datasource:</span><br><span class="line">    driver-class-name: com.mysql.jdbc.Driver</span><br><span class="line">    url: jdbc:mysql:<span class="comment">//localhost:3306/yq_mysql?serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">    username: root</span><br><span class="line">    password: admin</span><br><span class="line">    # Druid 数据源专用配置</span><br><span class="line">    # 初始化大小，最小，最大</span><br><span class="line">    initialSize: <span class="number">3</span></span><br><span class="line">    minIdle: <span class="number">5</span></span><br><span class="line">    maxActive: <span class="number">20</span></span><br><span class="line">    # 配置获取连接等待超时的时间</span><br><span class="line">    maxWait: <span class="number">30000</span></span><br><span class="line">    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒</span><br><span class="line">    timeBetweenEvictionRunsMillis: <span class="number">60000</span></span><br><span class="line">    # 配置一个连接在池中最小生存的时间，单位是毫秒</span><br><span class="line">    minEvictableIdleTimeMillis: <span class="number">300000</span></span><br><span class="line">    maxEvictableIdleTimeMillis: <span class="number">900000</span></span><br><span class="line">    validationQuery: SELECT <span class="number">1</span> FROM DUAL</span><br><span class="line">    testWhileIdle: <span class="keyword">true</span></span><br><span class="line">    testOnBorrow: <span class="keyword">false</span></span><br><span class="line">    testOnReturn: <span class="keyword">false</span></span><br><span class="line">    # 打开PSCache，并且指定每个连接上PSCache的大小</span><br><span class="line">    poolPreparedStatements: <span class="keyword">true</span></span><br><span class="line">    maxPoolPreparedStatementPerConnectionSize: <span class="number">20</span></span><br><span class="line">    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙，使用的日志组件为log4j2</span><br><span class="line">    filters: stat,wall,log4j2</span><br><span class="line">    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录.合并多个DruidDataSource的监控数据</span><br><span class="line">    #useGlobalDataSourceStat: true</span><br><span class="line">    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录</span><br><span class="line">    connectionProperties: druid.stat.mergeSql=<span class="keyword">true</span>;druid.stat.slowSqlMillis=<span class="number">10000</span></span><br><span class="line">  # Thymeleaf configurations</span><br><span class="line">  thymeleaf:</span><br><span class="line">    mode: HTML</span><br><span class="line">    cache: <span class="keyword">false</span></span><br><span class="line">    servlet.content-type: text/html</span><br><span class="line">    encoding: UTF-<span class="number">8</span></span><br><span class="line">  # jpa configurations</span><br><span class="line">  jpa:</span><br><span class="line">    #配置指明在程序启动的时候要删除并且创建实体类对应的表。这个参数很危险，因为他会把对应的表删除掉然后重建。所以千万不要在生成环境中使用。只有在测试环境中，一开始初始化数据库结构的时候才能使用一次。过后使用update</span><br><span class="line">    #hibernate.ddl-auto: create</span><br><span class="line">    hibernate.ddl-auto: update</span><br><span class="line">    #默认的存储引擎切换为 InnoDB</span><br><span class="line">    database-platform: org.hibernate.dialect.MySQL57InnoDBDialect</span><br><span class="line">    # 配置在日志中打印出执行的 SQL 语句信息。</span><br><span class="line">    show-sql: <span class="keyword">true</span></span><br><span class="line">  pgdatasource:</span><br><span class="line">    driver-class-name: org.postgresql.Driver</span><br><span class="line">    url: jdbc:postgresql:<span class="comment">//localhost:5432/yq_pgsql?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">    username: postgres</span><br><span class="line">    password: admin</span><br><span class="line">  servlet:</span><br><span class="line">    multipart:</span><br><span class="line">    max-file-size: <span class="number">100</span>MB</span><br><span class="line">    max-request-size: <span class="number">200</span>MB</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-配置Druid监控统计功能"><a href="#2-4-配置Druid监控统计功能" class="headerlink" title="2.4 配置Druid监控统计功能"></a>2.4 配置Druid监控统计功能</h4><p>&emsp;&emsp; 基于Druid的Filter-Chain扩展机制，Druid提供了3个非常有用的具有监控统计功能的Filter：</p>
+<blockquote>
+<p>StatFilter用于统计监控信息；<br>WallFilter基于SQL语义分析来实现防御SQL注入攻击；<br>LogFilter 用于输出JDBC执行的日志。</p>
+</blockquote>
+<p>如果在项目中需要使用Druid提供的这些监控统计功能，可以通过以下两种途径进行配置。<br>①方式一：基于Servlet 注解的配置<br>&emsp;&emsp; 对于使用Servlet 3.0的项目，在启动类上加上注解<code>@ServletComponentScan</code> 启用Servlet自动扫描，并在自定义的<code>DruidStatViewServlet/DruidStatFilter</code> 上分别加上注解<code>@WebServlet/@WebFilter</code> 使其能够被自动发现。</p>
+<p>DruidStatViewServlet.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * druid数据源状态监控.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> com.alibaba.druid.support.http.StatViewServlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebInitParam;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebServlet;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebServlet</span>(urlPatterns = <span class="string">"/druid/*"</span>,initParams = &#123;</span><br><span class="line">    <span class="comment">//IP白名单 没有配置或者为空则允许所有访问</span></span><br><span class="line">    <span class="meta">@WebInitParam</span>(name=<span class="string">"allow"</span>,value = <span class="string">"127.0.0.1"</span>),</span><br><span class="line">    <span class="comment">// IP黑名单 存在共同时，deny优先于allow</span></span><br><span class="line">    <span class="meta">@WebInitParam</span>(name = <span class="string">"deny"</span>, value = <span class="string">"192.168.1.10"</span>),</span><br><span class="line">    <span class="comment">// 用户名</span></span><br><span class="line">    <span class="meta">@WebInitParam</span>(name = <span class="string">"loginUsername"</span>, value = <span class="string">"root"</span>),</span><br><span class="line">    <span class="comment">// 密码</span></span><br><span class="line">    <span class="meta">@WebInitParam</span>(name = <span class="string">"loginPassword"</span>, value = <span class="string">"123"</span>),</span><br><span class="line">    <span class="comment">// 禁用HTML页面上的“Reset All”功能</span></span><br><span class="line">    <span class="meta">@WebInitParam</span>(name = <span class="string">"resetEnable"</span>, value = <span class="string">"false"</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DruidStatViewServlet</span> <span class="keyword">extends</span> <span class="title">StatViewServlet</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>DruidStatFilter.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * druid过滤器</span></span><br><span class="line"><span class="comment"> * /**</span></span><br><span class="line"><span class="comment"> * WebStatFilter用于采集web-jdbc关联监控的数据。</span></span><br><span class="line"><span class="comment"> * 属性filterName声明过滤器的名称,可选</span></span><br><span class="line"><span class="comment"> * 属性urlPatterns指定要过滤 的URL模式,也可使用属性value来声明.(指定要过滤的URL模式是必选属性)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> com.alibaba.druid.support.http.WebStatFilter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebFilter;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebInitParam;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebFilter</span>(filterName = <span class="string">"druidWebStatFilter"</span>,urlPatterns = <span class="string">"/*"</span>,initParams = &#123;</span><br><span class="line">    <span class="comment">// 忽略资源</span></span><br><span class="line">    <span class="meta">@WebInitParam</span>(name = <span class="string">"exclusions"</span>, value = <span class="string">"*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DruidStatFilter</span> <span class="keyword">extends</span> <span class="title">WebStatFilter</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之后在启动类加上@ServletComponentScan：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.web.servlet.ServletComponentScan;</span><br><span class="line"></span><br><span class="line"><span class="comment">//暂时关闭Spring 自带的Security用户认证</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span>(exclude = &#123;SecurityAutoConfiguration<span class="class">.<span class="keyword">class</span>&#125;)</span></span><br><span class="line"><span class="class">@<span class="title">ServletComponentScan</span></span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">DruidApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(DruidApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>②方式二<br>&emsp;&emsp; 使用Spring的注解<code>@Bean</code>对自定义的<code>Servlet</code>或<code>Filter</code>进行注册，<code>Servlet</code>使用<code>ServletRegistrationBean</code>进行注册，<code>Filter</code>使用<code>FilterRegistrationBean</code>进行注册。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.druid.support.http.StatViewServlet;</span><br><span class="line"><span class="keyword">import</span> com.alibaba.druid.support.http.WebStatFilter;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringBootConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.web.servlet.FilterRegistrationBean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.web.servlet.ServletRegistrationBean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootConfiguration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DruidMonitorConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ServletRegistrationBean <span class="title">servletRegistrationBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"init Druid Monitor Servlet ..."</span>);</span><br><span class="line">        ServletRegistrationBean servletRegistrationBean = <span class="keyword">new</span> ServletRegistrationBean(<span class="keyword">new</span> StatViewServlet(),</span><br><span class="line">                <span class="string">"/druid/*"</span>);</span><br><span class="line">        <span class="comment">// IP白名单</span></span><br><span class="line">        servletRegistrationBean.addInitParameter(<span class="string">"allow"</span>, <span class="string">"127.0.0.1"</span>);</span><br><span class="line">        <span class="comment">// IP黑名单(共同存在时，deny优先于allow)</span></span><br><span class="line">        servletRegistrationBean.addInitParameter(<span class="string">"deny"</span>, <span class="string">"192.168.1.10"</span>);</span><br><span class="line">        <span class="comment">// 控制台管理用户</span></span><br><span class="line">        servletRegistrationBean.addInitParameter(<span class="string">"loginUsername"</span>, <span class="string">"root"</span>);</span><br><span class="line">        servletRegistrationBean.addInitParameter(<span class="string">"loginPassword"</span>, <span class="string">"123"</span>);</span><br><span class="line">        <span class="comment">// 是否能够重置数据 禁用HTML页面上的“Reset All”功能</span></span><br><span class="line">        servletRegistrationBean.addInitParameter(<span class="string">"resetEnable"</span>, <span class="string">"false"</span>);</span><br><span class="line">        <span class="keyword">return</span> servletRegistrationBean;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> FilterRegistrationBean <span class="title">filterRegistrationBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        FilterRegistrationBean filterRegistrationBean = <span class="keyword">new</span> FilterRegistrationBean(<span class="keyword">new</span> WebStatFilter());</span><br><span class="line">        filterRegistrationBean.addUrlPatterns(<span class="string">"/*"</span>);</span><br><span class="line">        filterRegistrationBean.addInitParameter(<span class="string">"exclusions"</span>, <span class="string">"*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"</span>);</span><br><span class="line">        <span class="keyword">return</span> filterRegistrationBean;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此demo采用的第二种方式（注释启动类的<code>//@ServletComponentScan</code>）。</p>
+<h3 id="3-Druid使用log4j2进行日志输出"><a href="#3-Druid使用log4j2进行日志输出" class="headerlink" title="3. Druid使用log4j2进行日志输出"></a>3. Druid使用log4j2进行日志输出</h3><h4 id="3-1-pom-xml中springboot版本依赖"><a href="#3-1-pom-xml中springboot版本依赖" class="headerlink" title="3.1 pom.xml中springboot版本依赖"></a>3.1 pom.xml中springboot版本依赖</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--Spring-boot中去掉logback的依赖--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">	&lt;exclusions&gt;</span><br><span class="line">    &lt;exclusion&gt;</span><br><span class="line">    	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    	&lt;artifactId&gt;spring-boot-starter-logging&lt;/artifactId&gt;</span><br><span class="line">    &lt;/exclusion&gt;</span><br><span class="line">	&lt;/exclusions&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--日志--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-log4j2&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--数据库连接池--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;druid-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.1.6&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-log4j2-xml文件中的日志配置-完整，可直接拷贝使用"><a href="#3-2-log4j2-xml文件中的日志配置-完整，可直接拷贝使用" class="headerlink" title="3.2 log4j2.xml文件中的日志配置(完整，可直接拷贝使用)"></a>3.2 log4j2.xml文件中的日志配置(完整，可直接拷贝使用)</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;configuration status=<span class="string">"OFF"</span>&gt;</span><br><span class="line">    &lt;appenders&gt;</span><br><span class="line"></span><br><span class="line">        &lt;Console name=<span class="string">"Console"</span> target=<span class="string">"SYSTEM_OUT"</span>&gt;</span><br><span class="line">            &lt;!--只接受程序中DEBUG级别的日志进行处理--&gt;</span><br><span class="line">            &lt;ThresholdFilter level=<span class="string">"DEBUG"</span> onMatch=<span class="string">"ACCEPT"</span> onMismatch=<span class="string">"DENY"</span>/&gt;</span><br><span class="line">            &lt;PatternLayout pattern=<span class="string">"[%d&#123;HH:mm:ss.SSS&#125;] %-5level %class&#123;36&#125; %L %M - %msg%xEx%n"</span>/&gt;</span><br><span class="line">        &lt;/Console&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--处理DEBUG级别的日志，并把该日志放到logs/debug.log文件中--&gt;</span><br><span class="line">        &lt;!--打印出DEBUG级别日志，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档--&gt;</span><br><span class="line">        &lt;RollingFile name=<span class="string">"RollingFileDebug"</span> fileName=<span class="string">"./logs/debug.log"</span></span><br><span class="line">                     filePattern=<span class="string">"logs/$$&#123;date:yyyy-MM&#125;/debug-%d&#123;yyyy-MM-dd&#125;-%i.log.gz"</span>&gt;</span><br><span class="line">            &lt;Filters&gt;</span><br><span class="line">                &lt;ThresholdFilter level=<span class="string">"DEBUG"</span>/&gt;</span><br><span class="line">                &lt;ThresholdFilter level=<span class="string">"INFO"</span> onMatch=<span class="string">"DENY"</span> onMismatch=<span class="string">"NEUTRAL"</span>/&gt;</span><br><span class="line">            &lt;/Filters&gt;</span><br><span class="line">            &lt;PatternLayout</span><br><span class="line">                    pattern=<span class="string">"[%d&#123;yyyy-MM-dd HH:mm:ss&#125;] %-5level %class&#123;36&#125; %L %M - %msg%xEx%n"</span>/&gt;</span><br><span class="line">            &lt;Policies&gt;</span><br><span class="line">                &lt;SizeBasedTriggeringPolicy size=<span class="string">"500 MB"</span>/&gt;</span><br><span class="line">                &lt;TimeBasedTriggeringPolicy/&gt;</span><br><span class="line">            &lt;/Policies&gt;</span><br><span class="line">        &lt;/RollingFile&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--处理INFO级别的日志，并把该日志放到logs/info.log文件中--&gt;</span><br><span class="line">        &lt;RollingFile name=<span class="string">"RollingFileInfo"</span> fileName=<span class="string">"./logs/info.log"</span></span><br><span class="line">                     filePattern=<span class="string">"logs/$$&#123;date:yyyy-MM&#125;/info-%d&#123;yyyy-MM-dd&#125;-%i.log.gz"</span>&gt;</span><br><span class="line">            &lt;Filters&gt;</span><br><span class="line">                &lt;!--只接受INFO级别的日志，其余的全部拒绝处理--&gt;</span><br><span class="line">                &lt;ThresholdFilter level=<span class="string">"INFO"</span>/&gt;</span><br><span class="line">                &lt;ThresholdFilter level=<span class="string">"WARN"</span> onMatch=<span class="string">"DENY"</span> onMismatch=<span class="string">"NEUTRAL"</span>/&gt;</span><br><span class="line">            &lt;/Filters&gt;</span><br><span class="line">            &lt;PatternLayout</span><br><span class="line">                    pattern=<span class="string">"[%d&#123;yyyy-MM-dd HH:mm:ss&#125;] %-5level %class&#123;36&#125; %L %M - %msg%xEx%n"</span>/&gt;</span><br><span class="line">            &lt;Policies&gt;</span><br><span class="line">                &lt;SizeBasedTriggeringPolicy size=<span class="string">"500 MB"</span>/&gt;</span><br><span class="line">                &lt;TimeBasedTriggeringPolicy/&gt;</span><br><span class="line">            &lt;/Policies&gt;</span><br><span class="line">        &lt;/RollingFile&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--处理WARN级别的日志，并把该日志放到logs/warn.log文件中--&gt;</span><br><span class="line">        &lt;RollingFile name=<span class="string">"RollingFileWarn"</span> fileName=<span class="string">"./logs/warn.log"</span></span><br><span class="line">                     filePattern=<span class="string">"logs/$$&#123;date:yyyy-MM&#125;/warn-%d&#123;yyyy-MM-dd&#125;-%i.log.gz"</span>&gt;</span><br><span class="line">            &lt;Filters&gt;</span><br><span class="line">                &lt;ThresholdFilter level=<span class="string">"WARN"</span>/&gt;</span><br><span class="line">                &lt;ThresholdFilter level=<span class="string">"ERROR"</span> onMatch=<span class="string">"DENY"</span> onMismatch=<span class="string">"NEUTRAL"</span>/&gt;</span><br><span class="line">            &lt;/Filters&gt;</span><br><span class="line">            &lt;PatternLayout</span><br><span class="line">                    pattern=<span class="string">"[%d&#123;yyyy-MM-dd HH:mm:ss&#125;] %-5level %class&#123;36&#125; %L %M - %msg%xEx%n"</span>/&gt;</span><br><span class="line">            &lt;Policies&gt;</span><br><span class="line">                &lt;SizeBasedTriggeringPolicy size=<span class="string">"500 MB"</span>/&gt;</span><br><span class="line">                &lt;TimeBasedTriggeringPolicy/&gt;</span><br><span class="line">            &lt;/Policies&gt;</span><br><span class="line">        &lt;/RollingFile&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--处理error级别的日志，并把该日志放到logs/error.log文件中--&gt;</span><br><span class="line">        &lt;RollingFile name=<span class="string">"RollingFileError"</span> fileName=<span class="string">"./logs/error.log"</span></span><br><span class="line">                     filePattern=<span class="string">"logs/$$&#123;date:yyyy-MM&#125;/error-%d&#123;yyyy-MM-dd&#125;-%i.log.gz"</span>&gt;</span><br><span class="line">            &lt;ThresholdFilter level=<span class="string">"ERROR"</span>/&gt;</span><br><span class="line">            &lt;PatternLayout</span><br><span class="line">                    pattern=<span class="string">"[%d&#123;yyyy-MM-dd HH:mm:ss&#125;] %-5level %class&#123;36&#125; %L %M - %msg%xEx%n"</span>/&gt;</span><br><span class="line">            &lt;Policies&gt;</span><br><span class="line">                &lt;SizeBasedTriggeringPolicy size=<span class="string">"500 MB"</span>/&gt;</span><br><span class="line">                &lt;TimeBasedTriggeringPolicy/&gt;</span><br><span class="line">            &lt;/Policies&gt;</span><br><span class="line">        &lt;/RollingFile&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--druid的日志记录追加器--&gt;</span><br><span class="line">        &lt;RollingFile name=<span class="string">"druidSqlRollingFile"</span> fileName=<span class="string">"./logs/druid-sql.log"</span></span><br><span class="line">                     filePattern=<span class="string">"logs/$$&#123;date:yyyy-MM&#125;/api-%d&#123;yyyy-MM-dd&#125;-%i.log.gz"</span>&gt;</span><br><span class="line">            &lt;PatternLayout pattern=<span class="string">"[%d&#123;yyyy-MM-dd HH:mm:ss&#125;] %-5level %L %M - %msg%xEx%n"</span>/&gt;</span><br><span class="line">            &lt;Policies&gt;</span><br><span class="line">                &lt;SizeBasedTriggeringPolicy size=<span class="string">"500 MB"</span>/&gt;</span><br><span class="line">                &lt;TimeBasedTriggeringPolicy/&gt;</span><br><span class="line">            &lt;/Policies&gt;</span><br><span class="line">        &lt;/RollingFile&gt;</span><br><span class="line">    &lt;/appenders&gt;</span><br><span class="line"></span><br><span class="line">    &lt;loggers&gt;</span><br><span class="line">        &lt;root level=<span class="string">"DEBUG"</span>&gt;</span><br><span class="line">            &lt;appender-ref ref=<span class="string">"Console"</span>/&gt;</span><br><span class="line">            &lt;appender-ref ref=<span class="string">"RollingFileInfo"</span>/&gt;</span><br><span class="line">            &lt;appender-ref ref=<span class="string">"RollingFileWarn"</span>/&gt;</span><br><span class="line">            &lt;appender-ref ref=<span class="string">"RollingFileError"</span>/&gt;</span><br><span class="line">            &lt;appender-ref ref=<span class="string">"RollingFileDebug"</span>/&gt;</span><br><span class="line">        &lt;/root&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--记录druid-sql的记录--&gt;</span><br><span class="line">        &lt;logger name=<span class="string">"druid.sql.Statement"</span> level=<span class="string">"debug"</span> additivity=<span class="string">"false"</span>&gt;</span><br><span class="line">            &lt;appender-ref ref=<span class="string">"druidSqlRollingFile"</span>/&gt;</span><br><span class="line">        &lt;/logger&gt;</span><br><span class="line">        &lt;logger name=<span class="string">"druid.sql.Statement"</span> level=<span class="string">"debug"</span> additivity=<span class="string">"false"</span>&gt;</span><br><span class="line">            &lt;appender-ref ref=<span class="string">"druidSqlRollingFile"</span>/&gt;</span><br><span class="line">        &lt;/logger&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--log4j2 自带过滤日志--&gt;</span><br><span class="line">        &lt;Logger name=<span class="string">"org.apache.catalina.startup.DigesterFactory"</span> level=<span class="string">"error"</span> /&gt;</span><br><span class="line">        &lt;Logger name=<span class="string">"org.apache.catalina.util.LifecycleBase"</span> level=<span class="string">"error"</span> /&gt;</span><br><span class="line">        &lt;Logger name=<span class="string">"org.apache.coyote.http11.Http11NioProtocol"</span> level=<span class="string">"warn"</span> /&gt;</span><br><span class="line">        &lt;logger name=<span class="string">"org.apache.sshd.common.util.SecurityUtils"</span> level=<span class="string">"warn"</span>/&gt;</span><br><span class="line">        &lt;Logger name=<span class="string">"org.apache.tomcat.util.net.NioSelectorPool"</span> level=<span class="string">"warn"</span> /&gt;</span><br><span class="line">        &lt;Logger name=<span class="string">"org.crsh.plugin"</span> level=<span class="string">"warn"</span> /&gt;</span><br><span class="line">        &lt;logger name=<span class="string">"org.crsh.ssh"</span> level=<span class="string">"warn"</span>/&gt;</span><br><span class="line">        &lt;Logger name=<span class="string">"org.eclipse.jetty.util.component.AbstractLifeCycle"</span> level=<span class="string">"error"</span> /&gt;</span><br><span class="line">        &lt;Logger name=<span class="string">"org.hibernate.validator.internal.util.Version"</span> level=<span class="string">"warn"</span> /&gt;</span><br><span class="line">        &lt;logger name=<span class="string">"org.springframework.boot.actuate.autoconfigure.CrshAutoConfiguration"</span> level=<span class="string">"warn"</span>/&gt;</span><br><span class="line">        &lt;logger name=<span class="string">"org.springframework.boot.actuate.endpoint.jmx"</span> level=<span class="string">"warn"</span>/&gt;</span><br><span class="line">        &lt;logger name=<span class="string">"org.thymeleaf"</span> level=<span class="string">"warn"</span>/&gt;</span><br><span class="line">    &lt;/loggers&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-3-配置application-yml"><a href="#4-3-配置application-yml" class="headerlink" title="4.3 配置application.yml"></a>4.3 配置application.yml</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 配置日志输出</span><br><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    druid:</span><br><span class="line">      filter:</span><br><span class="line">        slf4j:</span><br><span class="line">          enabled=<span class="keyword">true</span></span><br><span class="line">          statement-create-after-log-enabled=<span class="keyword">false</span></span><br><span class="line">          statement-close-after-log-enabled=<span class="keyword">false</span></span><br><span class="line">          result-set-open-after-log-enabled=<span class="keyword">false</span></span><br><span class="line">          result-set-close-after-log-enabled=<span class="keyword">false</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4-测试与运行"><a href="#4-测试与运行" class="headerlink" title="4. 测试与运行"></a>4. 测试与运行</h3><h4 id="4-1-相关实体类创建"><a href="#4-1-相关实体类创建" class="headerlink" title="4.1 相关实体类创建"></a>4.1 相关实体类创建</h4><p>&emsp;&emsp; 相关数据库表、数据创建，以及相关dao，service，controller创建。（本demo采用上一个博客的相关类）<br>&emsp;&emsp; 系统结构目录如下：<br><img src="/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/druid_menu_structure.jpg" alt=""></p>
+<h4 id="4-2-测试"><a href="#4-2-测试" class="headerlink" title="4.2 测试"></a>4.2 测试</h4><p>swagger上查询结果：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"游强"</span>,</span><br><span class="line">    <span class="attr">"account"</span>: <span class="string">"yq"</span>,</span><br><span class="line">    <span class="attr">"password"</span>: <span class="string">"admin"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">"id"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"秦音"</span>,</span><br><span class="line">    <span class="attr">"account"</span>: <span class="string">"qy"</span>,</span><br><span class="line">    <span class="attr">"password"</span>: <span class="string">"admin"</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>然后访问：<a href="http://localhost:8081/druid/" target="_blank" rel="noopener">http://localhost:8081/druid/</a><br><img src="/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/druid_login.jpg" alt=""><br>大概就是下面这样的图：<br><img src="/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/druid_success.jpg" alt=""><br>控制日志记录如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2020</span>-<span class="number">06</span>-<span class="number">18</span> <span class="number">00</span>:<span class="number">11</span>:<span class="number">15.948</span>  INFO <span class="number">34916</span> --- [nio-<span class="number">8081</span>-exec-<span class="number">1</span>] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet <span class="string">'dispatcherServlet'</span></span><br><span class="line"><span class="number">2020</span>-<span class="number">06</span>-<span class="number">18</span> <span class="number">00</span>:<span class="number">11</span>:<span class="number">15.948</span>  INFO <span class="number">34916</span> --- [nio-<span class="number">8081</span>-exec-<span class="number">1</span>] o.s.web.servlet.DispatcherServlet        : Initializing Servlet <span class="string">'dispatcherServlet'</span></span><br><span class="line"><span class="number">2020</span>-<span class="number">06</span>-<span class="number">18</span> <span class="number">00</span>:<span class="number">11</span>:<span class="number">15.957</span>  INFO <span class="number">34916</span> --- [nio-<span class="number">8081</span>-exec-<span class="number">1</span>] o.s.web.servlet.DispatcherServlet        : Completed initialization in <span class="number">8</span> ms</span><br><span class="line">Creating a <span class="keyword">new</span> SqlSession</span><br><span class="line">SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">68197e8</span>b] was not registered <span class="keyword">for</span> synchronization because synchronization is not active</span><br><span class="line"><span class="number">2020</span>-<span class="number">06</span>-<span class="number">18</span> <span class="number">00</span>:<span class="number">11</span>:<span class="number">16.030</span>  INFO <span class="number">34916</span> --- [nio-<span class="number">8081</span>-exec-<span class="number">1</span>] com.alibaba.druid.pool.DruidDataSource   : &#123;dataSource-<span class="number">1</span>&#125; inited</span><br><span class="line">JDBC Connection [org.postgresql.jdbc.PgConnection@<span class="number">5</span>d7d2a16] will not be managed by Spring</span><br><span class="line">==&gt;  Preparing: select * from yq_user where id = ?</span><br><span class="line">==&gt; Parameters: <span class="number">1</span>(Long)</span><br><span class="line">&lt;==    Columns: id, name, account, password</span><br><span class="line">&lt;==        Row: <span class="number">1</span>, 游强, yq, admin</span><br><span class="line">&lt;==      Total: <span class="number">1</span></span><br><span class="line">Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">68197e8</span>b]</span><br><span class="line">Creating a <span class="keyword">new</span> SqlSession</span><br><span class="line">SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">7f</span>98edcf] was not registered <span class="keyword">for</span> synchronization because synchronization is not active</span><br><span class="line"><span class="number">2020</span>-<span class="number">06</span>-<span class="number">18</span> <span class="number">00</span>:<span class="number">11</span>:<span class="number">16.691</span>  INFO <span class="number">34916</span> --- [nio-<span class="number">8081</span>-exec-<span class="number">1</span>] com.alibaba.druid.pool.DruidDataSource   : &#123;dataSource-<span class="number">2</span>&#125; inited</span><br><span class="line">JDBC Connection [com.alibaba.druid.proxy.jdbc.ConnectionProxyImpl@<span class="number">12</span>d550e0] will not be managed by Spring</span><br><span class="line">==&gt;  Preparing: select * from yq_user where id = ?</span><br><span class="line">==&gt; Parameters: <span class="number">2</span>(Long)</span><br><span class="line">&lt;==    Columns: id, name, account, password</span><br><span class="line">&lt;==        Row: <span class="number">2</span>, 秦音, qy, admin</span><br><span class="line">&lt;==      Total: <span class="number">1</span></span><br><span class="line">Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">7f</span>98edcf]</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-druid数据库密码加密"><a href="#5-druid数据库密码加密" class="headerlink" title="5. druid数据库密码加密"></a>5. druid数据库密码加密</h3><p>&emsp;&emsp; 本demo只对主数据源MySQL进行了密码加密，对从数据源密码步骤类似。</p>
+<h4 id="5-1-密码加密"><a href="#5-1-密码加密" class="headerlink" title="5.1 密码加密"></a>5.1 密码加密</h4><h5 id="5-1-1-通过druid-1-0-18-jar提供的ConfigTools工具对密码进行加密："><a href="#5-1-1-通过druid-1-0-18-jar提供的ConfigTools工具对密码进行加密：" class="headerlink" title="5.1.1 通过druid-1.0.18.jar提供的ConfigTools工具对密码进行加密："></a>5.1.1 通过druid-1.0.18.jar提供的ConfigTools工具对密码进行加密：</h5><p>&emsp;&emsp; 在druid所在的目录下打开cmd窗口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#格式：java -cp druid.jar com.alibaba.druid.filter.config.ConfigTools you_password</span><br><span class="line">F:\Download&gt;java -cp druid-<span class="number">1.1</span><span class="number">.9</span>.jar com.alibaba.druid.filter.config.ConfigTools admin</span><br><span class="line">privateKey:MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAwB/rXIuWe5IHbIZOC9+VB4iRuBow0ca3pztVSIYtJjgkCSbWVN4fWzjfeO54DY9GKhkIufCTE/T+Fgci+UjtRQIDAQABAkBh2uAiDubioYoueGmgGozpfWHbB1v+PNylzM6vVcgBQouOqd0T1/tqs1IxCATSt+vvJ5BKsbgRPWO+nJAHqJyBAiEA+M3jVoGlsHA65j1JlqqPuHk7MXNIhwlajNEYq9F2l00CIQDFrmI9XZDZp0wpm6Vy9YGSuqAvLdqcwMh7LY2g3+jh2QIgDIBj5OvcxHHPM9RuhyiI0i8dP03YnhhlOWAkSjXbLJ0CIQCtsscbyMVomrovrVY5p0PNnDL4gcAgEL2YjrRt8ZF+MQIgOjRYMqQxMLKIzS1JBwjxK3X54xVbyLwgm0DNKlrXJ48=</span><br><span class="line">publicKey:MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMAf61yLlnuSB2yGTgvflQeIkbgaMNHGt6c7VUiGLSY4JAkm1lTeH1s433jueA2PRioZCLnwkxP0/hYHIvlI7UUCAwEAAQ==</span><br><span class="line">password:UDwkTJKXPXEIPjlYFnLKNJ5Tq5mWmEV5yLuENS8LqdAsb5QavQoM6jF3gQKgxmTX5GcXz5Ncxw5XknVQyab3kA==</span><br><span class="line"></span><br><span class="line">F:\Download&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="5-1-2-配置文件配置加密解密参数"><a href="#5-1-2-配置文件配置加密解密参数" class="headerlink" title="5.1.2 配置文件配置加密解密参数"></a>5.1.2 配置文件配置加密解密参数</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    name: MySQL</span><br><span class="line">    driver-class-name: com.mysql.jdbc.Driver</span><br><span class="line">    url: jdbc:mysql:<span class="comment">//localhost:3306/yq_mysql?serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">    username: root</span><br><span class="line">    # 修改密码为密文</span><br><span class="line">    password: UDwkTJKXPXEIPjlYFnLKNJ5Tq5mWmEV5yLuENS8LqdAsb5QavQoM6jF3gQKgxmTX5GcXz5Ncxw5XknVQyab3kA==</span><br><span class="line">    # 公钥</span><br><span class="line">    publickey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMAf61yLlnuSB2yGTgvflQeIkbgaMNHGt6c7VUiGLSY4JAkm1lTeH1s433jueA2PRioZCLnwkxP0/hYHIvlI7UUCAwEAAQ==</span><br><span class="line">    # 配置 connection-properties，启用ConfigFilter解密密码，以及配置公钥$&#123;publickey&#125;</span><br><span class="line">    connection-properties: config.decrypt=<span class="keyword">true</span>;config.decrypt.key=$&#123;spring.datasource.publickey&#125;;password=$&#123;spring.datasource.password&#125;</span><br><span class="line">    druid:</span><br><span class="line">      filter:</span><br><span class="line">        config:</span><br><span class="line">          # 启动ConfigFilter</span><br><span class="line">          enabled: <span class="keyword">true</span></span><br><span class="line">    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙,在原来的filters后面添加config，使用逗号分隔</span><br><span class="line">    filters: stat,wall,log4j2,config</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 需要用到生成的 publicKey 和 password。而privateKey私钥，用于生成密文密码用，不用管。</p>
+<h4 id="5-2-配置ConfigFilter"><a href="#5-2-配置ConfigFilter" class="headerlink" title="5.2 配置ConfigFilter"></a>5.2 配置ConfigFilter</h4><h5 id="5-2-1-配置文件从本地文件系统中读取"><a href="#5-2-1-配置文件从本地文件系统中读取" class="headerlink" title="5.2.1 配置文件从本地文件系统中读取"></a>5.2.1 配置文件从本地文件系统中读取</h5><p>&emsp;&emsp; SpringBoot默认是从本项目中的soureces目录中读取，故如果是使用本地application.yml文件中的配置参数，下面的代码可以忽略不添加。而且某些配置SpringBoot会自动注入，不需要手动设置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">    properties.load(getClass().getResourceAsStream(<span class="string">"/application.yml"</span>));</span><br><span class="line">    datasource.setName(properties.getProperty(<span class="string">"name"</span>));</span><br><span class="line">    datasource.setUsername(properties.getProperty(<span class="string">"username"</span>));</span><br><span class="line">    datasource.setPassword(properties.getProperty(<span class="string">"password"</span>));</span><br><span class="line">    datasource.setDriverClassName(properties.getProperty(<span class="string">"driverClassName"</span>));</span><br><span class="line">    datasource.setUrl(properties.getProperty(<span class="string">"url"</span>));</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="5-2-2-配置文件从远程http服务器中读取"><a href="#5-2-2-配置文件从远程http服务器中读取" class="headerlink" title="5.2.2 配置文件从远程http服务器中读取"></a>5.2.2 配置文件从远程http服务器中读取</h5> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">    properties.load(getClass().getResourceAsStream(<span class="string">"http://127.0.0.1/application.yml"</span>));</span><br><span class="line">    datasource.setName(properties.getProperty(<span class="string">"name"</span>));</span><br><span class="line">    datasource.setUsername(properties.getProperty(<span class="string">"username"</span>));</span><br><span class="line">    datasource.setPassword(properties.getProperty(<span class="string">"password"</span>));</span><br><span class="line">    datasource.setDriverClassName(properties.getProperty(<span class="string">"driverClassName"</span>));</span><br><span class="line">    datasource.setUrl(properties.getProperty(<span class="string">"url"</span>));</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 这种配置方式，使得一个应用集群中，多个实例可以从同一个地方读取配置，集中配置，集中修改，部署更简单。</p>
+<h5 id="5-2-3-通过jvm启动参数来使用ConfigFilter"><a href="#5-2-3-通过jvm启动参数来使用ConfigFilter" class="headerlink" title="5.2.3 通过jvm启动参数来使用ConfigFilter"></a>5.2.3 通过jvm启动参数来使用ConfigFilter</h5><p>&emsp;&emsp; DruidDataSource支持jvm启动参数配置filters，所以可以：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Ddruid.filters=./config/application.yml</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-3-手动密码加密解密"><a href="#5-3-手动密码加密解密" class="headerlink" title="5.3 手动密码加密解密"></a>5.3 手动密码加密解密</h4><p>&emsp;&emsp; 5.1中的加密是通过外部cmd命令生成的密码，5.2是使用druid封装好的解密工具对密文进行解密。但其实也可以通过自定义的代码来实现加密解密。<br>&emsp;&emsp; 其实druid的加密解密都是通过ConfigToolsTest.java文件中的encrypt和decrypt方法来实现的。故只要单独调用这两个方法，即可实现自定义加密解密。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    String password = <span class="string">"admin"</span>;</span><br><span class="line">    <span class="comment">//使用ConfigTools生成一组公私钥</span></span><br><span class="line">    String[] keyPair = ConfigTools.genKeyPair(<span class="number">512</span>);</span><br><span class="line">    <span class="comment">//获取公钥</span></span><br><span class="line">    System.out.println(<span class="string">"privateKey:"</span> + keyPair[<span class="number">0</span>]);</span><br><span class="line">    <span class="comment">//获取私钥</span></span><br><span class="line">    System.out.println(<span class="string">"publicKey:"</span> + keyPair[<span class="number">1</span>]);</span><br><span class="line">    <span class="comment">//通过公钥+密码明文，对密码进行加密</span></span><br><span class="line">    System.out.println(<span class="string">"password:"</span> + ConfigTools.encrypt(keyPair[<span class="number">0</span>], password));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//然后通过上面得到的密码密文+公钥，解密密码获得明文</span></span><br><span class="line">    String pwd = <span class="string">"n2giOipoUromAsrEUFApiG15LOKwvyp+5tumwlnQz2NiMs/vtqmkzkAb5cQmACqIKTEFhBBu4GuR/ggtdbYxPw=="</span>;</span><br><span class="line">    String pub = <span class="string">"MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANNhfjPiJkaOd07kp0F9ut92rwMWNO6zRkHHCBNiGpIPr6OKG9OvDcnsTyQ4d9hVINIIRwd+NQ4NF76AgijZ7r0CAwEAAQ=="</span>;</span><br><span class="line">    String decrypt = ConfigTools.decrypt(pub, pwd);</span><br><span class="line">    System.out.println(decrypt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 可以将手动生成的密码密文与公钥写入配置文件，然后在创建dataSource这个bean的时候，手动解密写入dataSource中。</p>
+<h4 id="5-4-相关问题记录"><a href="#5-4-相关问题记录" class="headerlink" title="5.4 相关问题记录"></a>5.4 相关问题记录</h4><h5 id="5-4-1-配置-connection-properties-失误"><a href="#5-4-1-配置-connection-properties-失误" class="headerlink" title="5.4.1 配置 connection-properties 失误"></a>5.4.1 配置 connection-properties 失误</h5><p>druid官网上的配置是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connection-properties: config.decrypt=<span class="keyword">true</span>;config.decrypt.key=$&#123;publickey&#125;</span><br></pre></td></tr></table></figure>
+<p>但这样配置会报下面的错误：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2020</span>-<span class="number">06</span>-<span class="number">18</span> <span class="number">14</span>:<span class="number">41</span>:<span class="number">39.925</span> ERROR <span class="number">6388</span> --- [nio-<span class="number">8081</span>-exec-<span class="number">1</span>] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() <span class="keyword">for</span> servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.exceptions.PersistenceException:</span><br><span class="line">### Error querying database.  Cause: java.lang.IllegalArgumentException: Failed to decrypt.</span><br><span class="line">### The error may exist in file [D:\work\code\qinyin\druid\target\classes\mapper\MysqlUserMapper.xml]</span><br><span class="line">### The error may involve com.example.druid.mapper.mysqlMapper.MysqlUserMapper.getOne</span><br><span class="line">### The error occurred while executing a query</span><br><span class="line">### Cause: java.lang.IllegalArgumentException: Failed to decrypt.] with root cause</span><br><span class="line"></span><br><span class="line">java.lang.IllegalArgumentException: Illegal character $</span><br><span class="line">	at com.alibaba.druid.util.Base64.base64toInt(Base64.java:<span class="number">174</span>) ~[druid-<span class="number">1.1</span><span class="number">.9</span>.jar:<span class="number">1.1</span><span class="number">.9</span>]</span><br><span class="line">	at com.alibaba.druid.util.Base64.base64ToByteArray(Base64.java:<span class="number">140</span>) ~[druid-<span class="number">1.1</span><span class="number">.9</span>.jar:<span class="number">1.1</span><span class="number">.9</span>]</span><br><span class="line">	at com.alibaba.druid.util.Base64.base64ToByteArray(Base64.java:<span class="number">107</span>) ~[druid-<span class="number">1.1</span><span class="number">.9</span>.jar:<span class="number">1.1</span><span class="number">.9</span>]</span><br><span class="line">	at com.alibaba.druid.filter.config.ConfigTools.getPublicKey(ConfigTools.java:<span class="number">94</span>) ~[druid-<span class="number">1.1</span><span class="number">.9</span>.jar:<span class="number">1.1</span><span class="number">.9</span>]</span><br><span class="line">	at com.alibaba.druid.filter.config.ConfigFilter.getPublicKey(ConfigFilter.java:<span class="number">223</span>) ~[druid-<span class="number">1.1</span><span class="number">.9</span>.jar:<span class="number">1.1</span><span class="number">.9</span>]</span><br><span class="line">	at com.alibaba.druid.filter.config.ConfigFilter.decrypt(ConfigFilter.java:<span class="number">195</span>) ~[druid-<span class="number">1.1</span><span class="number">.9</span>.jar:<span class="number">1.1</span><span class="number">.9</span>]</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 目前不清楚是自己跟官网上的其他配置有出入还是官网错误，暂时没找到原因。但我使用下面的配置，就可以正常访问或查询数据：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connection-properties: config.decrypt=<span class="keyword">true</span>;config.decrypt.key=$&#123;spring.datasource.publickey&#125;;password=$&#123;spring.datasource.password&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="5-4-2-配置不写入配置文件，而是写入代码中"><a href="#5-4-2-配置不写入配置文件，而是写入代码中" class="headerlink" title="5.4.2 配置不写入配置文件，而是写入代码中"></a>5.4.2 配置不写入配置文件，而是写入代码中</h5><p>&emsp;&emsp; 如果<code>connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publickey};password=${spring.datasource.password}</code>这个配置不写入配置文件，而是在代码中体现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">    properties.load(getClass().getResourceAsStream(<span class="string">"/application.yml"</span>));</span><br><span class="line">    <span class="comment">//config.decrypt=true;config.decrypt.key=$&#123;spring.datasource.publickey&#125;;password=$&#123;spring.datasource.password&#125;</span></span><br><span class="line">    String connectionProperties = <span class="string">"config.decrypt=true;"</span> + <span class="string">"config.decrypt.key="</span> + publickey + <span class="string">";"</span> + <span class="string">"password="</span> + password;</span><br><span class="line">    datasource.setConnectionProperties(connectionProperties);</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>会报下面的错误：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2020</span>-<span class="number">06</span>-<span class="number">18</span> <span class="number">14</span>:<span class="number">38</span>:<span class="number">14.990</span> ERROR <span class="number">24840</span> --- [reate-<span class="number">248705782</span>] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:mysql:<span class="comment">//localhost:3306/yq_mysql?serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false, errorCode 1045, state 28000</span></span><br><span class="line"></span><br><span class="line">java.sql.SQLException: Access denied <span class="keyword">for</span> user <span class="string">'root'</span>@<span class="string">'localhost'</span> (using password: YES)</span><br><span class="line">	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:<span class="number">965</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br><span class="line">	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:<span class="number">3978</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br><span class="line">	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:<span class="number">3914</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br><span class="line">	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:<span class="number">871</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br><span class="line">	at com.mysql.jdbc.MysqlIO.proceedHandshakeWithPluggableAuthentication(MysqlIO.java:<span class="number">1714</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br><span class="line">	at com.mysql.jdbc.MysqlIO.doHandshake(MysqlIO.java:<span class="number">1224</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br><span class="line">	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:<span class="number">2199</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br><span class="line">	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:<span class="number">2230</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br><span class="line">	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:<span class="number">2025</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br><span class="line">	at com.mysql.jdbc.ConnectionImpl.&lt;init&gt;(ConnectionImpl.java:<span class="number">778</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br><span class="line">	at com.mysql.jdbc.JDBC4Connection.&lt;init&gt;(JDBC4Connection.java:<span class="number">47</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br><span class="line">	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:<span class="number">1.8</span><span class="number">.0_191</span>]</span><br><span class="line">	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:<span class="number">62</span>) ~[na:<span class="number">1.8</span><span class="number">.0_191</span>]</span><br><span class="line">	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:<span class="number">45</span>) ~[na:<span class="number">1.8</span><span class="number">.0_191</span>]</span><br><span class="line">	at java.lang.reflect.Constructor.newInstance(Constructor.java:<span class="number">423</span>) ~[na:<span class="number">1.8</span><span class="number">.0_191</span>]</span><br><span class="line">	at com.mysql.jdbc.Util.handleNewInstance(Util.java:<span class="number">425</span>) ~[mysql-connector-java-<span class="number">5.1</span><span class="number">.47</span>.jar:<span class="number">5.1</span><span class="number">.47</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-问题记录"><a href="#6-问题记录" class="headerlink" title="6. 问题记录"></a>6. 问题记录</h3><p>如果在项目中使用的是log4j而不是log4j2，那么可能会出现如下警告：</p>
+<h4 id="6-1-log4j警告"><a href="#6-1-log4j警告" class="headerlink" title="6.1 log4j警告"></a>6.1 log4j警告</h4><p>在项目运行过程中，有log4j配置缺失警告：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">log4j:<span class="function">WARN No appenders could be found <span class="keyword">for</span> <span class="title">logger</span> <span class="params">(druid.sql.Connection)</span>.</span></span><br><span class="line"><span class="function">log4j:WARN Please initialize the log4j system properly.</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 该警告不影响项目正常运行，但如果想要消除警告，有多种方式：<br>&emsp;&emsp; ①手动在resources目录下创建log4j.properties配置文件来指定相关log4j参数（网上找的答案，但手动操作过，发现没有效果。也有说是因为SpringBoot中含有logback这个依赖，需要将该依赖解除，自定义的log4j.properties配置才会生效。但也亲自操作过，也没有效果，可能是操作过程中有失误）。<br>&emsp;&emsp; ②强制在启动类中设置日志缺失环境</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    BasicConfigurator.configure(); <span class="comment">//自动快速地使用缺省Log4j环境</span></span><br><span class="line">    SpringApplication.run(DruidApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 虽然这种方式解决log4j的警告，但个人感觉日志显示的级别过于详细。且只对主数库MySQL进行详细记录，但对PostgreSQL只是简单的记录。对该日志级别设置暂时没找到方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">Creating a <span class="keyword">new</span> SqlSession</span><br><span class="line">SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession<span class="meta">@f</span>91ab56] was not registered <span class="keyword">for</span> synchronization because synchronization is not active</span><br><span class="line"><span class="number">2020</span>-<span class="number">06</span>-<span class="number">17</span> <span class="number">22</span>:<span class="number">08</span>:<span class="number">06.988</span>  INFO <span class="number">32188</span> --- [nio-<span class="number">8081</span>-exec-<span class="number">6</span>] com.alibaba.druid.pool.DruidDataSource   : &#123;dataSource-<span class="number">1</span>&#125; inited</span><br><span class="line">JDBC Connection [org.postgresql.jdbc.PgConnection@<span class="number">136e7f</span>5c] will not be managed by Spring</span><br><span class="line">==&gt;  Preparing: select * from yq_user where id = ?</span><br><span class="line">==&gt; Parameters: <span class="number">1</span>(Long)</span><br><span class="line">&lt;==    Columns: id, name, account, password</span><br><span class="line">&lt;==        Row: <span class="number">1</span>, 游强, yq, admin</span><br><span class="line">&lt;==      Total: <span class="number">1</span></span><br><span class="line">Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession<span class="meta">@f</span>91ab56]</span><br><span class="line">Creating a <span class="keyword">new</span> SqlSession</span><br><span class="line">SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">1428</span>c0e1] was not registered <span class="keyword">for</span> synchronization because synchronization is not active</span><br><span class="line"><span class="number">0</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.Connection  - &#123;conn-<span class="number">110001</span>&#125; connected</span><br><span class="line"><span class="number">7</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.Connection  - &#123;conn-<span class="number">110002</span>&#125; connected</span><br><span class="line"><span class="number">13</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.Connection  - &#123;conn-<span class="number">110003</span>&#125; connected</span><br><span class="line"><span class="number">2020</span>-<span class="number">06</span>-<span class="number">17</span> <span class="number">22</span>:<span class="number">08</span>:<span class="number">07.569</span>  INFO <span class="number">32188</span> --- [nio-<span class="number">8081</span>-exec-<span class="number">6</span>] com.alibaba.druid.pool.DruidDataSource   : &#123;dataSource-<span class="number">2</span>&#125; inited</span><br><span class="line"><span class="number">15</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.Connection  - &#123;conn-<span class="number">110003</span>&#125; pool-connect</span><br><span class="line">JDBC Connection [com.alibaba.druid.proxy.jdbc.ConnectionProxyImpl@<span class="number">2713</span>ea39] will not be managed by Spring</span><br><span class="line">==&gt;  Preparing: select * from yq_user where id = ?</span><br><span class="line"><span class="number">134</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.Statement  - &#123;conn-<span class="number">110003</span>, pstmt-<span class="number">120000</span>&#125; created. select * from yq_user where id = ?</span><br><span class="line">==&gt; Parameters: <span class="number">2</span>(Long)</span><br><span class="line"><span class="number">143</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.Statement  - &#123;conn-<span class="number">110003</span>, pstmt-<span class="number">120000</span>&#125; Parameters : [<span class="number">2</span>]</span><br><span class="line"><span class="number">143</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.Statement  - &#123;conn-<span class="number">110003</span>, pstmt-<span class="number">120000</span>&#125; Types : [BIGINT]</span><br><span class="line"><span class="number">143</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.Statement  - &#123;conn-<span class="number">110003</span>, pstmt-<span class="number">120000</span>&#125; executed. <span class="number">5.6849</span> millis. select * from yq_user where id = ?</span><br><span class="line"><span class="number">148</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.ResultSet  - &#123;conn-<span class="number">110003</span>, pstmt-<span class="number">120000</span>, rs-<span class="number">150000</span>&#125; open</span><br><span class="line"><span class="number">149</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.ResultSet  - &#123;conn-<span class="number">110003</span>, pstmt-<span class="number">120000</span>, rs-<span class="number">150000</span>&#125; Header: [id, name, account, password]</span><br><span class="line"><span class="number">149</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.ResultSet  - &#123;conn-<span class="number">110003</span>, pstmt-<span class="number">120000</span>, rs-<span class="number">150000</span>&#125; Result: [<span class="number">2</span>, 秦音, qy, admin]</span><br><span class="line">&lt;==    Columns: id, name, account, password</span><br><span class="line">&lt;==        Row: <span class="number">2</span>, 秦音, qy, admin</span><br><span class="line">&lt;==      Total: <span class="number">1</span></span><br><span class="line"><span class="number">150</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.ResultSet  - &#123;conn-<span class="number">110003</span>, pstmt-<span class="number">120000</span>, rs-<span class="number">150000</span>&#125; closed</span><br><span class="line"><span class="number">150</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.Statement  - &#123;conn-<span class="number">110003</span>, pstmt-<span class="number">120000</span>&#125; clearParameters.</span><br><span class="line">Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="number">1428</span>c0e1]</span><br><span class="line"><span class="number">151</span> [http-nio-<span class="number">8081</span>-exec-<span class="number">6</span>] DEBUG druid.sql.Connection  - &#123;conn-<span class="number">110003</span>&#125; pool-recycle</span><br><span class="line"><span class="number">900023</span> [Druid-ConnectionPool-Destroy-<span class="number">486994287</span>] DEBUG druid.sql.Connection  - &#123;conn-<span class="number">110001</span>&#125; closed</span><br><span class="line"><span class="number">900024</span> [Druid-ConnectionPool-Destroy-<span class="number">486994287</span>] DEBUG druid.sql.Connection  - &#123;conn-<span class="number">110002</span>&#125; closed</span><br><span class="line"><span class="number">960025</span> [Druid-ConnectionPool-Destroy-<span class="number">486994287</span>] DEBUG druid.sql.Connection  - &#123;conn-<span class="number">110003</span>&#125; closed</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-2-log4j日志配置文件示例"><a href="#6-2-log4j日志配置文件示例" class="headerlink" title="6.2 log4j日志配置文件示例"></a>6.2 log4j日志配置文件示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">#此句为定义名为stdout的输出端是哪种类型，可以是</span><br><span class="line">#org.apache.log4j.ConsoleAppender（控制台），</span><br><span class="line">#org.apache.log4j.FileAppender（文件），</span><br><span class="line">#org.apache.log4j.DailyRollingFileAppender（每天产生一个日志文件），</span><br><span class="line">#org.apache.log4j.RollingFileAppender（文件大小到达指定尺寸的时候产生一个新的文件）</span><br><span class="line">#org.apache.log4j.WriterAppender（将日志信息以流格式发送到任意指定的地方）</span><br><span class="line">log4j.appender.stdout=org.apache.log4j.ConsoleAppender  </span><br><span class="line">log4j.appender.stdout.Target=System.out  </span><br><span class="line">#此句为定义名为stdout的输出端的layout是哪种类型，可以是</span><br><span class="line">#org.apache.log4j.HTMLLayout（以HTML表格形式布局），</span><br><span class="line">#org.apache.log4j.PatternLayout（可以灵活地指定布局模式），</span><br><span class="line">#org.apache.log4j.SimpleLayout（包含日志信息的级别和信息字符串），</span><br><span class="line">#org.apache.log4j.TTCCLayout（包含日志产生的时间、线程、类别等等信息）</span><br><span class="line">log4j.appender.stdout.layout=org.apache.log4j.PatternLayout  </span><br><span class="line">#如果使用pattern布局就要指定的打印信息的具体格式ConversionPattern，打印参数如下：</span><br><span class="line">#%m 输出代码中指定的消息</span><br><span class="line">#%p 输出优先级，即DEBUG，INFO，WARN，ERROR，FATAL</span><br><span class="line">#%r 输出自应用启动到输出该log信息耗费的毫秒数</span><br><span class="line">#%c 输出所属的类目，通常就是所在类的全名</span><br><span class="line">#%t 输出产生该日志事件的线程名</span><br><span class="line">#%n 输出一个回车换行符，Windows平台为“rn”，Unix平台为“n”</span><br><span class="line">#%d 输出日志时间点的日期或时间，默认格式为ISO8601，也可以在其后指定格式，比如：%d&#123;yyyy MMM dd HH:mm:ss,SSS&#125;，输出类似：2002年10月18日 22：10：28，921</span><br><span class="line">#%l 输出日志事件的发生位置，包括类目名、发生的线程，以及在代码中的行数。</span><br><span class="line">#[QC]是log信息的开头，可以为任意字符，一般为项目简称。</span><br><span class="line">#比如：输出的信息：#[TS] DEBUG [main] AbstractBeanFactory.getBean(189) | Returning cached instance of singleton bean 'MyAutoProxy'</span><br><span class="line">log4j.appender.stdout.layout.ConversionPattern= [QC] %p [%t] %C.%M(%L) | %m%n  </span><br><span class="line"></span><br><span class="line">#定义名为R的输出端的类型为每天产生一个日志文件。</span><br><span class="line">log4j.appender.R=org.apache.log4j.RollingFileAppender  </span><br><span class="line">#此句为定义名为R的输出端的文件名为D:\\Tomcat 5.5\\logs\\qc.log可以自行修改。</span><br><span class="line">log4j.appender.R.File=D:/work/code/qinyin/druid/src/main/resources/druid.log</span><br><span class="line">#log4j.appender.R.File=$&#123;catalina.home&#125;/logs/ddoMsg.log</span><br><span class="line">log4j.appender.R.MaxFileSize=<span class="number">1024</span>KB  </span><br><span class="line">log4j.appender.R.MaxBackupIndex=<span class="number">100</span>  </span><br><span class="line">#与log4j.appender.stdout.layout属性相同</span><br><span class="line">log4j.appender.R.layout=org.apache.log4j.PatternLayout  </span><br><span class="line">#与log4j.appender.stdout.layout.ConversionPattern属性相同</span><br><span class="line">log4j.appender.R.layout.ConversionPattern= %d&#123;yyyy-MM-dd HH:mm:ss&#125; %<span class="number">5</span>p %c %t: - %m%n  </span><br><span class="line"></span><br><span class="line">#INFO WARN ERROR DEBUG</span><br><span class="line">#此句为将等级为INFO的日志信息输出到stdout和R这两个目的地，stdout和R的定义在下面的代码，可以任意起名。(此文本设置的是：stdout为控制台输出，R为文本输出)</span><br><span class="line"># 等级可分为OFF、FATAL、ERROR、WARN、INFO、DEBUG、ALL，如果配置OFF则不打出任何信息，</span><br><span class="line"># #如果配置为INFO这样只显示INFO, WARN, ERROR的log信息，而DEBUG信息不会被显示，</span><br><span class="line">log4j.rootLogger=OFF, stdout, R  </span><br><span class="line">org.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog  </span><br><span class="line"></span><br><span class="line">#指定com.example.druid包下的所有类的等级为DEBUG。</span><br><span class="line">log4j.logger.com.example.druid =OFF</span><br><span class="line">#这两句是把这两个包下出现的错误的等级设为ERROR，如果项目中没有配置EHCache，则不需要这两句。</span><br><span class="line">log4j.logger.com.opensymphony.oscache=OFF</span><br><span class="line">log4j.logger.net.sf.navigator=OFF</span><br><span class="line">#这句是displaytag的包。（QC问题列表页面所用）</span><br><span class="line">log4j.logger.org.displaytag=OFF</span><br><span class="line">#此句为Spring的包。</span><br><span class="line">log4j.logger.org.springframework=OFF</span><br><span class="line">#此两句是hibernate的包。</span><br><span class="line">log4j.logger.org.hibernate.ps.PreparedStatementCache=OFF</span><br><span class="line">log4j.logger.org.hibernate=OFF</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-知识扩展"><a href="#7-知识扩展" class="headerlink" title="7. 知识扩展"></a>7. 知识扩展</h3><h4 id="7-1-线程池介绍"><a href="#7-1-线程池介绍" class="headerlink" title="7.1 线程池介绍"></a>7.1 线程池介绍</h4><p>&emsp;&emsp; Java中已经提供了创建线程池的一个类：Executor，而我们创建时，一般使用它的子类：<code>ThreadPoolExecutor</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,  </span></span></span><br><span class="line"><span class="function"><span class="params">                          <span class="keyword">int</span> maximumPoolSize,  </span></span></span><br><span class="line"><span class="function"><span class="params">                          <span class="keyword">long</span> keepAliveTime,  </span></span></span><br><span class="line"><span class="function"><span class="params">                          TimeUnit unit,  </span></span></span><br><span class="line"><span class="function"><span class="params">                          BlockingQueue workQueue,  </span></span></span><br><span class="line"><span class="function"><span class="params">                          ThreadFactory threadFactory,  </span></span></span><br><span class="line"><span class="function"><span class="params">                          RejectedExecutionHandler handler)</span></span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 这是其中最重要的一个构造方法，这个方法决定了创建出来的线程池的各种属性，下面依靠一张图来更好的理解线程池和这几个参数：<br><img src="/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/executor_1.jpg" alt=""><br>&emsp;&emsp; 从图中，可以看出，线程池中的corePoolSize就是线程池中的核心线程数量，这几个核心线程，只是在没有用的时候，也不会被回收；<br>&emsp;&emsp; maximumPoolSize就是线程池中可以容纳的最大线程的数量；<br>&emsp;&emsp; keepAliveTime就是线程池中除了核心线程之外的其他的最长可以保留的时间，因为在线程池中，除了核心线程即使在无任务的情况下也不能被清除，其余的都是有存活时间的，意思就是非核心线程可以保留的最长的空闲时间；<br>&emsp;&emsp; util就是计算这个时间的一个单位；<br>&emsp;&emsp; workQueue就是等待队列，任务可以储存在任务队列中等待被执行，执行的是FIFIO原则（先进先出）；<br>&emsp;&emsp; threadFactory就是创建线程的线程工厂；<br>&emsp;&emsp; handler是一种拒绝策略，我们可以在任务满了知乎，拒绝执行某些任务。</p>
+<p>线程池的执行流程又是怎样的呢？<br><img src="/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/executor_2.jpg" alt=""><br>&emsp;&emsp; 从图中可以看出，任务进来时，首先执行判断，判断核心线程是否处于空闲状态，如果不是，核心线程就先就执行任务，如果核心线程已满，则判断任务队列是否有地方存放该任务，若果有，就将任务保存在任务队列中，等待执行，如果满了，在判断最大可容纳的线程数，如果没有超出这个数量，就开创非核心线程执行任务，如果超出了，就调用handler实现拒绝策略。</p>
+<p>handler的拒绝策略：<br>&emsp;&emsp; 第一种AbortPolicy:不执行新任务，直接抛出异常，提示线程池已满<br>&emsp;&emsp; 第二种DisCardPolicy:不执行新任务，也不抛出异常<br>&emsp;&emsp; 第三种DisCardOldSetPolicy:将消息队列中的第一个任务替换为当前新进来的任务执行<br>&emsp;&emsp; 第四种CallerRunsPolicy:直接调用execute来执行当前任务</p>
+<p>四种常见的线程池：<br>&emsp;&emsp; CachedThreadPool:可缓存的线程池，该线程池中没有核心线程，非核心线程的数量为Integer.max_value，就是无限大，当有需要时创建线程来执行任务，没有需要时回收线程，适用于耗时少，任务量大的情况。<br>&emsp;&emsp; SecudleThreadPool:周期性执行任务的线程池，按照某种特定的计划执行线程中的任务，有核心线程，但也有非核心线程，非核心线程的大小也为无限大。适用于执行周期性的任务。<br>&emsp;&emsp; SingleThreadPool:只有一条线程来执行任务，适用于有顺序的任务的应用场景。<br>&emsp;&emsp; FixedThreadPool:定长的线程池，有核心线程，核心线程的即为最大的线程数量，没有非核心线程</p>
+<p>参考链接：<br><a href="https://www.jianshu.com/p/c3006ac7e37c" target="_blank" rel="noopener" title="Springboot+Druid搭建简单demo">Springboot+Druid搭建简单demo</a><br><a href="https://github.com/alibaba/druid/wiki/%E5%A6%82%E4%BD%95%E5%9C%A8Spring-Boot%E4%B8%AD%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86%EF%BC%9F" target="_blank" rel="noopener" title="如何在Spring Boot中配置数据库密码加密？">如何在Spring Boot中配置数据库密码加密？</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SpringBoot/" rel="tag"># SpringBoot</a>
+          
+            <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
+          
+            <a href="/tags/Druid/" rel="tag"># Druid</a>
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0/" rel="tag"># 数据库连接池</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/14/SpringBoot%E6%95%B4%E5%90%88MyBatis%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/" rel="next" title="SpringBoot整合MyBatis多数据源">
+                <i class="fa fa-chevron-left"></i> SpringBoot整合MyBatis多数据源
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/18/Maven%E5%AF%BC%E5%85%A5jar%E6%8A%A5%E9%94%99%E6%8E%92%E6%9F%A5/" rel="prev" title="Maven导入jar报错排查">
+                Maven导入jar报错排查 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/touxiang.png"
+                alt="YouQiang" />
+            
+              <p class="site-author-name" itemprop="name">YouQiang</p>
+              <p class="site-description motion-element" itemprop="description">技术总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Druid简单介绍"><span class="nav-text">1. Druid简单介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-druid基础配置"><span class="nav-text">2. druid基础配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-创建基本的SpringBoot项目"><span class="nav-text">2.1 创建基本的SpringBoot项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-导入jar"><span class="nav-text">2.2 导入jar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-设置druid相关配置"><span class="nav-text">2.3 设置druid相关配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-配置Druid监控统计功能"><span class="nav-text">2.4 配置Druid监控统计功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Druid使用log4j2进行日志输出"><span class="nav-text">3. Druid使用log4j2进行日志输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-pom-xml中springboot版本依赖"><span class="nav-text">3.1 pom.xml中springboot版本依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-log4j2-xml文件中的日志配置-完整，可直接拷贝使用"><span class="nav-text">3.2 log4j2.xml文件中的日志配置(完整，可直接拷贝使用)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-配置application-yml"><span class="nav-text">4.3 配置application.yml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-测试与运行"><span class="nav-text">4. 测试与运行</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-相关实体类创建"><span class="nav-text">4.1 相关实体类创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-测试"><span class="nav-text">4.2 测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-druid数据库密码加密"><span class="nav-text">5. druid数据库密码加密</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-密码加密"><span class="nav-text">5.1 密码加密</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-1-通过druid-1-0-18-jar提供的ConfigTools工具对密码进行加密："><span class="nav-text">5.1.1 通过druid-1.0.18.jar提供的ConfigTools工具对密码进行加密：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-2-配置文件配置加密解密参数"><span class="nav-text">5.1.2 配置文件配置加密解密参数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-配置ConfigFilter"><span class="nav-text">5.2 配置ConfigFilter</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-1-配置文件从本地文件系统中读取"><span class="nav-text">5.2.1 配置文件从本地文件系统中读取</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-2-配置文件从远程http服务器中读取"><span class="nav-text">5.2.2 配置文件从远程http服务器中读取</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-3-通过jvm启动参数来使用ConfigFilter"><span class="nav-text">5.2.3 通过jvm启动参数来使用ConfigFilter</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-手动密码加密解密"><span class="nav-text">5.3 手动密码加密解密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4-相关问题记录"><span class="nav-text">5.4 相关问题记录</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-4-1-配置-connection-properties-失误"><span class="nav-text">5.4.1 配置 connection-properties 失误</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-4-2-配置不写入配置文件，而是写入代码中"><span class="nav-text">5.4.2 配置不写入配置文件，而是写入代码中</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-问题记录"><span class="nav-text">6. 问题记录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-log4j警告"><span class="nav-text">6.1 log4j警告</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-log4j日志配置文件示例"><span class="nav-text">6.2 log4j日志配置文件示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-知识扩展"><span class="nav-text">7. 知识扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-线程池介绍"><span class="nav-text">7.1 线程池介绍</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YouQiang</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SpringBoot,MyBatis,多数据源," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1.项目创建&amp;emsp;&amp;emsp;创建一个Spring Boot 项目工程，并且添加Mybatis、web以及相关数据源依赖（此处只选择了Mysql依赖）：&amp;emsp;&amp;emsp;或者在现有项目中，添加相关依赖，比如：mysql依赖以及postgresql依赖： 1234567891011121314151617&lt;dependency&gt;	 &lt;groupId&gt;org.pos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot整合MyBatis多数据源">
+<meta property="og:url" content="http://yoursite.com/2020/06/14/SpringBoot%E6%95%B4%E5%90%88MyBatis%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/index.html">
+<meta property="og:site_name" content="秦音">
+<meta property="og:description" content="1.项目创建&amp;emsp;&amp;emsp;创建一个Spring Boot 项目工程，并且添加Mybatis、web以及相关数据源依赖（此处只选择了Mysql依赖）：&amp;emsp;&amp;emsp;或者在现有项目中，添加相关依赖，比如：mysql依赖以及postgresql依赖： 1234567891011121314151617&lt;dependency&gt;	 &lt;groupId&gt;org.pos">
+<meta property="og:image" content="http://yoursite.com/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/createProject.jpg">
+<meta property="og:image" content="http://yoursite.com/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/menuStructure.jpg">
+<meta property="og:image" content="http://yoursite.com/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/mysql_error_1.jpg">
+<meta property="article:published_time" content="2020-06-14T06:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-19T09:04:05.377Z">
+<meta property="article:author" content="YouQiang">
+<meta property="article:tag" content="SpringBoot">
+<meta property="article:tag" content="MyBatis">
+<meta property="article:tag" content="多数据源">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/createProject.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/14/SpringBoot整合MyBatis多数据源/"/>
+
+
+
+
+
+  <title>SpringBoot整合MyBatis多数据源 | 秦音</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦音</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archive">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/14/SpringBoot%E6%95%B4%E5%90%88MyBatis%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YouQiang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦音">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot整合MyBatis多数据源</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-14T14:00:00+08:00">
+                2020-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SpringBoot/" itemprop="url" rel="index">
+                    <span itemprop="name">SpringBoot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-项目创建"><a href="#1-项目创建" class="headerlink" title="1.项目创建"></a>1.项目创建</h3><p>&emsp;&emsp;创建一个Spring Boot 项目工程，并且添加Mybatis、web以及相关数据源依赖（此处只选择了Mysql依赖）：<br><img src="/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/createProject.jpg" alt=""><br>&emsp;&emsp;或者在现有项目中，添加相关依赖，比如：mysql依赖以及postgresql依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	 &lt;groupId&gt;org.postgresql&lt;&#x2F;groupId&gt;</span><br><span class="line">	 &lt;artifactId&gt;postgresql&lt;&#x2F;artifactId&gt;</span><br><span class="line">	 &lt;version&gt;42.2.6&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--连接mysql所需jar--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	 &lt;groupId&gt;mysql&lt;&#x2F;groupId&gt;</span><br><span class="line">	 &lt;artifactId&gt;mysql-connector-java&lt;&#x2F;artifactId&gt;</span><br><span class="line">	 &lt;scope&gt;runtime&lt;&#x2F;scope&gt;</span><br><span class="line">	 &lt;version&gt;5.1.47&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	 &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">	 &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;然后添加数据库连接池Druid依赖，此处整合JdbcTemplate时也是要添加Druid依赖，但是要添加Spring Boot打造的Druid，不能使用传统的Druid。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.mybatis.spring.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;mybatis-spring-boot-starter&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;version&gt;2.0.1&lt;&#x2F;version&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;com.alibaba&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;druid-spring-boot-starter&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;version&gt;1.1.16&lt;&#x2F;version&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-test&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;scope&gt;test&lt;&#x2F;scope&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;&#x2F;dependencies&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-双数据源配置"><a href="#2-双数据源配置" class="headerlink" title="2.双数据源配置"></a>2.双数据源配置</h3><p>&emsp;&emsp;设置双数据源配置，在项目中application.yml中配置数据库基本信息，然后提供两个DataSource即可。application.yml中的配置如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">#主数据源，即默认的数据源，SpringBoot在启动时会加载默认数据源</span><br><span class="line">  datasource:</span><br><span class="line">    driver-class-name: org.postgresql.Driver</span><br><span class="line">    url: jdbc:postgresql:<span class="comment">//localhost:5432/yq_pgsql?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">    username: postgres</span><br><span class="line">    password: admin</span><br><span class="line">#从数据源</span><br><span class="line">  mysqldatasource:</span><br><span class="line">    driver-class-name: com.mysql.jdbc.Driver</span><br><span class="line">    url: jdbc:mysql:<span class="comment">//localhost:3306/yq_mysql?serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">    username: root</span><br><span class="line">    password: admin</span><br><span class="line">  jpa:</span><br><span class="line">    properties.hibernate.hbm2ddl.auto: update</span><br><span class="line">    properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect</span><br><span class="line">    show-sql: <span class="keyword">true</span></span><br><span class="line">#设置mybatis扫描包路径</span><br><span class="line">mybatis:</span><br><span class="line">  configuration:</span><br><span class="line">    map-underscore-to-camel-<span class="keyword">case</span>: <span class="keyword">true</span></span><br><span class="line">    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl</span><br><span class="line">  mapper-locations: classpath:mapper<span class="comment">/*</span></span><br><span class="line"><span class="comment">mybatis-plus:</span></span><br><span class="line"><span class="comment">  mapper-locations: classpath*:mapper/*</span></span><br><span class="line"><span class="comment">#设置日志显示配置，即显示sql查询语句与相关参数在控制台上</span></span><br><span class="line"><span class="comment">logging:</span></span><br><span class="line"><span class="comment">  level:</span></span><br><span class="line"><span class="comment">    com.example.qinyin.datasource.mysqlMapper : debug</span></span><br><span class="line"><span class="comment">    com.example.qinyin.datasource.pgsqlMapper : debug</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;之后创建两个DataSource的提供来源：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.sql.DataSource;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataSourceConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置数据源1</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"spring.datasource"</span>)</span><br><span class="line">    <span class="function">DataSource <span class="title">dataSource</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> DruidDataSourceBuilder.create().build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置数据源2</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"spring.mysqldatasource"</span>)</span><br><span class="line">    <span class="function">DataSource <span class="title">mysqlDataSource</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> DruidDataSourceBuilder.create().build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-MyBatis配置"><a href="#3-MyBatis配置" class="headerlink" title="3.MyBatis配置"></a>3.MyBatis配置</h3><p>&emsp;&emsp;对于Mybatis的配置，相对于JdbcTemplate的配置是有那么麻烦一点，因为要根据不同的数据源设置不同的SqlSessionFactory和SqlSessionTemplate这两个bean，故每个数据源都要单独配置。</p>
+<h4 id="3-1-配置第一个数据MyBatis配置："><a href="#3-1-配置第一个数据MyBatis配置：" class="headerlink" title="3.1 配置第一个数据MyBatis配置："></a>3.1 配置第一个数据MyBatis配置：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.SqlSessionFactoryBean;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.SqlSessionTemplate;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.annotation.MapperScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.io.support.PathMatchingResourcePatternResolver;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.sql.DataSource;</span><br><span class="line"><span class="keyword">import</span> javax.annotation.Resource;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 指明该类是一个配置类，配置类中要扫描的包是com.example.qinyin.datasource.pgsqlMapper，即该包下的Mapper接口将操作dataSource中的数据；</span></span><br><span class="line"><span class="comment"> * 对应的SqlSessionFactory和SqlSessionTemplate分别是sqlSessionFactory()和sqlSessionTemplate()返回的bean，</span></span><br><span class="line"><span class="comment"> * 在MyBatisConfigPgSql内部，分别对外提供SqlSessionFactory和SqlSessionTemplate两个bean即可，SqlSessionFactory根据dataSource创建，</span></span><br><span class="line"><span class="comment"> * 然后再根据创建好的SqlSessionFactory创建一个SqlSessionTemplate。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@MapperScan</span>(basePackages = <span class="string">"com.example.qinyin.datasource.pgsqlMapper"</span>,</span><br><span class="line">        sqlSessionFactoryRef = <span class="string">"sqlSessionFactory"</span>,</span><br><span class="line">        sqlSessionTemplateRef = <span class="string">"sqlSessionTemplate"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MybatisConfigPgSql</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注入DataSourceConfig中的数据源1指定的dataSource配置</span></span><br><span class="line">    <span class="meta">@Resource</span>(name = <span class="string">"dataSource"</span>)</span><br><span class="line">    DataSource dataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;mybatis.mapper-locations&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String mapperLocations;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;mybatis.type-aliases-package&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String typeAliasesPackage;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function">SqlSessionFactory <span class="title">sqlSessionFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        SqlSessionFactory sessionFactory = <span class="keyword">null</span>;</span><br><span class="line">        SqlSessionFactoryBean bean = <span class="keyword">new</span> SqlSessionFactoryBean();</span><br><span class="line">        bean.setDataSource(dataSource);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//这里需要设置扫描mapper的路径，否则容易导致mapper中的方法无法映射到xml中去，导致报：Invalid bound statement (not found) 错误</span></span><br><span class="line">            <span class="comment">//当Mapper文件跟对应的Mapper接口处于同一位置的时候可以不用指定该属性的值。</span></span><br><span class="line">            PathMatchingResourcePatternResolver resolver = <span class="keyword">new</span> PathMatchingResourcePatternResolver();</span><br><span class="line">            <span class="comment">//通过读取配置文件中的值来指定扫描路径</span></span><br><span class="line">            bean.setMapperLocations(resolver.getResources(mapperLocations));</span><br><span class="line">            <span class="comment">//直接写死值来指定扫描路径</span></span><br><span class="line">            <span class="comment">//bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));</span></span><br><span class="line">            <span class="comment">// 设置typeAlias（别名） 包扫描路径。可配置可不配置（猜想：可能不同的数据源查询返回的实体类字段有差异，故指定不同的别名包来映射不同的查询结果）</span></span><br><span class="line">            <span class="comment">// bean.setTypeAliasesPackage(typeAliasesPackage);</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//开启驼峰式映射功能</span></span><br><span class="line">            org.apache.ibatis.session.Configuration configuration = <span class="keyword">new</span> org.apache.ibatis.session.Configuration();</span><br><span class="line">            configuration.setMapUnderscoreToCamelCase(<span class="keyword">true</span>);</span><br><span class="line">            configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">            bean.setConfiguration(configuration);</span><br><span class="line"></span><br><span class="line">            sessionFactory = bean.getObject();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sessionFactory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function">SqlSessionTemplate <span class="title">sqlSessionTemplate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SqlSessionTemplate(sqlSessionFactory());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在定义SqlSessionFactoryBean的时候，dataSource属性是必须指定的，它表示用于连接数据库的数据源。当然，也可以指定一些其他的属性，下面简单列举几个：<br>(1)mapperLocations：它表示我们的Mapper文件存放的位置，当我们的Mapper文件跟对应的Mapper接口处于同一位置的时候可以不用指定该属性的值。<br>(2)configLocation：用于指定Mybatis的配置文件位置。如果指定了该属性，那么会以该配置文件的内容作为配置信息构建对应的SqlSessionFactoryBuilder，但是后续属性指定的内容会覆盖该配置文件里面指定的对应内容。<br>(3)typeAliasesPackage：它一般对应我们的实体类所在的包，这个时候会自动取对应包中不包括包名的简单类名作为包括包名的别名。多个package之间可以用逗号或者分号等来进行分隔。(value的值一定要是包的全名)<br>(4)typeAliases：数组类型，用来指定别名的。指定了这个属性后，Mybatis会把这个类型的短名称作为这个类型的别名，前提是该类上没有标注@Alias注解，否则将使用该注解对应的值作为此种类型的别名。(value的值一定要是类的完全限定名)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">org.apache.ibatis.session.Configuration configuration = <span class="keyword">new</span> org.apache.ibatis.session.Configuration();</span><br><span class="line">configuration.setMapUnderscoreToCamelCase(<span class="keyword">true</span>);</span><br><span class="line">configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure>
+<p>设置驼峰式命名映射规则，在单数据源的时候，可以不用设置。SqlSessionFactoryBean会自动读取appliaction.yml配置文件中的参数（如下代码）来设置。但如果有多个数据源时，SqlSessionFactoryBean默认都会主数据源设置驼峰映射规则，而从数据源无法映射。故需要手动给从数据源设置（但建议每个数据源都设置上）。否则会导致某个数据源结果映射正常，但另一个数据源结果映射失败。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mybatis:</span><br><span class="line">  #扫描mapper包路径</span><br><span class="line">  mapper-locations: classpath:mapper<span class="comment">/*</span></span><br><span class="line"><span class="comment">  #别名包路径</span></span><br><span class="line"><span class="comment">  type-aliases-package: com.example.druid.entity</span></span><br><span class="line"><span class="comment">	configuration:</span></span><br><span class="line"><span class="comment">    #是否开启驼峰式命名映射</span></span><br><span class="line"><span class="comment">    map-underscore-to-camel-case: true</span></span><br><span class="line"><span class="comment">    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="3-2-配置第二个数据MyBatis配置："><a href="#3-2-配置第二个数据MyBatis配置：" class="headerlink" title="3.2 配置第二个数据MyBatis配置："></a>3.2 配置第二个数据MyBatis配置：</h4><p>&emsp;&emsp;与第一个数据源的配置方式类似，配置第二个数据源配置，只需要修改启动的相关mapper路径与DataSource来源即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.SqlSessionFactoryBean;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.SqlSessionTemplate;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.annotation.MapperScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.io.support.PathMatchingResourcePatternResolver;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.annotation.Resource;</span><br><span class="line"><span class="keyword">import</span> javax.sql.DataSource;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@MapperScan</span>(basePackages = <span class="string">"com.example.qinyin.datasource.mysqlMapper"</span>,</span><br><span class="line">        sqlSessionFactoryRef = <span class="string">"sqlSessionFactoryMySql"</span>,</span><br><span class="line">        sqlSessionTemplateRef = <span class="string">"sqlSessionTemplateMySql"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MybatisConfigMySql</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注入DataSourceConfig中的数据源2指定的dataSource配置</span></span><br><span class="line">    <span class="meta">@Resource</span>(name = <span class="string">"mysqlDataSource"</span>)</span><br><span class="line">    DataSource mysqlDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;mybatis.mapper-locations&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String mapperLocations;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;mybatis.type-aliases-package&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String typeAliasesPackage;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function">SqlSessionFactory <span class="title">sqlSessionFactoryMySql</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        SqlSessionFactory sessionFactory = <span class="keyword">null</span>;</span><br><span class="line">        SqlSessionFactoryBean bean = <span class="keyword">new</span> SqlSessionFactoryBean();</span><br><span class="line">        bean.setDataSource(mysqlDataSource);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//这里需要设置扫描mapper的路径，否则容易导致mapper中的方法无法映射到xml中去，导致报：Invalid bound statement (not found) 错误</span></span><br><span class="line">            <span class="comment">//当Mapper文件跟对应的Mapper接口处于同一位置的时候可以不用指定该属性的值。</span></span><br><span class="line">            PathMatchingResourcePatternResolver resolver = <span class="keyword">new</span> PathMatchingResourcePatternResolver();</span><br><span class="line">            <span class="comment">//通过读取配置文件中的值来指定扫描路径</span></span><br><span class="line">            bean.setMapperLocations(resolver.getResources(mapperLocations));</span><br><span class="line">            <span class="comment">//直接写死值来指定扫描路径</span></span><br><span class="line">            <span class="comment">// bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));</span></span><br><span class="line">            <span class="comment">// 设置typeAlias（别名） 包扫描路径。可配置可不配置（猜想：可能不同的数据源查询返回的实体类字段有差异，故指定不同的别名包来映射不同的查询结果）</span></span><br><span class="line">            <span class="comment">// bean.setTypeAliasesPackage(typeAliasesPackage);</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//开启驼峰式映射功能</span></span><br><span class="line">            org.apache.ibatis.session.Configuration configuration = <span class="keyword">new</span> org.apache.ibatis.session.Configuration();</span><br><span class="line">            configuration.setMapUnderscoreToCamelCase(<span class="keyword">true</span>);</span><br><span class="line">            configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">            bean.setConfiguration(configuration);</span><br><span class="line">            sessionFactory = bean.getObject();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sessionFactory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function">SqlSessionTemplate <span class="title">sqlSessionTemplateMySql</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SqlSessionTemplate(sqlSessionFactoryMySql());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-实体类创建"><a href="#4-实体类创建" class="headerlink" title="4.实体类创建"></a>4.实体类创建</h3><h4 id="4-1-创建数据源1-PostgreSql的表结构与相关实体类"><a href="#4-1-创建数据源1-PostgreSql的表结构与相关实体类" class="headerlink" title="4.1 创建数据源1 PostgreSql的表结构与相关实体类"></a>4.1 创建数据源1 PostgreSql的表结构与相关实体类</h4><p>数据库表创建并添加值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE <span class="string">"public"</span>.<span class="string">"yq_user"</span> (</span><br><span class="line">  <span class="string">"id"</span> int8 NOT <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> nextval(<span class="string">'yq_user_id_seq'</span>::regclass),</span><br><span class="line">  <span class="string">"name"</span> varchar(<span class="number">255</span>) COLLATE <span class="string">"pg_catalog"</span>.<span class="string">"default"</span>,</span><br><span class="line">  <span class="string">"account"</span> varchar(<span class="number">255</span>) COLLATE <span class="string">"pg_catalog"</span>.<span class="string">"default"</span>,</span><br><span class="line">  <span class="string">"password"</span> varchar(<span class="number">255</span>) COLLATE <span class="string">"pg_catalog"</span>.<span class="string">"default"</span>,</span><br><span class="line">  CONSTRAINT <span class="string">"yq_user_pkey"</span> PRIMARY KEY (<span class="string">"id"</span>)</span><br><span class="line">)</span><br><span class="line">;</span><br><span class="line"></span><br><span class="line">ALTER TABLE <span class="string">"public"</span>.<span class="string">"yq_user"</span></span><br><span class="line">  OWNER TO <span class="string">"postgres"</span>;</span><br><span class="line"></span><br><span class="line">INSERT INTO <span class="string">"public"</span>.<span class="string">"yq_user"</span>(<span class="string">"id"</span>, <span class="string">"name"</span>, <span class="string">"account"</span>, <span class="string">"password"</span>) VALUES (<span class="number">1</span>, <span class="string">'游强'</span>, <span class="string">'yq'</span>, <span class="string">'admin'</span>);</span><br></pre></td></tr></table></figure>
+<p>数据库内容:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>account</th>
+<th>password</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>游强</td>
+<td>yq</td>
+<td>admin</td>
+</tr>
+</tbody></table>
+<p>相关实体类User，service，mapper等自行创建。</p>
+<h4 id="4-2-创建数据源2-MySql的表结构与相关实体类"><a href="#4-2-创建数据源2-MySql的表结构与相关实体类" class="headerlink" title="4.2 创建数据源2 MySql的表结构与相关实体类"></a>4.2 创建数据源2 MySql的表结构与相关实体类</h4><p>数据库表创建并添加值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `yq_user` (</span><br><span class="line">  `id` int NOT <span class="keyword">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  `name` varchar(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `account` varchar(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `password` varchar(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=<span class="number">3</span> <span class="keyword">DEFAULT</span> CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;</span><br><span class="line"></span><br><span class="line">INSERT INTO `yq_mysql`.`yq_user`(`id`, `name`, `account`, `password`) VALUES (<span class="number">2</span>, <span class="string">'秦音'</span>, <span class="string">'qy'</span>, <span class="string">'admin'</span>);</span><br></pre></td></tr></table></figure>
+<p>数据库内容:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>account</th>
+<th>password</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>秦音</td>
+<td>qy</td>
+<td>admin</td>
+</tr>
+</tbody></table>
+<p>相关实体类User，service，mapper等自行创建。<br>两个数据相关配置创建成功后，结构如下图：<br><img src="/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/menuStructure.jpg" alt=""><br>&emsp;&emsp;本项目只是一个demo，故没有service层，且没有将两个数据源的实体类User没有区分开，都共用一个User（因为两个数据源的查询结构返回值都是一样的字段属性），用户可根据业务情况自行扩展。<br>当个数据源的mapper文件需要分开放置在不同的包下，因为在配置数据源时，会指定当前数据源去扫描那一个mapper，故需要将不同数据源的mapper文件放在不同的包下，但mapper对应的xml文件不受该限制。</p>
+<h3 id="5-测试效果"><a href="#5-测试效果" class="headerlink" title="5.测试效果"></a>5.测试效果</h3><p>在同一个controller中引用两个不同数据源的mapper，来查询数据：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@RestController</span>()</span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/user"</span>)</span><br><span class="line"><span class="meta">@Api</span>(description = <span class="string">"用户"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//数据源1</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> PgsqlUserMapper pgsqlUserMapper;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//数据源2</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MysqlUserMapper mysqlUserMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"获取用户"</span>)</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/getUser"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">receiveTask</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        User userpg = pgsqlUserMapper.getOne(<span class="number">1L</span>);</span><br><span class="line">        User usermy = mysqlUserMapper.getOne(<span class="number">2L</span>);</span><br><span class="line">        <span class="keyword">return</span> Arrays.asList(userpg, usermy);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查询结果：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"游强"</span>,</span><br><span class="line">    <span class="attr">"account"</span>: <span class="string">"yq"</span>,</span><br><span class="line">    <span class="attr">"password"</span>: <span class="string">"admin"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">"id"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"秦音"</span>,</span><br><span class="line">    <span class="attr">"account"</span>: <span class="string">"qy"</span>,</span><br><span class="line">    <span class="attr">"password"</span>: <span class="string">"admin"</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-遇到的问题"><a href="#6-遇到的问题" class="headerlink" title="6.遇到的问题"></a>6.遇到的问题</h3><h4 id="6-1-启动报错"><a href="#6-1-启动报错" class="headerlink" title="6.1 启动报错"></a>6.1 启动报错</h4><blockquote>
+<p>org.apache.ibatis.binding.BindingException: Invalid bound statement (not found): com.example.qinyin.datasource.pgsqlMapper.getOne</p>
+</blockquote>
+<p>即mapper中的接口方法没有找到其实现方法，即没有映射到xml文件中去。<br>原因:在启动的时候，Spring Boot默认把PgsqlUserMapper和MysqlUserMapper中的xml文件过滤掉了。<br>解决办法：<br>第一种：硬办法，将xml文件中的查询语句写在mapper文件中，采用@Sercelt(“”) 、@Insert(“”)等方法来操作；<br>第二种：让SpringBoot不过滤相关xml文件<br>在pom文件中build节点中添加如下配置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;build&gt;</span><br><span class="line">        &lt;resources&gt;</span><br><span class="line">            &lt;resource&gt;</span><br><span class="line">                &lt;directory&gt;src/main/java&lt;/directory&gt;</span><br><span class="line">                &lt;includes&gt;</span><br><span class="line">                    &lt;<span class="keyword">include</span>&gt;**<span class="comment">/*.yml&lt;/include&gt;</span></span><br><span class="line"><span class="comment">                    &lt;include&gt;**/</span>*.xml&lt;/<span class="keyword">include</span>&gt;</span><br><span class="line">                &lt;/includes&gt;</span><br><span class="line">                &lt;filtering&gt;<span class="keyword">false</span>&lt;/filtering&gt;</span><br><span class="line">            &lt;/resource&gt;</span><br><span class="line">            &lt;resource&gt;</span><br><span class="line">                &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">                &lt;includes&gt;</span><br><span class="line">                    &lt;<span class="keyword">include</span>&gt;**<span class="comment">/*.yml&lt;/include&gt;</span></span><br><span class="line"><span class="comment">                    &lt;include&gt;**/</span>*.xml&lt;/<span class="keyword">include</span>&gt;</span><br><span class="line">                &lt;/includes&gt;</span><br><span class="line">                &lt;filtering&gt;<span class="keyword">false</span>&lt;/filtering&gt;</span><br><span class="line">            &lt;/resource&gt;</span><br><span class="line">        &lt;/resources&gt;</span><br><span class="line">    &lt;/build&gt;</span><br></pre></td></tr></table></figure>
+<p>同时，在数据源配置类中（比如：MybatisConfigPgSql）创建sqlSessionFactory时，添加配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 这里需要设置扫描mapper的路径，否则容易导致mapper中的方法无法映射到xml中去，导致报：Invalid bound statement (not found) 错误</span></span><br><span class="line"><span class="comment">* 注意sqlSessionFactoryBean.setTypeAliasesPackage参数不支持通配符*,如果有多个包可以通过","等分割</span></span><br><span class="line"><span class="comment">* 如果需要加载依赖传递过来的jar包中的mapper目录下的xml，classpath:mapper/*.xml 修改为classpath*:mapper/*.xml</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">//这里需要设置扫描mapper的路径，否则容易导致mapper中的方法无法映射到xml中去，导致报：Invalid bound statement (not found) 错误</span></span><br><span class="line"><span class="comment">//当Mapper文件跟对应的Mapper接口处于同一位置的时候可以不用指定该属性的值。</span></span><br><span class="line">PathMatchingResourcePatternResolver resolver = <span class="keyword">new</span> PathMatchingResourcePatternResolver();</span><br><span class="line"><span class="comment">//通过读取配置文件中的值来指定扫描路径</span></span><br><span class="line">bean.setMapperLocations(resolver.getResources(mapperLocations));</span><br><span class="line"><span class="comment">//直接写死值来指定扫描路径</span></span><br><span class="line"><span class="comment">//            bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));</span></span><br><span class="line"><span class="comment">// 设置typeAlias（别名） 包扫描路径。可配置可不配置（猜想：可能不同的数据源查询返回的实体类字段有差异，故指定不同的别名包来映射不同的查询结果）</span></span><br><span class="line"><span class="comment">//            bean.setTypeAliasesPackage(typeAliasesPackage);</span></span><br></pre></td></tr></table></figure>
+<p>然后把项目中的target删掉，重新启动。</p>
+<h4 id="6-2-项目启动时，数据库连接警告"><a href="#6-2-项目启动时，数据库连接警告" class="headerlink" title="6.2 项目启动时，数据库连接警告"></a>6.2 项目启动时，数据库连接警告</h4><blockquote>
+<p>Sun Aug 05 21:18:18 CST 2018 WARN: Establishing SSL connection without server’s identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn’t set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to ‘false’.<font color=red> You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.</font></p>
+</blockquote>
+<p>警告显示：<font color=red>不建议在没有服务器身份验证的情况下建立SSL连接，需要通过设置useSSL=false显式禁用SSL</font><br>解决办法：在application.yml文件的数据源url中添加useSSL=false</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysqldatasource:</span><br><span class="line">    driver-class-name: com.mysql.jdbc.Driver</span><br><span class="line">    url: jdbc:mysql:<span class="comment">//localhost:3306/yq_mysql?serverTimezone=GMT%2B8&amp;characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line">    username: root</span><br><span class="line">    password: admin</span><br></pre></td></tr></table></figure>
+
+<p>出现下面的错误，在后面加上“?serverTimezone=GMT%2B8”（在数据库的连接url上设置），设置下时区即可。<br><img src="/images/spring/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90/mysql_error_1.jpg" alt=""></p>
+<p>参考链接：<br><a href="https://github.com/drtrang/druid-spring-boot/blob/master/docs/Druid%20%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E6%94%AF%E6%8C%81.md" target="_blank" rel="noopener" title="Druid 多数据源支持.md">Druid 多数据源支持.md</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SpringBoot/" rel="tag"># SpringBoot</a>
+          
+            <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
+          
+            <a href="/tags/%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/" rel="tag"># 多数据源</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/13/MySQL%E4%B8%8EPostgreSQL%E5%AE%89%E8%A3%85/" rel="next" title="MySQL与PostgreSQL安装">
+                <i class="fa fa-chevron-left"></i> MySQL与PostgreSQL安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/17/Druid%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9B%91%E6%8E%A7/" rel="prev" title="Druid实现简单数据库连接池监控">
+                Druid实现简单数据库连接池监控 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/touxiang.png"
+                alt="YouQiang" />
+            
+              <p class="site-author-name" itemprop="name">YouQiang</p>
+              <p class="site-description motion-element" itemprop="description">技术总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-项目创建"><span class="nav-text">1.项目创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-双数据源配置"><span class="nav-text">2.双数据源配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-MyBatis配置"><span class="nav-text">3.MyBatis配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-配置第一个数据MyBatis配置："><span class="nav-text">3.1 配置第一个数据MyBatis配置：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-配置第二个数据MyBatis配置："><span class="nav-text">3.2 配置第二个数据MyBatis配置：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-实体类创建"><span class="nav-text">4.实体类创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-创建数据源1-PostgreSql的表结构与相关实体类"><span class="nav-text">4.1 创建数据源1 PostgreSql的表结构与相关实体类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-创建数据源2-MySql的表结构与相关实体类"><span class="nav-text">4.2 创建数据源2 MySql的表结构与相关实体类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-测试效果"><span class="nav-text">5.测试效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-遇到的问题"><span class="nav-text">6.遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-启动报错"><span class="nav-text">6.1 启动报错</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-项目启动时，数据库连接警告"><span class="nav-text">6.2 项目启动时，数据库连接警告</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YouQiang</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

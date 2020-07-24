@@ -88,8 +88,10 @@
 <meta property="og:image" content="http://yoursite.com/images/nginx/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE.png">
 <meta property="og:image" content="http://yoursite.com/images/nginx/%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8Dselinux%E7%9A%84%E7%8A%B6%E6%80%81.png">
 <meta property="og:image" content="http://yoursite.com/images/nginx/%E4%BF%AE%E6%94%B9selinux%E7%9A%84%E7%8A%B6%E6%80%81.png">
+<meta property="og:image" content="http://yoursite.com/images/nginx/nginx%E8%AF%B7%E6%B1%82502.jpg">
+<meta property="og:image" content="http://yoursite.com/images/nginx/nginx%E8%AF%B7%E6%B1%82502_2.jpg">
 <meta property="article:published_time" content="2020-04-24T11:23:00.000Z">
-<meta property="article:modified_time" content="2020-05-21T06:47:02.264Z">
+<meta property="article:modified_time" content="2020-07-08T07:39:38.149Z">
 <meta property="article:author" content="YouQiang">
 <meta property="article:tag" content="nginx">
 <meta name="twitter:card" content="summary">
@@ -373,7 +375,7 @@
 </blockquote>
 <p>&emsp;&emsp;以上安装方法nginx的配置文件位于<code>/usr/local/nginx/conf/nginx.conf</code><br>Nginx配置文件常见结构的从外到内依次是「http」「server」「location」等等，缺省的继承关系是从外到内，也就是说内层块会自动获取外层块的值作为缺省值。</p>
 <h4 id="1-6-启动"><a href="#1-6-启动" class="headerlink" title="1.6 启动"></a>1.6 启动</h4><p>&emsp;&emsp;根据上面的安装步骤，nginx 在服务器上安装后启动位置为：<code>/usr/local/nginx/sbin/nginx</code>，即直接运行该命令即可启动nginx。也可以修改指定配置文件地址，然后就可全局使用Nginx命令（个人理解）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#寻找含有nginx的文件:</span><br><span class="line">find &#x2F; -name nginx  </span><br><span class="line"></span><br><span class="line">#定位nginx文件位置:</span><br><span class="line">whereis nginx</span><br><span class="line"></span><br><span class="line">#指定配置文件地址(需要根据自己的nginx路径做相应的修改):</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -c &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf </span><br><span class="line"></span><br><span class="line">#重新加载nginx配置文件:</span><br><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#寻找含有nginx的文件:</span><br><span class="line">find &#x2F; -name nginx  </span><br><span class="line"></span><br><span class="line">#定位nginx文件位置:</span><br><span class="line">whereis nginx</span><br><span class="line"></span><br><span class="line">#指定配置文件地址(需要根据自己的nginx路径做相应的修改):</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -c &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br><span class="line"></span><br><span class="line">#重新加载nginx配置文件:</span><br><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
 <p>nginx的配置文件目录/usr/local/nginx/conf/nginx.conf中在http内添加：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name localhost;</span><br><span class="line"></span><br><span class="line">	location &#x2F; &#123;</span><br><span class="line">		proxy_pass http:&#x2F;&#x2F;localhost:8080;</span><br><span class="line">		proxy_redirect off;</span><br><span class="line">		proxy_set_header Host $host;</span><br><span class="line">		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">		proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h5 id="1-6-1-启动前准备"><a href="#1-6-1-启动前准备" class="headerlink" title="1.6.1 启动前准备"></a>1.6.1 启动前准备</h5><p>启动前先看它启动没有，通过linux命令查看所有端口，看看启动端口中有没有80端口</p>
@@ -406,7 +408,7 @@
 <blockquote>
 <p>命令含义：<br>    –zone #作用域<br>    –add-port=80/tcp #添加端口，格式为：端口/通讯协议<br>    –permanent #永久生效，没有此参数重启后将失效</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#重启防火墙</span><br><span class="line">firewall-cmd --reload</span><br><span class="line"></span><br><span class="line">#停止firewall</span><br><span class="line">systemctl stop firewalld.service</span><br><span class="line"> </span><br><span class="line">#禁止firewall开机启动</span><br><span class="line">systemctl disable firewalld.service </span><br><span class="line"></span><br><span class="line">#查看默认防火墙状态（关闭后显示notrunning，开启后显示running）</span><br><span class="line">firewall-cmd --state</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#重启防火墙</span><br><span class="line">firewall-cmd --reload</span><br><span class="line"></span><br><span class="line">#停止firewall</span><br><span class="line">systemctl stop firewalld.service</span><br><span class="line"></span><br><span class="line">#禁止firewall开机启动</span><br><span class="line">systemctl disable firewalld.service</span><br><span class="line"></span><br><span class="line">#查看默认防火墙状态（关闭后显示notrunning，开启后显示running）</span><br><span class="line">firewall-cmd --state</span><br></pre></td></tr></table></figure>
 <h3 id="4-解决Nginx出现403-forbidden-13-Permission-denied-报错的四种方法"><a href="#4-解决Nginx出现403-forbidden-13-Permission-denied-报错的四种方法" class="headerlink" title="4. 解决Nginx出现403 forbidden (13: Permission denied)报错的四种方法"></a>4. 解决Nginx出现403 forbidden (13: Permission denied)报错的四种方法</h3><h4 id="4-1-由于启动用户和nginx工作用户不一致所致"><a href="#4-1-由于启动用户和nginx工作用户不一致所致" class="headerlink" title="4.1 由于启动用户和nginx工作用户不一致所致"></a>4.1 由于启动用户和nginx工作用户不一致所致</h4><p>查看nginx的启动用户，发现是nobody，而未是用root启动的</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep &quot;nginx: worker process&quot; | awk&#39;&#123;print $1&#125;&#39;</span><br></pre></td></tr></table></figure>
 <p>故将nginx.config的user改为和启动用户一致，</p>
@@ -414,7 +416,7 @@
 <p>该文件如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">user nginx;  #将nginx改为和启动用户一致</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">error_log  logs&#x2F;error.log;</span><br><span class="line">error_log  logs&#x2F;error.log  notice;</span><br><span class="line">error_log  logs&#x2F;error.log  info;</span><br><span class="line"></span><br><span class="line">pid        logs&#x2F;nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="4-2-缺少index-html或者index-php文件，就是配置文件中index-index-html-index-htm这行中的指定的文件。"><a href="#4-2-缺少index-html或者index-php文件，就是配置文件中index-index-html-index-htm这行中的指定的文件。" class="headerlink" title="4.2 缺少index.html或者index.php文件，就是配置文件中index index.html index.htm这行中的指定的文件。"></a>4.2 缺少index.html或者index.php文件，就是配置文件中index index.html index.htm这行中的指定的文件。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server &#123;  </span><br><span class="line">	listen       80;  </span><br><span class="line">	server_name  localhost; </span><br><span class="line">	index  index.php index.html;  </span><br><span class="line">	root  &#x2F;data&#x2F;www&#x2F;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-2-缺少index-html或者index-php文件，就是配置文件中index-index-html-index-htm这行中的指定的文件。"><a href="#4-2-缺少index-html或者index-php文件，就是配置文件中index-index-html-index-htm这行中的指定的文件。" class="headerlink" title="4.2 缺少index.html或者index.php文件，就是配置文件中index index.html index.htm这行中的指定的文件。"></a>4.2 缺少index.html或者index.php文件，就是配置文件中index index.html index.htm这行中的指定的文件。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server &#123;  </span><br><span class="line">	listen       80;  </span><br><span class="line">	server_name  localhost;</span><br><span class="line">	index  index.php index.html;  </span><br><span class="line">	root  &#x2F;data&#x2F;www&#x2F;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果在/data/www/下面没有index.php,index.html的时候，直接文件，会报403 forbidden。</p>
 <h4 id="4-3-权限问题，如果nginx没有web目录的操作权限，也会出现403错误。"><a href="#4-3-权限问题，如果nginx没有web目录的操作权限，也会出现403错误。" class="headerlink" title="4.3 权限问题，如果nginx没有web目录的操作权限，也会出现403错误。"></a>4.3 权限问题，如果nginx没有web目录的操作权限，也会出现403错误。</h4><p>解决办法：修改web目录的读写权限，或者是把nginx的启动用户改成目录的所属用户，重启Nginx即可解决</p>
 <blockquote>
@@ -430,7 +432,13 @@
 <p>重启生效。reboot。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot</span><br></pre></td></tr></table></figure>
 
-
+<p>或者出现如下情况：<br><img src="/images/nginx/nginx%E8%AF%B7%E6%B1%82502.jpg" alt=""><br>导致浏览器请求报502异常。同样修改上面的配置，但有可能修改的文件路径不一定相同，如果上面的文件路径不对，可试试下面的路径：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;sysconfig&#x2F;selinux</span><br></pre></td></tr></table></figure>
+<p>同时，在出现浏览器请求nginx报502的时候，可以在linux上通过curl命令排查是nginx出现问题还是对应的项目服务出现异常：<br>如：在浏览器上访问：<a href="http://172.16.16.153/dimension/api/swagger-ui.html" target="_blank" rel="noopener">http://172.16.16.153/dimension/api/swagger-ui.html</a> 通过nginx代理去dimension服务，nginx配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        alias  &#x2F;opt&#x2F;parse&#x2F;web&#x2F;dimension&#x2F;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location &#x2F;dimension&#x2F;api&#x2F; &#123;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;127.0.0.1:8601&#x2F;;</span><br><span class="line">        proxy_set_header Host $host:$server_port;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header REMOTE-HOST $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        client_max_body_size 10m;</span><br><span class="line">        proxy_connect_timeout 60s;</span><br><span class="line">        proxy_send_timeout 60s;</span><br><span class="line">        proxy_read_timeout 60s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可通过curl来排查是否是dimension服务出现问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@aiidc-sf-028 conf.d]# curl http:&#x2F;&#x2F;127.0.0.1:8601&#x2F;</span><br><span class="line">&#123;&quot;errorCode&quot;:10001,&quot;message&quot;:&quot;未登录&quot;,&quot;systemId&quot;:&quot;aiidc_parse&quot;,&quot;data&quot;:null&#125;</span><br><span class="line">[root@aiidc-sf-028 conf.d]#</span><br></pre></td></tr></table></figure>
+<p>如果请求过去dimension服务没有返回相应的结果值，说明是服务出现问题；否则即是nginx没有将浏览器请求代理过去。<br>即可定位到问题出现在nginx上。<br>再通过修改系统配置：将SELINUX=enforcing 修改为 SELINUX=disabled 状态即解决问题。<br><img src="/images/nginx/nginx%E8%AF%B7%E6%B1%82502_2.jpg" alt=""></p>
 
       
     </div>
@@ -554,7 +562,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -565,7 +573,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -576,7 +584,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

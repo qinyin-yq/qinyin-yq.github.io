@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MySQL,PostgreSQL," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="mysql安装此博客只是记录在win10系统上安装MySql流程。 1.mysql下载第一种方式，去数据库的官网http:&#x2F;&#x2F;www.mysql.com下载MySQL。点击进入后的首页如下： 然后点击downloads，community，选择MySQL Community Server。如下图： 滑到下面，找到Recommended Download，然后点击go to download pag">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL与PostgreSQL安装">
+<meta property="og:url" content="http://yoursite.com/2020/06/13/MySQL%E4%B8%8EPostgreSQL%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="秦音">
+<meta property="og:description" content="mysql安装此博客只是记录在win10系统上安装MySql流程。 1.mysql下载第一种方式，去数据库的官网http:&#x2F;&#x2F;www.mysql.com下载MySQL。点击进入后的首页如下： 然后点击downloads，community，选择MySQL Community Server。如下图： 滑到下面，找到Recommended Download，然后点击go to download pag">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/download_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/download_2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/download_3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/download_4.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/download_5.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/download_6.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_4.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_5.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_6.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_7.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_8.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_9.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_10.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_11.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_12.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_13.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_14.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_15.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_16.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_17.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_18.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_19.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_20.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_21.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_22.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_23.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_24.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_25.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/install_26.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/finish_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/finish_2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/Workbench_test.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/Prenmium_test.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/error_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/MySQLworkbench_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/MySQLworkbench_2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/MySQLworkbench_3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/MySQLworkbench_4.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/mysql/MySQLworkbench_5.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_4.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_5.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_6.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_7.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_8.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_9.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_10.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_11.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_12.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/install_13.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/error_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/PostgreSql/error_2.jpg">
+<meta property="article:published_time" content="2020-06-13T15:17:32.733Z">
+<meta property="article:modified_time" content="2020-06-13T16:44:58.182Z">
+<meta property="article:author" content="YouQiang">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/qinyin/mysql/download_1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/13/MySQL与PostgreSQL安装/"/>
+
+
+
+
+
+  <title>MySQL与PostgreSQL安装 | 秦音</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦音</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archive">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/13/MySQL%E4%B8%8EPostgreSQL%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YouQiang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦音">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL与PostgreSQL安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-13T23:17:32+08:00">
+                2020-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SQL/" itemprop="url" rel="index">
+                    <span itemprop="name">SQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="mysql安装"><a href="#mysql安装" class="headerlink" title="mysql安装"></a>mysql安装</h3><p><font color=red>此博客只是记录在win10系统上安装MySql流程。</font></p>
+<h4 id="1-mysql下载"><a href="#1-mysql下载" class="headerlink" title="1.mysql下载"></a>1.mysql下载</h4><p>第一种方式，去数据库的官网<a href="http://www.mysql.com下载MySQL。" target="_blank" rel="noopener">http://www.mysql.com下载MySQL。</a><br>点击进入后的首页如下：<br><img src="/images/qinyin/mysql/download_1.jpg" alt=""></p>
+<p>然后点击downloads，community，选择MySQL Community Server。如下图：<br><img src="/images/qinyin/mysql/download_2.jpg" alt=""></p>
+<p>滑到下面，找到Recommended Download，然后点击go to download page。如下图：<br><img src="/images/qinyin/mysql/download_3.jpg" alt=""></p>
+<p>点击download进入下载页面选择No thanks, just start my download就可以开始下载了，当然你要是想注册也可以注册一下。<br><img src="/images/qinyin/mysql/download_4.jpg" alt=""></p>
+<p>第二种方式，也可以直接点击<a href="https://dev.mysql.com/downloads/mysql/" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/</a> 进去下载对应系统的MySql版本信息<br>选择需要下载的对应系统版本的mysql：<br><img src="/images/qinyin/mysql/download_5.jpg" alt=""><br>同样可以选择只下载不注册：<br><img src="/images/qinyin/mysql/download_6.jpg" alt=""></p>
+<h4 id="2-MySQL安装"><a href="#2-MySQL安装" class="headerlink" title="2.MySQL安装"></a>2.MySQL安装</h4><p>打开刚刚下载好的安装包，开始安装MySQL。安装大部分情况都选择默认设置，但也有一些位置根据自己实际情况来定：<br>选择 I accept 然后点击next进入下一步。<br><img src="/images/qinyin/mysql/install_1.jpg" alt=""></p>
+<p>这里选择Developer Default，然后点击next进入下一步。<br><img src="/images/qinyin/mysql/install_2.jpg" alt=""></p>
+<p>此处可以修改MySQL的安装目录，也可以使用默认路径。<br><img src="/images/qinyin/mysql/install_3.jpg" alt=""></p>
+<p>这一步是检查安装条件，直接点击next进入下一步就可以了。<br><img src="/images/qinyin/mysql/install_4.jpg" alt=""></p>
+<p>会提示电脑是否含有MySQL的依赖插件，会提示是否进行安装：<br><img src="/images/qinyin/mysql/install_5.jpg" alt=""></p>
+<p>这里直接点击execute执行就可以了，执行完后点击next进入下一步。<br><img src="/images/qinyin/mysql/install_6.jpg" alt=""></p>
+<p>一直等待全部依赖安装完成<br><img src="/images/qinyin/mysql/install_7.jpg" alt=""><br><img src="/images/qinyin/mysql/install_8.jpg" alt=""></p>
+<p>继续点击next进入下一步<br><img src="/images/qinyin/mysql/install_9.jpg" alt=""></p>
+<p>选择第一个然后点击next进入下一步。<br><img src="/images/qinyin/mysql/install_10.jpg" alt=""></p>
+<p>这里直接点击next进入下一步<br><img src="/images/qinyin/mysql/install_11.jpg" alt=""></p>
+<p>这里直接点击next进入下一步<br><img src="/images/qinyin/mysql/install_12.jpg" alt=""></p>
+<p>设置root密码然后点击next进入下一步<br><img src="/images/qinyin/mysql/install_13.jpg" alt=""><br><img src="/images/qinyin/mysql/install_14.jpg" alt=""></p>
+<p>设置MySQL的服务名称：<br><img src="/images/qinyin/mysql/install_15.jpg" alt=""></p>
+<p>然后等待安装<br><img src="/images/qinyin/mysql/install_16.jpg" alt=""></p>
+<p>全部安装完成后点击点击next进入下一步<br><img src="/images/qinyin/mysql/install_17.jpg" alt=""></p>
+<p>继续点击next进入下一步<br><img src="/images/qinyin/mysql/install_18.jpg" alt=""></p>
+<p>继续点击next进入下一步<br><img src="/images/qinyin/mysql/install_19.jpg" alt=""></p>
+<p>继续点击next进入下一步<br><img src="/images/qinyin/mysql/install_20.jpg" alt=""></p>
+<p>继续点击next进入下一步<br><img src="/images/qinyin/mysql/install_21.jpg" alt=""></p>
+<p>继续点击next进入下一步<br><img src="/images/qinyin/mysql/install_22.jpg" alt=""></p>
+<p>继续点击next进入下一步<br><img src="/images/qinyin/mysql/install_23.jpg" alt=""></p>
+<p>继续点击next进入下一步<br><img src="/images/qinyin/mysql/install_24.jpg" alt=""></p>
+<p>继续点击next进入下一步<br><img src="/images/qinyin/mysql/install_25.jpg" alt=""></p>
+<p>点击Finish完成MySQL的安装<br><img src="/images/qinyin/mysql/install_26.jpg" alt=""></p>
+<p>安装完成后进入MySQL的安装目录，进入MySQL Sever，其目录下的文件如下：<br><img src="/images/qinyin/mysql/finish_1.jpg" alt=""></p>
+<p>bin目录下保存了MySQL常用的命令工具以及管理工具<br>data目录是MySQL默认用来保存数据文件以及日志文件的地方（我的因刚安装还没有data文件夹）<br>docs目录下是MySQL的帮助文档<br>include目录和lib目录是MySQL所依赖的头文件以及库文件<br>share目录下保存目录文件以及日志文件。</p>
+<p>mysql的shell控制端：C:\Program Files\MySQL\MySQL Shell 8.0\bin\mysqlsh.exe或者C:\ProgramData\Microsoft\Windows\Start Menu\Programs\MySQL\MySQL Shell<br>MySQL Shell操作参考链接：<a href="https://www.cnblogs.com/zengkefu/p/5667037.html" target="_blank" rel="noopener">https://www.cnblogs.com/zengkefu/p/5667037.html</a><br>mysql的Workbench端位置：MySQL Workbench 8.0 CE<br>mysql服务链接客户端：MySQL 8.0 Command Line Client<br>Mysql服务启动快捷键：MySQL Notifier 1.1.8</p>
+<p>参考链接：<br><a href="https://blog.csdn.net/weixin_40845165/article/details/84104842" target="_blank" rel="noopener" title="MySQL-Installer-community-8.0.13.0 社区版安装解决方案">MySQL-Installer-community-8.0.13.0 社区版安装解决方案</a></p>
+<h4 id="3-MySQL安装成功与否测试"><a href="#3-MySQL安装成功与否测试" class="headerlink" title="3.MySQL安装成功与否测试"></a>3.MySQL安装成功与否测试</h4><p>进入bin目录，按住shift键然后点击鼠标右键可以选择在该目录下打开命令窗口，或者在地址栏中输入cmd进入命令窗口。输入1mysql -u root -p1后回车，然后会提示输入密码，输入密码后就会进入MySQL的操作管理界面。<br>输入<code>show databases</code>；（注意末尾有分号）可以查看当前MySQL中的数据库列表，<br>输入<code>use test</code>；可以进入test数据库（前提是要有此数据库），<br>输入<code>show tables</code>可以查看test数据库中的所有表，<br>输入<code>quit</code>可以退出MySQL的操作管理界面。<br><img src="/images/qinyin/mysql/finish_2.jpg" alt=""></p>
+<p>或者使用mysql的Workbench端MySQL Workbench 8.0 CE来连接MySQL服务，看是否能连接上:<br><img src="/images/qinyin/mysql/Workbench_test.jpg" alt=""></p>
+<p>又或者使用navicat Prenmium工具测试创建MySQL连接是否成功<br><img src="/images/qinyin/mysql/Prenmium_test.jpg" alt=""></p>
+<h4 id="4-MySQL在使用过程中遇到的问题"><a href="#4-MySQL在使用过程中遇到的问题" class="headerlink" title="4.MySQL在使用过程中遇到的问题"></a>4.MySQL在使用过程中遇到的问题</h4><p>在使用Navicat Premium 12连接MySQL数据库时会出现Authentication plugin ‘caching_sha2_password’ cannot be loaded的错误。<br>出现这个原因是mysql8 之前的版本中加密规则是mysql_native_password,而在mysql8之后,加密规则是caching_sha2_password, 解决问题方法有两种,一种是升级navicat驱动,一种是把mysql用户登录密码加密规则还原成mysql_native_password.<br>这里用第二种方式 ，解决方法如下：<br>①在mysql的bin目录打开cmd窗口，运行：<code>mysql -u root -p</code>  命令，会提示输入密码。<br><img src="/images/qinyin/mysql/error_1.jpg" alt=""><br>②修改账户密码加密规则并更新用户密码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#更新一下用户的密码 </span><br><span class="line">ALTER USER <span class="string">'root'</span>@<span class="string">'localhost'</span> IDENTIFIED BY <span class="string">'admin'</span> PASSWORD EXPIRE NEVER; </span><br><span class="line">#修改加密规则 </span><br><span class="line">ALTER USER <span class="string">'root'</span>@<span class="string">'localhost'</span> IDENTIFIED WITH mysql_native_password BY <span class="string">'admin'</span>;</span><br></pre></td></tr></table></figure>
+<p>③刷新权限并重置密码<br><code>FLUSH PRIVILEGES;</code>   #刷新权限<br>现在再次打开Navicat Premium 12连接MySQL问题数据库就会发现可以连接成功了<br>（上面三个步骤经操作有效，下面的未经测试，效果未知。参考链接<a href="https://www.cnblogs.com/zhurong/p/9898675.html）" target="_blank" rel="noopener">https://www.cnblogs.com/zhurong/p/9898675.html）</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#单独重置密码命令：</span><br><span class="line">alter user <span class="string">'root'</span>@<span class="string">'localhost'</span> identified by <span class="string">'111111'</span>; </span><br><span class="line">#给root用户设置新密码：</span><br><span class="line">mysql&gt; update user set password=password(<span class="string">"123456"</span>) where user=<span class="string">"root"</span>;</span><br><span class="line">#刷新数据库</span><br><span class="line">mysql&gt; flush privileges;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但<code>update user set password=password(&quot;123456&quot;) where user=&quot;root&quot;;</code>这个对不是5.7版本有效，5.7版本得要<code>update mysql.user set authentication_string=password(&#39;*******&#39;) where user=&#39;*******&#39;</code></p>
+</blockquote>
+<h4 id="5-MySQLworkbench使用教程"><a href="#5-MySQLworkbench使用教程" class="headerlink" title="5.MySQLworkbench使用教程"></a>5.MySQLworkbench使用教程</h4><h5 id="5-1-创建数据库"><a href="#5-1-创建数据库" class="headerlink" title="5.1 创建数据库"></a>5.1 创建数据库</h5><p>可以使用工具栏上的创建数据库直接创建数据库，如下图：<br><img src="/images/qinyin/mysql/MySQLworkbench_1.jpg" alt=""><br>或者使用命令：create database 数据库名称;(注意最后有分号)来创建。注意，此方法可能不会立马刷新，可以在左下角点击右键选择Refresh all 来刷新。<br><img src="/images/qinyin/mysql/MySQLworkbench_2.jpg" alt=""></p>
+<h5 id="5-2-创建表、删除表"><a href="#5-2-创建表、删除表" class="headerlink" title="5.2 创建表、删除表"></a>5.2 创建表、删除表</h5><p>可以在你想要创建表的Tables上面点击右键，选择Create Table，或者使用命令<code>create table table_name(column_name column_type);</code><br><img src="/images/qinyin/mysql/MySQLworkbench_3.jpg" alt=""><br>注意，创建数据表的命令前需要使用use指明你要使用的数据库。（可以在你将要使用的数据库上面点击右键选择Set as Default Schema来使你将要用的数据库变为默认的，这样可以不用写use语句）<br>通过命令<code>drop table table_name;</code>来删除一张表。</p>
+<h5 id="5-3-修改表的名字"><a href="#5-3-修改表的名字" class="headerlink" title="5.3 修改表的名字"></a>5.3 修改表的名字</h5><p>通过使用命令：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table old_name rename to new_name</span><br><span class="line">#或</span><br><span class="line">rename table old_name to new_name</span><br></pre></td></tr></table></figure>
+<p>来更改数据表名。<br><img src="/images/qinyin/mysql/MySQLworkbench_4.jpg" alt=""></p>
+<h5 id="5-4-为数据表增加、修改、删除字段"><a href="#5-4-为数据表增加、修改、删除字段" class="headerlink" title="5.4 为数据表增加、修改、删除字段"></a>5.4 为数据表增加、修改、删除字段</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#语句来为数据表增加字段。</span><br><span class="line">alter table table_name add column_name column_type;</span><br><span class="line">#语句来修改数据表字段名称。</span><br><span class="line">alter table table_name change column_name new_column_name new_column_name_type;</span><br><span class="line">#删除数据表字段。</span><br><span class="line">alter table table_name drop column_name;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/qinyin/mysql/MySQLworkbench_5.jpg" alt=""></p>
+<h5 id="5-5-关于修改数据库名字"><a href="#5-5-关于修改数据库名字" class="headerlink" title="5.5 关于修改数据库名字"></a>5.5 关于修改数据库名字</h5><p>在低版本的MySQL中提供了一个命令rename来修改数据库的名称（注意不是数据库的表），不过这个命令会造成数据的丢失，所以这个命令已经被删掉，现在如果想要重命名一个数据库名称的话，需要先导出原有数据库中的所有数据，然后新建一个数据库，然后把导出的数据导入到新的数据库中，最后删掉原来的数据库。整个过程比较繁琐，数据量大的时候会非常浪费时间，所以不推荐修改数据库的名字，因此在给数据库命名的时候要考虑好应该给数据库起一个合理的名字。</p>
+<p>最后，附上MySQL Workbench汉化解决方案链接：<a href="https://blog.csdn.net/weixin_40845165/article/details/84105822，感兴趣的可以自行配置。" target="_blank" rel="noopener">https://blog.csdn.net/weixin_40845165/article/details/84105822，感兴趣的可以自行配置。</a></p>
+<h3 id="PostgreSql安装"><a href="#PostgreSql安装" class="headerlink" title="PostgreSql安装"></a>PostgreSql安装</h3><p><font color=red>pgsql 9.4.26版本的可以在本机win10 正常安装<br>12.3-1版本会报error running icacls异常。（网上说postgreSQL9需要vc2013;postgreSQL10需要vc2017，但真实性不确定）<br></font></p>
+<h4 id="1-PostgreSql的获取与安装"><a href="#1-PostgreSql的获取与安装" class="headerlink" title="1.PostgreSql的获取与安装"></a>1.PostgreSql的获取与安装</h4><p>获取安装包：<a href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads" target="_blank" rel="noopener">https://www.enterprisedb.com/downloads/postgres-postgresql-downloads</a><br><img src="/images/qinyin/PostgreSql/install_1.jpg" alt=""></p>
+<p>点击下载的安装包开始安装<br><img src="/images/qinyin/PostgreSql/install_2.jpg" alt=""></p>
+<p>选择程序安装目录<br><img src="/images/qinyin/PostgreSql/install_3.jpg" alt=""></p>
+<p>选择数据存放目录<br><img src="/images/qinyin/PostgreSql/install_4.jpg" alt=""></p>
+<p>输入数据库超级用户和创建的OS用户的密码<br><img src="/images/qinyin/PostgreSql/install_5.jpg" alt=""><br>注：数据库超级用户是一个非管理员账户，这是为了减少黑客利用在 PostgreSQL 发现的缺陷对系统造成损害，因此需要对数据库超级用户设置密码。</p>
+<p>设置服务监听端口，默认为5432<br><img src="/images/qinyin/PostgreSql/install_6.jpg" alt=""></p>
+<p>选择运行时语言环境<br><img src="/images/qinyin/PostgreSql/install_7.jpg" alt=""><br>注：选择数据库存储区域的运行时语言环境（字符编码格式）。<br>在选择语言环境时，若选择”default locale”会导致安装不正确；同时，PostgreSQL 不支持 GBK 和 GB18030 作为字符集，如果选择其它四个中文字符集：中文繁体 香港（Chinese[Traditional], Hong Kong S.A.R.）、中文简体 新加坡（Chinese[Simplified], Singapore）、中文繁体 台湾（Chinese[Traditional], Taiwan）和中文繁体 澳门（Chinese[Traditional], Marco S.A.R.），会导致查询结果和排序效果不正确。建议选择”C”，即不使用区域。</p>
+<p>安装过程<br><img src="/images/qinyin/PostgreSql/install_8.jpg" alt=""><br><img src="/images/qinyin/PostgreSql/install_9.jpg" alt=""><br><img src="/images/qinyin/PostgreSql/install_10.jpg" alt=""></p>
+<p>安装完成<br><img src="/images/qinyin/PostgreSql/install_11.jpg" alt=""></p>
+<p>安装完成后，从开始文件夹可以看到<br><img src="/images/qinyin/PostgreSql/install_12.jpg" alt=""></p>
+<p>安装目录可以看到<br><img src="/images/qinyin/PostgreSql/install_13.jpg" alt=""><br>其中：data存放数据文件、日志文件、控制文件、配置文件等。uninstall-postgresql.exe用于卸载已安装的数据库管理系统。<br>安装参考链接：<a href="https://blog.csdn.net/u012325865/article/details/81951916" target="_blank" rel="noopener">https://blog.csdn.net/u012325865/article/details/81951916</a></p>
+<h4 id="2-PostgreSql在使用过程中遇到的问题"><a href="#2-PostgreSql在使用过程中遇到的问题" class="headerlink" title="2.PostgreSql在使用过程中遇到的问题"></a>2.PostgreSql在使用过程中遇到的问题</h4><h5 id="2-1-无法连接服务器"><a href="#2-1-无法连接服务器" class="headerlink" title="2.1 无法连接服务器"></a>2.1 无法连接服务器</h5><p>进行安装，安装完成后，在运行bin目录下的psql.exe -U postgres  命令后显示：<br><img src="/images/qinyin/PostgreSql/error_1.jpg" alt=""><br>其实产生这样的原因很简单，那是因为没有连接服务器—–psqlgres并没有启动，导致没有服务可连。接下来是启动的步骤：<br>①.在电脑左下角处搜索—-控制面板<br>②.右键桌面上的我的电脑—-选择管理<br>③.进入管理工具找到其中的—服务，并双击进入<br>④.在服务中找到postgresql提供的服务，查看postgresql的服务是否启动，没有启动就启动该服务。如果没有postgresql服务选项，说明postgresql没有注册到服务目录中，将postgresql注册到服务列表中的步骤在文章后面介绍。<br><img src="/images/qinyin/PostgreSql/error_2.jpg" alt=""><br>⑤. 最后测试一下，是否已经启动（解决问题）。</p>
+<h5 id="2-2-安装postgresql后找不到服务-postgresql-service"><a href="#2-2-安装postgresql后找不到服务-postgresql-service" class="headerlink" title="2.2 安装postgresql后找不到服务 postgresql service"></a>2.2 安装postgresql后找不到服务 postgresql service</h5><p>使用postgresql-9.4.26-1-windows-x64.exe安装后，让电脑重新启动，但是重启后，依然没有在服务中找到pstgresql的服务，也就没有办法启动服务。并且查看pgsql的安装目录，data也是空的（或者不是空的）。因此需要自己注册服务，cd 到pgsql的安装目录的bin目录下，我的是：D:\work\study\postgresql\9.4.26\bin<br>之后运行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_ctl.exe register -N PostgreSQL -D D:\work\study\postgresql\9.4.26\data\</span><br></pre></td></tr></table></figure>
+<p>每个版本的这个命令的格式可能有差别，可以使用<code>pg_ctl.exe --help</code>来查看语法格式。注意-D 指定data的目录。之后就注册承重。</p>
+<p>启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\pg_ctl.exe -D ..\data\ -l D:\work\study\postgresql\9.4.26\log\logfile.LOG start</span><br></pre></td></tr></table></figure>
+<p>这样日志就在D:\work\study\postgresql\9.4.26\log\logfile.LOG(该日志目录并不是在安装过程自动创建的，需要手动创建，或者指定其他目录文件)中生成，并且也启动了服务。<br>参考链接：<a href="https://www.cnblogs.com/heenhui2016/p/11613423.html" target="_blank" rel="noopener">https://www.cnblogs.com/heenhui2016/p/11613423.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          
+            <a href="/tags/PostgreSQL/" rel="tag"># PostgreSQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/22/Elasticsearch%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E4%B8%8E%E8%BF%98%E5%8E%9F/" rel="next" title="Elasticsearch快照备份与还原">
+                <i class="fa fa-chevron-left"></i> Elasticsearch快照备份与还原
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/14/SpringBoot%E6%95%B4%E5%90%88MyBatis%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/" rel="prev" title="SpringBoot整合MyBatis多数据源">
+                SpringBoot整合MyBatis多数据源 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/touxiang.png"
+                alt="YouQiang" />
+            
+              <p class="site-author-name" itemprop="name">YouQiang</p>
+              <p class="site-description motion-element" itemprop="description">技术总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql安装"><span class="nav-text">mysql安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-mysql下载"><span class="nav-text">1.mysql下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-MySQL安装"><span class="nav-text">2.MySQL安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-MySQL安装成功与否测试"><span class="nav-text">3.MySQL安装成功与否测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-MySQL在使用过程中遇到的问题"><span class="nav-text">4.MySQL在使用过程中遇到的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-MySQLworkbench使用教程"><span class="nav-text">5.MySQLworkbench使用教程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-创建数据库"><span class="nav-text">5.1 创建数据库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-创建表、删除表"><span class="nav-text">5.2 创建表、删除表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-3-修改表的名字"><span class="nav-text">5.3 修改表的名字</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-4-为数据表增加、修改、删除字段"><span class="nav-text">5.4 为数据表增加、修改、删除字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-5-关于修改数据库名字"><span class="nav-text">5.5 关于修改数据库名字</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PostgreSql安装"><span class="nav-text">PostgreSql安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-PostgreSql的获取与安装"><span class="nav-text">1.PostgreSql的获取与安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-PostgreSql在使用过程中遇到的问题"><span class="nav-text">2.PostgreSql在使用过程中遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-无法连接服务器"><span class="nav-text">2.1 无法连接服务器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-安装postgresql后找不到服务-postgresql-service"><span class="nav-text">2.2 安装postgresql后找不到服务 postgresql service</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YouQiang</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

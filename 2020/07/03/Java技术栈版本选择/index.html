@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Java相关技术选择   组件名称 版本 说明    Java 1.8.0_212 elasticsearch依赖最低版本1.8.0_131springboot2至少依赖1.8   Spring Boot 2.1.5.RELEASE feign多文件需要简单配置   Servlet 容器 tomcat 忠宇反馈评审人员对于不熟悉的undertow持否定态度，采用springboot自带的tomca">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java技术栈版本选择">
+<meta property="og:url" content="http://yoursite.com/2020/07/03/Java%E6%8A%80%E6%9C%AF%E6%A0%88%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9/index.html">
+<meta property="og:site_name" content="秦音">
+<meta property="og:description" content="Java相关技术选择   组件名称 版本 说明    Java 1.8.0_212 elasticsearch依赖最低版本1.8.0_131springboot2至少依赖1.8   Spring Boot 2.1.5.RELEASE feign多文件需要简单配置   Servlet 容器 tomcat 忠宇反馈评审人员对于不熟悉的undertow持否定态度，采用springboot自带的tomca">
+<meta property="article:published_time" content="2020-07-03T07:53:00.000Z">
+<meta property="article:modified_time" content="2020-07-03T08:06:28.275Z">
+<meta property="article:author" content="YouQiang">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/07/03/Java技术栈版本选择/"/>
+
+
+
+
+
+  <title>Java技术栈版本选择 | 秦音</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦音</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archive">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/03/Java%E6%8A%80%E6%9C%AF%E6%A0%88%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YouQiang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦音">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java技术栈版本选择</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-03T15:53:00+08:00">
+                2020-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Java相关技术选择"><a href="#Java相关技术选择" class="headerlink" title="Java相关技术选择"></a>Java相关技术选择</h1><table>
+<thead>
+<tr>
+<th>组件名称</th>
+<th>版本</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Java</td>
+<td>1.8.0_212</td>
+<td>elasticsearch依赖最低版本1.8.0_131</br>springboot2至少依赖1.8</td>
+</tr>
+<tr>
+<td>Spring Boot</td>
+<td>2.1.5.RELEASE</td>
+<td>feign多文件需要简单配置</td>
+</tr>
+<tr>
+<td>Servlet 容器</td>
+<td>tomcat</td>
+<td>忠宇反馈评审人员对于不熟悉的undertow持否定态度，采用springboot自带的tomcat</td>
+</tr>
+<tr>
+<td>Elasticsearch</td>
+<td>6.3.2</td>
+<td>采用restclient代替transportclient，根据需要再开发2.4相关版本</td>
+</tr>
+<tr>
+<td>数据库</td>
+<td>PostgreSQL(11.4)</td>
+<td></td>
+</tr>
+<tr>
+<td>持久层框架</td>
+<td>MyBatis（3.5.1）</td>
+<td>mybatis-spring-boot-starter(2.0.1)内部mybatis就是3.5.1</td>
+</tr>
+<tr>
+<td>swagger</td>
+<td>2.7.0</td>
+<td>从2.8.0之后版本ui不好用</td>
+</tr>
+<tr>
+<td>参数校验</td>
+<td>javax.validation</td>
+<td>统一异常处理</td>
+</tr>
+<tr>
+<td>统一异常处理</td>
+<td>分层处理</td>
+<td>需要自己封装</td>
+</tr>
+<tr>
+<td>统一返回数据对象</td>
+<td></td>
+<td>需要自己封装</td>
+</tr>
+<tr>
+<td>工具类</td>
+<td>commons-lang3<br>commons-collections4<br>commons-io<br>http(okhttp)</br>json(jackson)</br>日期操作</td>
+<td>需要自己封装</td>
+</tr>
+</tbody></table>
+<h1 id="版本详情"><a href="#版本详情" class="headerlink" title="版本详情"></a>版本详情</h1><h2 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h2><p>官方当前1.8最新稳定版 Java SE Development Kit 8u212</p>
+<p>最低要求版本1.8.0_131（elasticsearch6.0官方要求的最低版本）</p>
+<h2 id="Spring-Boot"><a href="#Spring-Boot" class="headerlink" title="Spring Boot"></a>Spring Boot</h2><p>最新稳定版 2.1.5.RELEASE</p>
+<p>之前项目中使用springboot 如果需要使用feign的文件上传需要配置的地方比较多<br>2.0以后feign采用openfeign，不需要配置，只有在多文件上传时需要简单配置</p>
+<pre><code>class MultipartSupportConfig {
+
+    @Autowired
+    private ObjectFactory&lt;HttpMessageConverters&gt; messageConverters;
+
+    @Bean
+    public Encoder feignEncoder() {
+        return new SpringMultipartEncoder(new SpringEncoder(messageConverters));
+    }
+}
+
+class SpringMultipartEncoder extends SpringFormEncoder {
+
+    public SpringMultipartEncoder() {
+        this(new Default());
+    }
+
+    public SpringMultipartEncoder(Encoder delegate) {
+        super(delegate);
+        MultipartFormContentProcessor processor = (MultipartFormContentProcessor) getContentProcessor(ContentType.MULTIPART);
+        processor.addWriter(new SpringSingleMultipartFileWriter());
+        processor.addWriter(new SpringManyMultipartFilesWriter());
+    }
+
+    @Override
+    public void encode(Object object, Type bodyType, RequestTemplate template) throws EncodeException {
+        if (bodyType.equals(MultipartFile.class)) {
+            // 单MultipartFile判断
+            MultipartFile file = (MultipartFile) object;
+            Map data = singletonMap(file.getName(), object);
+            super.encode(data, MAP_STRING_WILDCARD, template);
+            return;
+        } else if (bodyType.equals(MultipartFile[].class)) {
+            // MultipartFile数组处理
+            MultipartFile[] file = (MultipartFile[]) object;
+            if (file != null) {
+                Map data = singletonMap(file.length == 0 ? &quot;&quot; : file[0].getName(), object);
+                super.encode(data, MAP_STRING_WILDCARD, template);
+                return;
+            }
+        }
+        // 其他类型调用父类默认处理方法
+        super.encode(object, bodyType, template);
+    }
+}</code></pre><p>文件上传的feign配置</p>
+<pre><code>@FeignClient(name = &quot;file&quot;, url = &quot;http://127.0.0.1:8080&quot;, configuration = FileFeign.MultipartSupportConfig.class)</code></pre><h2 id="Servlet容器"><a href="#Servlet容器" class="headerlink" title="Servlet容器"></a>Servlet容器</h2><p>使用springboot自带的tomcat</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre><p>使用统一异常处理捕获文件大小异常</p>
+<p>配置文件上传大小为10M示例</p>
+<p>application.yml</p>
+<pre><code>server:
+  # 该配置项可以在统一异常处理中捕获上传文件大小异常
+  tomcat:
+    max-swallow-size: -1
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB</code></pre><p>统一异常处理</p>
+<pre><code>@Slf4j
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseStatus(value = HttpStatus.PAYLOAD_TOO_LARGE)
+    public String handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        return e.getMessage();
+    }
+
+}</code></pre><p>上面的方法只能处理单文件的异常，对于多文件上传，一个表单项上传多文件的情况，如果是每个文件不过超过10MB，那么选择两个6MB的同样会报错，可以采用如下配置</p>
+<pre><code>@SpringBootApplication(exclude = MultipartAutoConfiguration.class)</code></pre><p>在启动类上排除MultipartAutoConfiguration，使用自定义的MultipartResolver</p>
+<pre><code>@Value(&quot;${spring.servlet.multipart.max-file-size:1MB}&quot;)
+private String maxFileSize;
+
+@Bean(name = &quot;multipartResolver&quot;)
+@Primary
+public MultipartResolver multipartResolver() {
+    log.info(&quot;maxUploadSize {}&quot;, maxFileSize);
+    long maxSize = DataSize.parse(maxFileSize).toBytes();
+    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+    multipartResolver.setDefaultEncoding(&quot;utf-8&quot;);
+    multipartResolver.setMaxUploadSizePerFile(maxSize);
+    return multipartResolver;
+}</code></pre><h2 id="Elasticsearch"><a href="#Elasticsearch" class="headerlink" title="Elasticsearch"></a>Elasticsearch</h2><p>使用6.3.2作为开发版本</p>
+<p>采用RestHighLevelClient操作</p>
+<p>依赖</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.elasticsearch.client&lt;/groupId&gt;
+    &lt;artifactId&gt;elasticsearch-rest-high-level-client&lt;/artifactId&gt;
+    &lt;version&gt;6.3.2&lt;/version&gt;
+&lt;/dependency&gt;</code></pre><p>示例</p>
+<pre><code>RestHighLevelClient client = new RestHighLevelClient(
+    RestClient.builder(
+            new HttpHost(&quot;localhost&quot;, 9200, &quot;http&quot;),
+            new HttpHost(&quot;localhost&quot;, 9201, &quot;http&quot;)));
+
+创建索引
+client.indices().create(request);
+删除索引
+client.indices().delete(request);
+查询数据
+client.search(request);</code></pre><h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>PostgreSQL 11.4</p>
+<h2 id="持久层框架"><a href="#持久层框架" class="headerlink" title="持久层框架"></a>持久层框架</h2><p>MyBatis 3.5.1</p>
+<p>mybatis-spring-boot-starter(2.0.1)内部mybatis就是3.5.1</p>
+<h2 id="swagger"><a href="#swagger" class="headerlink" title="swagger"></a>swagger</h2><p>从2.8.0开始界面变化太大，操作不方便，使用2.7.0</p>
+<p>依赖</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;io.springfox&lt;/groupId&gt;
+    &lt;artifactId&gt;springfox-swagger2&lt;/artifactId&gt;
+    &lt;version&gt;${swagger.version}&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.springfox&lt;/groupId&gt;
+    &lt;artifactId&gt;springfox-swagger-ui&lt;/artifactId&gt;
+    &lt;version&gt;${swagger.version}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre><h2 id="参数校验"><a href="#参数校验" class="headerlink" title="参数校验"></a>参数校验</h2><p>比如参数不能为空，一些正则的校验</p>
+<pre><code>@NotEmpty(message = &quot;手机号不能为空&quot;)
+@Pattern(regexp = &quot;^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$&quot;, message = &quot;手机号格式不对&quot;)
+private String telephone;</code></pre><p>示例</p>
+<pre><code>请求对象
+@Data
+public class ParamVo {
+    @NotEmpty(message = &quot;用户名不能为空&quot;)
+    private String username;
+    @NotEmpty(message = &quot;手机号不能为空&quot;)
+    @Pattern(regexp = &quot;^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$&quot;, message = &quot;手机号格式不对&quot;)
+    private String telephone;
+}
+
+请求controller
+@ApiOperation(value = &quot;参数校验&quot;)
+@PostMapping(&quot;/paramValidate&quot;)
+public ParamVo paramValidate(@RequestBody @Valid ParamVo paramVo) {
+    return paramVo;
+}
+
+统一异常处理
+@ExceptionHandler(MethodArgumentNotValidException.class)
+@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+@ResponseBody
+public String handleBindException(MethodArgumentNotValidException e) {
+    // log.error(&quot;参数校验异常：{}&quot;, e);
+    StringBuilder errorStr = new StringBuilder();
+    e.getBindingResult().getAllErrors().
+            forEach(x -&gt; errorStr.append(x.getDefaultMessage() + &quot;，&quot;));
+    String message = errorStr.substring(0, errorStr.length() - 1);
+    // message = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+    return message;
+}</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/30/%E6%97%A5%E5%B8%B8%E4%BB%A3%E7%A0%81%E8%AE%B0%E5%BD%95/" rel="next" title="日常代码记录">
+                <i class="fa fa-chevron-left"></i> 日常代码记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/03/Jenkins%E8%87%AA%E5%8A%A8%E5%8C%96%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/" rel="prev" title="Jenkins自动化项目部署">
+                Jenkins自动化项目部署 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/touxiang.png"
+                alt="YouQiang" />
+            
+              <p class="site-author-name" itemprop="name">YouQiang</p>
+              <p class="site-description motion-element" itemprop="description">技术总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java相关技术选择"><span class="nav-text">Java相关技术选择</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#版本详情"><span class="nav-text">版本详情</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java"><span class="nav-text">Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Boot"><span class="nav-text">Spring Boot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Servlet容器"><span class="nav-text">Servlet容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Elasticsearch"><span class="nav-text">Elasticsearch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库"><span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久层框架"><span class="nav-text">持久层框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#swagger"><span class="nav-text">swagger</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数校验"><span class="nav-text">参数校验</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YouQiang</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1.Spring常用标签123456789101112131415@Configuration把一个类作为一个IoC容器，它的某个方法头上如果注册了@Bean，就会作为这个Spring容器中的Bean。@Scope注解 作用域@Lazy(true) 表示延迟初始化@Service用于标注业务层组件、@Controller用于标注控制层组件（如struts中的action）@Repository用于">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring实现类注入注意点">
+<meta property="og:url" content="http://yoursite.com/2020/06/19/Spring%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%B3%A8%E5%85%A5%E6%B3%A8%E6%84%8F%E7%82%B9/index.html">
+<meta property="og:site_name" content="秦音">
+<meta property="og:description" content="1.Spring常用标签123456789101112131415@Configuration把一个类作为一个IoC容器，它的某个方法头上如果注册了@Bean，就会作为这个Spring容器中的Bean。@Scope注解 作用域@Lazy(true) 表示延迟初始化@Service用于标注业务层组件、@Controller用于标注控制层组件（如struts中的action）@Repository用于">
+<meta property="article:published_time" content="2020-06-19T09:15:00.000Z">
+<meta property="article:modified_time" content="2020-06-19T10:32:08.122Z">
+<meta property="article:author" content="YouQiang">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/19/Spring实现类注入注意点/"/>
+
+
+
+
+
+  <title>Spring实现类注入注意点 | 秦音</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦音</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archive">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/19/Spring%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%B3%A8%E5%85%A5%E6%B3%A8%E6%84%8F%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YouQiang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦音">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring实现类注入注意点</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-19T17:15:00+08:00">
+                2020-06-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-Spring常用标签"><a href="#1-Spring常用标签" class="headerlink" title="1.Spring常用标签"></a>1.Spring常用标签</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span>把一个类作为一个IoC容器，它的某个方法头上如果注册了<span class="meta">@Bean</span>，就会作为这个Spring容器中的Bean。</span><br><span class="line"><span class="meta">@Scope</span>注解 作用域</span><br><span class="line"><span class="meta">@Lazy</span>(<span class="keyword">true</span>) 表示延迟初始化</span><br><span class="line"><span class="meta">@Service</span>用于标注业务层组件、</span><br><span class="line"><span class="meta">@Controller</span>用于标注控制层组件（如struts中的action）</span><br><span class="line"><span class="meta">@Repository</span>用于标注数据访问组件，即DAO组件。</span><br><span class="line"><span class="meta">@Component</span>泛指组件，当组件不好归类的时候，我们可以使用这个注解进行标注。</span><br><span class="line"><span class="meta">@Scope</span>用于指定scope作用域的（用在类上）</span><br><span class="line"><span class="meta">@PostConstruct</span>用于指定初始化方法（用在方法上）</span><br><span class="line"><span class="meta">@PreDestory</span>用于指定销毁方法（用在方法上）</span><br><span class="line"><span class="meta">@Resource</span> 默认按名称装配，当找不到与名称匹配的bean才会按类型装配。</span><br><span class="line"><span class="meta">@DependsOn</span>：定义Bean初始化及销毁时的顺序</span><br><span class="line"><span class="meta">@Primary</span>：自动装配时当出现多个Bean候选者时，被注解为<span class="meta">@Primary</span>的Bean将作为首选者，否则将抛出异常</span><br><span class="line"><span class="meta">@Autowired</span> 默认按类型装配，如果我们想使用按名称装配，可以结合<span class="meta">@Qualifier</span>注解一起使用</span><br><span class="line"><span class="meta">@Autowired</span> <span class="meta">@Qualifier</span>(“personDaoBean”) 存在多个实例配合使用</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp; 当一个接口有两个不同的实现方法时，Spring在注入的时候会由于不知道该注入那个一个实现而报错。可以通过@Primary告诉spring在犹豫的时候优先选择哪一个具体的实现。<br>场景：<br>&emsp;&emsp; 定义接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Singer</span> </span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">sing</span><span class="params">(String lyrics)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 有下面的两个实现类:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span> <span class="comment">// 加注解，让spring识别</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MetalSinger</span> <span class="keyword">implements</span> <span class="title">Singer</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sing</span><span class="params">(String lyrics)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"I am singing with DIO voice: "</span>+lyrics;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 注意，这里没有注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OperaSinger</span> <span class="keyword">implements</span> <span class="title">Singer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sing</span><span class="params">(String lyrics)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"I am singing in Bocelli voice: "</span>+lyrics;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> Singer singer;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 在注入Singer对象时，会报错误：<code>I am singing with DIO voice: song lyrics.</code> 原因很简单，就是OperaSinger这个类上面根本没有加上注解@Copmonent或者@Service,所以spring注入的时候，只能找到MetalSinger这个实现类.所以才有这个结果。</p>
+<p>&emsp;&emsp; 但是如果一旦 OperaSinger 这个类加上了@Copmonent 或者 @Service 注解，有趣的事情就会发生，你会发现一个错误的结果或异常:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type [main.service.Singer] is defined: expected single matching bean but found <span class="number">2</span>: metalSinger,operaSinger</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 第一种解决办法：提示很明确了，spring 根据类型无法选择到底注入哪一个。这个时候@Primay 可以闪亮登场了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OperaSinger</span> <span class="keyword">implements</span> <span class="title">Singer</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sing</span><span class="params">(String lyrics)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"I am singing in Bocelli voice: "</span>+lyrics;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 如果代码改成这样，再次运行，结果如下：<code>I am singing in Bocelli voice: song lyrics</code>， 用@Primary 告诉spring在犹豫的时候优先选择哪一个具体的实现。<br>&emsp;&emsp; 第二种解决办法：用@Qualifier这个注解来解决问题，将上面的两个类改为如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span> <span class="comment">// 加注解，让spring识别</span></span><br><span class="line"><span class="meta">@Qualifier</span>(<span class="string">"metalSinger"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MetalSinger</span> <span class="keyword">implements</span> <span class="title">Singer</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sing</span><span class="params">(String lyrics)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"I am singing with DIO voice: "</span>+lyrics;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Qualifier</span>(<span class="string">"opreaSinger"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OperaSinger</span> <span class="keyword">implements</span> <span class="title">Singer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sing</span><span class="params">(String lyrics)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"I am singing in Bocelli voice: "</span>+lyrics;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 然后在调用的方法上面使用@Qualifier标签，@Qualifier限定哪个bean应该被自动注入。当Spring无法判断出哪个bean应该被注入时，@Qualifier注解有助于消除歧义bean的自动注入。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingerService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(SingerService<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Singer singer;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Qualifier</span>(<span class="string">"opreaSinger"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sing</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> singer.sing(<span class="string">"song lyrics"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Spring自定义Bean"><a href="#2-Spring自定义Bean" class="headerlink" title="2.Spring自定义Bean"></a>2.Spring自定义Bean</h3><p>&emsp;&emsp; springboot的标签生成bean方式，bean的名称是与方法名称相匹配的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnBean</span>(WxConfig<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">WxAuthService</span> <span class="title">wxBindService</span>(<span class="title">WxService</span> <span class="title">wxService</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> WxAuthServiceAdapter(wxService);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 上面的bean的名称为<code>wxBindService</code>.也可在@Bean（””）指定生成bean的名称，比如：<code>@Bean(&quot;wxAuthService&quot;)</code></p>
+<p>注意点：<br>&emsp;&emsp; ① @Bean用在方法上，@Component用在类上，用了这2个注解就可以将自定的bean就放入ioc了。注意：有@Bean的方法的类，必须加上@Configuration，表明这个是个配置类，相当于xml文件的作用。不然，你加上@Bean没有用啊！！<br>&emsp;&emsp; ② @ConfigurationProperties作用是绑定配置文件中的值和类的成员变量，使得new出的对象是有初始值的。但是，用了这个注解后，类并没有到容器中。必须要加@Component，放入容器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"casic.filestore.minio"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinioProperties</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String url;</span><br><span class="line">    <span class="keyword">private</span> String accessKey;</span><br><span class="line">    <span class="keyword">private</span> String secretKey;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MinioProperties</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">		<span class="comment">//设置set、get方法</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 通过@ConfigurationProperties标签，在创建MinioProperties对象的时候，会自动设置MinioProperties对象中的字段的初始值为配置文件中设置的值。<br>&emsp;&emsp; ③ 如果不用Component，那么需要注入上面这个对象的类，必须加上@EnableConfigurationProperties。这样，使用了@EnableConfigurationProperties这个注解后，IOC容器中也会有了。那么你就可以在这个类中使用@AutoWired 等注解来注入上述组件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> io.minio.MinioClient;</span><br><span class="line"><span class="keyword">import</span> io.minio.errors.InvalidEndpointException;</span><br><span class="line"><span class="keyword">import</span> io.minio.errors.InvalidPortException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.EnableConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Lazy;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.crypto.KeyGenerator;</span><br><span class="line"><span class="keyword">import</span> java.security.NoSuchAlgorithmException;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties</span>(MinioProperties<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">FileStoreConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@Lazy</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> MinioClient <span class="title">minioClient</span><span class="params">(MinioProperties minioProperties)</span> <span class="keyword">throws</span> InvalidPortException, InvalidEndpointException </span>&#123;</span><br><span class="line">		MinioClient minioClient = <span class="keyword">new</span> MinioClient(minioProperties.getUrl(),minioProperties.getAccessKey(),minioProperties.getSecretKey());</span><br><span class="line">		<span class="keyword">return</span> minioClient;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-开发常见标签"><a href="#3-开发常见标签" class="headerlink" title="3.开发常见标签"></a>3.开发常见标签</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ApiImplicitParams</span>：用在请求的方法上，表示一组参数说明</span><br><span class="line"><span class="meta">@ApiImplicitParam</span>：用在<span class="meta">@ApiImplicitParams</span>注解中，指定一个请求参数的各个方面</span><br><span class="line">    name：参数名</span><br><span class="line">    value：参数的汉字说明、解释</span><br><span class="line">    required：参数是否必须传</span><br><span class="line">    paramType：参数放在哪个地方</span><br><span class="line">    	· header --&gt; 请求参数的获取：<span class="meta">@RequestHeader</span></span><br><span class="line">    	· query --&gt; 请求参数的获取：<span class="meta">@RequestParam</span></span><br><span class="line">    	· path（用于restful接口）--&gt; 请求参数的获取：<span class="meta">@PathVariable</span></span><br><span class="line">    	· body（不常用）</span><br><span class="line">    	· form（不常用）</span><br><span class="line">    dataType：参数类型，默认String，其它值dataType=<span class="string">"Integer"</span></span><br><span class="line">    defaultValue：参数的默认值</span><br><span class="line"></span><br><span class="line"><span class="meta">@ApiResponses</span>：用在请求的方法上，表示一组响应</span><br><span class="line">  <span class="meta">@ApiResponse</span>：用在<span class="meta">@ApiResponses</span>中，一般用于表达一个错误的响应信息</span><br><span class="line">    code：数字，例如<span class="number">400</span></span><br><span class="line">    message：信息，例如<span class="string">"请求参数没填好"</span></span><br><span class="line">    response：抛出异常的类</span><br><span class="line"></span><br><span class="line"><span class="meta">@Validated</span>:用于校验请求中的数据是否正常。即修饰实体类时，通过在实体类中的字段上添加类似</span><br><span class="line"><span class="meta">@NotNull</span>、 <span class="meta">@Size</span>(max=<span class="number">32</span>,message=<span class="string">"code is null"</span>)</span><br><span class="line">  等标签，如果在请求时数据异常则会统一抛出异常，方便异常中心统一处理。</span><br><span class="line"><span class="meta">@PathVariable</span>：带占位符的 URL 是 Spring3<span class="number">.0</span> 新增的功能；</span><br><span class="line">  通过 <span class="meta">@PathVariable</span> 可以将 URL 中占位符参数绑定到控制器处理方法的入参中：</span><br><span class="line">  URL 中的 &#123;xxx&#125; 占位符可以通过<span class="meta">@PathVariable</span>(“xxx“) 绑定到操作方法的入参中;</span><br><span class="line"><span class="meta">@TableLogic</span>：在字段上加上这个注解再执行BaseMapper的删除方法时，删除方法会变成修改</span><br><span class="line"><span class="meta">@TableField</span>：<span class="meta">@TableField</span>(exist = <span class="keyword">false</span>)注解加载bean属性上，表示当前属性不是数据库的字段，但在项目中必须使用，</span><br><span class="line">  这样在新增等使用bean的时候，mybatis-plus就会忽略这个，不会报错</span><br><span class="line"><span class="meta">@NotBlank</span>(message = <span class="string">"密码不能为空！"</span>)</span><br><span class="line">  设置字段的验证规则，不需要再业务层再进行单独判断</span><br><span class="line"></span><br><span class="line"><span class="meta">@TableLogic</span>：注解表示逻辑删除，在字段上加上这个注解再执行BaseMapper的删除方法时，删除方法会变成修改</span><br><span class="line">  没有<span class="meta">@TableLogic</span>注解调用deleteById/removeById,直接删除数据。</span><br><span class="line">     SQL:delete from table where id = <span class="number">1</span></span><br><span class="line">  有注解走Update方法</span><br><span class="line">     SQL：Update table set isDelete = <span class="number">1</span> where id = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">Swagger:</span><br><span class="line">  <span class="meta">@JsonIgnore</span>:不让前端或文档显示某字段注解</span><br><span class="line"></span><br><span class="line">Lombok：</span><br><span class="line">  <span class="meta">@EqualsAndHashCode</span>(callSuper = <span class="keyword">true</span>)：</span><br><span class="line">    a.这个注解会生成equals(Object other) 和 hashCode()方法。 </span><br><span class="line">    b.它默认使用非静态，非瞬态的属性 </span><br><span class="line">    c.可通过参数exclude排除一些属性 </span><br><span class="line">    d.可通过参数of指定仅使用哪些属性 </span><br><span class="line">    e.它默认仅使用该类中定义的属性且不调用父类的方法 </span><br><span class="line">    f.可通过callSuper=<span class="keyword">true</span>解决e问题。让其生成的方法中可以调用父类的方法。</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/18/Maven%E5%AF%BC%E5%85%A5jar%E6%8A%A5%E9%94%99%E6%8E%92%E6%9F%A5/" rel="next" title="Maven导入jar报错排查">
+                <i class="fa fa-chevron-left"></i> Maven导入jar报错排查
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/30/%E6%97%A5%E5%B8%B8%E4%BB%A3%E7%A0%81%E8%AE%B0%E5%BD%95/" rel="prev" title="日常代码记录">
+                日常代码记录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/touxiang.png"
+                alt="YouQiang" />
+            
+              <p class="site-author-name" itemprop="name">YouQiang</p>
+              <p class="site-description motion-element" itemprop="description">技术总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Spring常用标签"><span class="nav-text">1.Spring常用标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Spring自定义Bean"><span class="nav-text">2.Spring自定义Bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-开发常见标签"><span class="nav-text">3.开发常见标签</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YouQiang</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

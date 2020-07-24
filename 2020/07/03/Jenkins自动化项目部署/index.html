@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Jenkins," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. 自动化部署&amp;emsp;&amp;emsp; 此文本的自动部署是默认安装好JenKins、JDK以及打包所需要的maven等配置。如果没有安装好Jenkins或其他配置，可参考：Jenkins之——构建Java Maven项目(WAR)并发布到远程Tomcat① 创建项目工程&amp;emsp;&amp;emsp; 在创建项目工程时，比如parse_test_youqiang工程的某些基础配置与parse_sign_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins自动化项目部署">
+<meta property="og:url" content="http://yoursite.com/2020/07/03/Jenkins%E8%87%AA%E5%8A%A8%E5%8C%96%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="秦音">
+<meta property="og:description" content="1. 自动化部署&amp;emsp;&amp;emsp; 此文本的自动部署是默认安装好JenKins、JDK以及打包所需要的maven等配置。如果没有安装好Jenkins或其他配置，可参考：Jenkins之——构建Java Maven项目(WAR)并发布到远程Tomcat① 创建项目工程&amp;emsp;&amp;emsp; 在创建项目工程时，比如parse_test_youqiang工程的某些基础配置与parse_sign_">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_4.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_5.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_6.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_7.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_8.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_9.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_10.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_11.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/JenKinsCN_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/JenKinsCN_2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/JenKinsCN_3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/JenKinsCN_4.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/JenKinsCN_5.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramPackage_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramPackage_2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramPackage_3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramPackage_4.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramPackage_5.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramPackage_6.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramPackage_7.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramPackage_8.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramPackage_9.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramGit_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramGit_2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/qinyin/JenKins/paramGit_3.jpg">
+<meta property="article:published_time" content="2020-07-03T08:00:00.000Z">
+<meta property="article:modified_time" content="2020-07-21T07:11:31.810Z">
+<meta property="article:author" content="YouQiang">
+<meta property="article:tag" content="Jenkins">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/qinyin/JenKins/autoDeployment_1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/07/03/Jenkins自动化项目部署/"/>
+
+
+
+
+
+  <title>Jenkins自动化项目部署 | 秦音</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">秦音</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archive">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/03/Jenkins%E8%87%AA%E5%8A%A8%E5%8C%96%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YouQiang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秦音">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Jenkins自动化项目部署</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-03T16:00:00+08:00">
+                2020-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Jenkins/" itemprop="url" rel="index">
+                    <span itemprop="name">Jenkins</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-自动化部署"><a href="#1-自动化部署" class="headerlink" title="1. 自动化部署"></a>1. 自动化部署</h3><p>&emsp;&emsp; 此文本的自动部署是默认安装好JenKins、JDK以及打包所需要的maven等配置。如果没有安装好Jenkins或其他配置，可参考：<a href="https://blog.csdn.net/l1028386804/article/details/78668879" target="_blank" rel="noopener" title="Jenkins之——构建Java Maven项目(WAR)并发布到远程Tomcat">Jenkins之——构建Java Maven项目(WAR)并发布到远程Tomcat</a><br>① 创建项目工程<br><img src="/images/qinyin/JenKins/autoDeployment_1.jpg" alt="">&emsp;&emsp; 在创建项目工程时，比如<code>parse_test_youqiang</code>工程的某些基础配置与<code>parse_sign_test_api</code>有公共部分，则可以在创建<code>parse_test_youqiang</code>项目工程时，将<code>parse_sign_test_api</code>的参数配置全部复制到<code>parse_test_youqiang</code>中，然后再进去修改单独配置参数。当然，两个项目一点共同点都没有也可以这样操作，只是要进去对所有的配置进行全部修改，比较麻烦。<br><img src="/images/qinyin/JenKins/autoDeployment_2.jpg" alt="">&emsp;&emsp; 因为是从已有工程复制过去的，所以<code>parse_test_youqiang</code>工程创建好后，默认带有初始值。可根据业务自行修改。</p>
+<p>② 设置构建保存策略：<br><img src="/images/qinyin/JenKins/autoDeployment_3.jpg" alt=""></p>
+<blockquote>
+<p>打开一个Jenkins job的Configure页面，勾选上<code>”Discard old builds”</code>，填入<code>Day of keep builds</code> （保留几天的build记录）和<code>Max# of builds to keep</code> （保留最多几个build记录）。<code>点击Advanced按钮，还可以填入</code>Days of keep artifacts <code>（保留几天的artifact）和</code> Max# of builds to keep with artifacts<code>(保留最多几个artifacts)。
+通常来讲，如果磁盘空间足够，这4个选项设置为15就可以了（也就是两周 + 1天）。如果磁盘空间不足时，可以将这4个选项都设置为3。
+Jenkins job在每次build结束后（无论成功还是失败）都会自动执行</code>discard old builds`，这样当下次执行build后，这个job占用的磁盘空间就会被释放。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$JENKINS_HOME/jobs/[JOB_NAME]/builds 目录存储了该Jenkins job的全部构建记录（目录名为Build Number）。</span><br><span class="line">$JENKINS_HOME/jobs/[JOB_NAME]/builds/BUILD_NUMBER/artifacts 目录存储了该次构建的artifact。</span><br></pre></td></tr></table></figure>
+
+<p>③ 选取源代码地址、分支、gitlab版本<br><img src="/images/qinyin/JenKins/autoDeployment_4.jpg" alt="">&emsp;&emsp; 项目打包：<br><img src="/images/qinyin/JenKins/autoDeployment_5.jpg" alt="">&emsp;&emsp; 输入打包命令，JenKins会自动执行该命令。</p>
+<blockquote>
+<p>需要注意的是，在后端打包时，需要进入到项目工程对应的目录下。<br>而JenKins会自动在JenKins的工作空间创建以项目工程名称的文件夹，然后将代码拉取到该目录下。故需要先进入到该目录下在执行maven打包命令。前端也是，也要进入到该目录下，只是执行的打包命令不同而已。<br><font color=red>（注意，vue前端打包时，需要在将项目初始化，即：<code>/data1/node-v14.4.0-linux-x64/bin/npm install</code>。因为该命令只需要执行一次即可，故不写入自动部署命令脚本中。如果不初始化项目，会导致打包失败）</font></p>
+</blockquote>
+<p><img src="/images/qinyin/JenKins/autoDeployment_6.jpg" alt=""></p>
+<p>④ 打好的jar传输与jar启动：<br><img src="/images/qinyin/JenKins/autoDeployment_7.jpg" alt=""></p>
+<p>⑤ 前端文件传输：前端与后端配置基本相同，只是文件的路径不同的差异。<br><img src="/images/qinyin/JenKins/autoDeployment_8.jpg" alt=""></p>
+<p>⑥ JenKins的公共配置：<br><img src="/images/qinyin/JenKins/autoDeployment_9.jpg" alt=""><br><img src="/images/qinyin/JenKins/autoDeployment_10.jpg" alt=""><br><img src="/images/qinyin/JenKins/autoDeployment_11.jpg" alt=""></p>
+<p>参考链接：<a href="https://www.cnblogs.com/mengyu/p/7802822.html" target="_blank" rel="noopener" title="Post-build Actions的ssh配置">Post-build Actions的ssh配置</a></p>
+<h3 id="2-JenKins设置中文"><a href="#2-JenKins设置中文" class="headerlink" title="2.JenKins设置中文"></a>2.JenKins设置中文</h3><p>&emsp;&emsp; 由于本Jenkins已经设置过了，故显示为中文<br><img src="/images/qinyin/JenKins/JenKinsCN_1.jpg" alt=""><br>&emsp;&emsp; 在插件管理，搜索 Localization: Chinese (Simplified)，然后点击Install without restart<br><img src="/images/qinyin/JenKins/JenKinsCN_2.jpg" alt=""><br>&emsp;&emsp; 等待插件安装完成：<br><img src="/images/qinyin/JenKins/JenKinsCN_3.jpg" alt=""><br>&emsp;&emsp; 安装完成后，需要重启JenKins：在地址栏输入 restart 重启Jenkins：<br><img src="/images/qinyin/JenKins/JenKinsCN_4.jpg" alt=""><br>&emsp;&emsp; 即可看到效果：<br><img src="/images/qinyin/JenKins/JenKinsCN_5.jpg" alt=""><br>&emsp;&emsp; 如果重启后没有中文化，可能是插件没安装完全，上面步骤再来一次。</p>
+<h3 id="3-根据不同参数打不同环境的jar"><a href="#3-根据不同参数打不同环境的jar" class="headerlink" title="3.根据不同参数打不同环境的jar"></a>3.根据不同参数打不同环境的jar</h3><p><img src="/images/qinyin/JenKins/paramPackage_1.jpg" alt=""><br>&emsp;&emsp; 在构建自动部署过程中引用该参数：<br><img src="/images/qinyin/JenKins/paramPackage_2.jpg" alt=""><br>&emsp;&emsp; 然后根据该参数选中的不同选项，发布到不同的服务器上去启动：<br><img src="/images/qinyin/JenKins/paramPackage_3.jpg" alt=""><br>&emsp;&emsp; 当env_options字段选中的值为parse_test时，则使用parse_test用户进行jar传输与启动：<br><img src="/images/qinyin/JenKins/paramPackage_4.jpg" alt=""><br>&emsp;&emsp; 当env_options字段选中的值为parse_rel时，则使用parse_rel用户进行jar传输与启动：<br><img src="/images/qinyin/JenKins/paramPackage_5.jpg" alt=""><br>&emsp;&emsp; 设置打包过程中使用env_options的值来进行不同的jar传输与启动：<br><img src="/images/qinyin/JenKins/paramPackage_6.jpg" alt=""><br><img src="/images/qinyin/JenKins/paramPackage_7.jpg" alt=""><br>&emsp;&emsp; 实现后打包效果为：<br><img src="/images/qinyin/JenKins/paramPackage_8.jpg" alt=""><br><img src="/images/qinyin/JenKins/paramPackage_9.jpg" alt=""><br>&emsp;&emsp; 即根据<code>env_options</code>选中的不同的值，来实现不同服务器的打包部署。但这种方式的前提是代码仓库Git地址要是同一个地址，且打包的分支也是同一个分支才行，不满足这两个条件则不适合这种自动部署方式。打包时选择不同分支进行打包的操作后面介绍。</p>
+<h3 id="4-打包时选择不同git分支自动部署"><a href="#4-打包时选择不同git分支自动部署" class="headerlink" title="4. 打包时选择不同git分支自动部署"></a>4. 打包时选择不同git分支自动部署</h3><p>&emsp;&emsp; 在插件管理中，安装Git Parameter Plug-In插件，安装后重启JenKins，安装步骤与JenKins设置中文步骤类似。<br>&emsp;&emsp; 插件安装好后，进入待设置的工程配置里面：<br><img src="/images/qinyin/JenKins/paramGit_1.jpg" alt=""><br>&emsp;&emsp; 在拉取源代码时，设置拉取源代码分支参数值：<br><img src="/images/qinyin/JenKins/paramGit_2.jpg" alt=""><br><img src="/images/qinyin/JenKins/paramGit_3.jpg" alt=""></p>
+<p>参考链接：<a href="https://www.cnblogs.com/guoyabin/p/12022693.html" target="_blank" rel="noopener" title="jenkins发布代码选择不同分支">jenkins发布代码选择不同分支</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Jenkins/" rel="tag"># Jenkins</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/03/Java%E6%8A%80%E6%9C%AF%E6%A0%88%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9/" rel="next" title="Java技术栈版本选择">
+                <i class="fa fa-chevron-left"></i> Java技术栈版本选择
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/20/PostgresSQL%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%93%8D%E4%BD%9C/" rel="prev" title="PostgresSQL命令行操作">
+                PostgresSQL命令行操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/touxiang.png"
+                alt="YouQiang" />
+            
+              <p class="site-author-name" itemprop="name">YouQiang</p>
+              <p class="site-description motion-element" itemprop="description">技术总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-自动化部署"><span class="nav-text">1. 自动化部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-JenKins设置中文"><span class="nav-text">2.JenKins设置中文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-根据不同参数打不同环境的jar"><span class="nav-text">3.根据不同参数打不同环境的jar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-打包时选择不同git分支自动部署"><span class="nav-text">4. 打包时选择不同git分支自动部署</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YouQiang</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

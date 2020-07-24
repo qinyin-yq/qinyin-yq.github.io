@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="linux,虚拟机,jdk," />
+  <meta name="keywords" content="Linux,虚拟机,Jdk," />
 
 
 
@@ -79,19 +79,22 @@
 
 
 
-<meta name="description" content="1.jdk安装本地压缩包安装1）将jdk的centos7 jar解压到指定位置2）修改环境变量：vi &#x2F;etc&#x2F;profile 12345678JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre">
+<meta name="description" content="1.jdk安装本地压缩包安装1）将jdk的centos7 jar解压到指定位置 1tar -zxvf jdk-8u211-linux-x64.tar.gz 2）修改环境变量：vi &#x2F;etc&#x2F;profile 12345#java environmentexport JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_211export JRE_HOME&amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux常用软件安装">
 <meta property="og:url" content="http://yoursite.com/2020/05/20/Linux%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/index.html">
 <meta property="og:site_name" content="秦音">
-<meta property="og:description" content="1.jdk安装本地压缩包安装1）将jdk的centos7 jar解压到指定位置2）修改环境变量：vi &#x2F;etc&#x2F;profile 12345678JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre">
+<meta property="og:description" content="1.jdk安装本地压缩包安装1）将jdk的centos7 jar解压到指定位置 1tar -zxvf jdk-8u211-linux-x64.tar.gz 2）修改环境变量：vi &#x2F;etc&#x2F;profile 12345#java environmentexport JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_211export JRE_HOME&amp;">
+<meta property="og:image" content="http://yoursite.com/images/linux/openjdk_1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/linux/openjdk_2.jpg">
 <meta property="article:published_time" content="2020-05-20T06:26:00.000Z">
-<meta property="article:modified_time" content="2020-05-20T08:12:24.763Z">
+<meta property="article:modified_time" content="2020-07-23T05:40:58.409Z">
 <meta property="article:author" content="YouQiang">
-<meta property="article:tag" content="linux">
+<meta property="article:tag" content="Linux">
 <meta property="article:tag" content="虚拟机">
-<meta property="article:tag" content="jdk">
+<meta property="article:tag" content="Jdk">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/linux/openjdk_1.jpg">
 
 
 
@@ -306,8 +309,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
 
@@ -343,9 +346,12 @@
       
 
       
-        <h3 id="1-jdk安装"><a href="#1-jdk安装" class="headerlink" title="1.jdk安装"></a>1.jdk安装</h3><h4 id="本地压缩包安装"><a href="#本地压缩包安装" class="headerlink" title="本地压缩包安装"></a>本地压缩包安装</h4><p>1）将jdk的centos7 jar解压到指定位置<br>2）修改环境变量：<code>vi /etc/profile</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64</span><br><span class="line">JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre</span><br><span class="line">PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin</span><br><span class="line">CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar</span><br><span class="line">export JAVA_HOME</span><br><span class="line">export JRE_HOME</span><br><span class="line">export PATH</span><br><span class="line">export CLASSPATH</span><br></pre></td></tr></table></figure>
-<p>3）重启系统文件：<code>source /etc/profile</code></p>
+        <h3 id="1-jdk安装"><a href="#1-jdk安装" class="headerlink" title="1.jdk安装"></a>1.jdk安装</h3><h4 id="本地压缩包安装"><a href="#本地压缩包安装" class="headerlink" title="本地压缩包安装"></a>本地压缩包安装</h4><p>1）将jdk的centos7 jar解压到指定位置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf jdk-<span class="number">8</span>u211-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+<p>2）修改环境变量：<code>vi /etc/profile</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#java environment</span><br><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_211</span><br><span class="line">export JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre</span><br><span class="line">export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin</span><br><span class="line">export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar</span><br></pre></td></tr></table></figure>
+<p>3）重启系统文件：<code>source /etc/profile</code><br>这种直接解压压缩包的安装方式卸载也极为简单：首先删除解压的文件夹jdk1.8.0_211，然后把环境变量中的配置删除，重启系统文件即可卸载该jdk</p>
+<h4 id="本地rpm安装"><a href="#本地rpm安装" class="headerlink" title="本地rpm安装"></a>本地rpm安装</h4><p>即将本地的rpm移动到服务器上安装，如果rpm只是jdk的rpm，而没有包含其所依赖的，则需要将jdk所依赖的rpm一起拷贝上去。<br>然后一个一个将子类安装好后，最后才能安装成功jdk。其中涉及到很多子类依赖yum安装步骤，极其复杂。<br>即只针对没有网络，且没有其他安装步骤时使用。<br><img src="/images/linux/openjdk_1.jpg" alt=""><br><img src="/images/linux/openjdk_2.jpg" alt=""><br>上面的截图只是其中的一部分，还有很多其他子rpm也是按照这个步骤安装。</p>
 <h3 id="2-linux中Expect工具的安装"><a href="#2-linux中Expect工具的安装" class="headerlink" title="2.linux中Expect工具的安装"></a>2.linux中Expect工具的安装</h3><p>Expect是一个用来处理交互的工具，通常用于需要手动输入数据的场景，可在脚本中使用expect来实现自动化。</p>
 <p>安装<br>首先查看系统中是否有安装expect。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whereis expect</span><br></pre></td></tr></table></figure>
@@ -389,10 +395,6 @@
 <p>3.3 使用命令</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sshpass -p 123456(密码) scp &#x2F;home&#x2F;file.txt root@10.0.0.37:&#x2F;home&#x2F;copy</span><br></pre></td></tr></table></figure>
 
-
-
-
-
       
     </div>
     
@@ -409,11 +411,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag"># linux</a>
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
           
             <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag"># 虚拟机</a>
           
-            <a href="/tags/jdk/" rel="tag"># jdk</a>
+            <a href="/tags/Jdk/" rel="tag"># Jdk</a>
           
         </div>
       
@@ -519,7 +521,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -530,7 +532,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -541,7 +543,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -584,7 +586,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-jdk安装"><span class="nav-text">1.jdk安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本地压缩包安装"><span class="nav-text">本地压缩包安装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-linux中Expect工具的安装"><span class="nav-text">2.linux中Expect工具的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-sshpass的安装使用"><span class="nav-text">3.sshpass的安装使用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-jdk安装"><span class="nav-text">1.jdk安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本地压缩包安装"><span class="nav-text">本地压缩包安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地rpm安装"><span class="nav-text">本地rpm安装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-linux中Expect工具的安装"><span class="nav-text">2.linux中Expect工具的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-sshpass的安装使用"><span class="nav-text">3.sshpass的安装使用</span></a></li></ol></div>
             
 
           </div>
